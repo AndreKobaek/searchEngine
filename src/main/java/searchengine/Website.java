@@ -1,6 +1,8 @@
 package searchengine;
 
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * A website is the basic entity of the search engine. It has a url, a title, and a list of words.
@@ -19,11 +21,20 @@ public class Website {
    */
   private String url;
 
-
   /**
    * A list of words storing the words on the website
    */
   private List<String> words;
+
+  /**
+   * A map of words mapped to the respective term frequecy score
+   */
+  private Map<String, Double> wordTfScore;
+
+  /**
+   * A map of words mapped to the respective term frequency score
+   */
+  private Map<String, Double> wordTfIdfScore;
 
   /**
    * Creates a {@code Website} object from a url, a title, and a list of words that are contained on
@@ -37,6 +48,7 @@ public class Website {
     this.url = url;
     this.title = title;
     this.words = words;
+    wordTfScore = new TreeMap<>();
   }
 
   /**
@@ -80,5 +92,39 @@ public class Website {
   public String toString() {
     return "Website{" + "title='" + title + '\'' + ", url='" + url + '\'' + ", words=" + words
         + '}';
+  }
+
+  /**
+   * Get the value of wordTfScore map
+   * @return wordTfScore map
+   */
+  public Map<String, Double> getWordTfScore() {
+    return wordTfScore;
+  }
+
+  /**
+   * Takes a word and a score and pur it into a TreeMap
+   * @param word
+   * @param score
+   */
+  public void setWordTFScore(String word, Double score) {
+    wordTfScore.put(word,score);
+  }
+
+  /**
+   * Get the value of wordTfIdfScore map
+   * @return wordTfIdfScore
+   */
+  public Map<String, Double> getWordTfIdfScore() {
+    return wordTfIdfScore;
+  }
+
+  /**
+   * Takes a word and a score and put it into a TreeMap
+   * @param word
+   * @param score
+   */
+  public void setWordTfIdfScore(String word, Double score) {
+    wordTfIdfScore.put(word, score);
   }
 }

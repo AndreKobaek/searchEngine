@@ -56,4 +56,12 @@ public abstract class InvertedIndex implements Index {
     // Return an empty HashSet
     return new HashSet<>();
   }
+
+  /**
+   * Get the map of words and websites
+   * @return map of words and websites
+   */
+  public Map<String, Collection<Website>> getMap() {
+        return map;
+  }
 }
