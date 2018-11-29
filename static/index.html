@@ -1,20 +1,33 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Programming Workshop Search Engine</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
     <script src="code.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=VT323" rel="stylesheet">
     <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
-    <div id="content">
-        <h1>My Search Engine</h1>
-        <input id="searchbox" type="text" placeholder="Search here..." />
-        <button id="searchbutton">Search</button>
-    </div>
-    <div id="responsesize">
-    </div>
-    <div id="urllist">
-    </div>
+    <main>
+        <header>
+            <h1>Deep Blue Search</h1>
+            <p>by IPM</p>
+        </header>
+        
+        <form>  
+            <input id="searchbox" type="text" placeholder="Search here..." />
+            <button id="searchbutton">Search</button>
+        </form>
+        
+        <details id="responsesize">
+        </details>
+        
+        <section id="urllist">
+        </section>
+    </main>
 </body>
+
 </html>
