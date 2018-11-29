@@ -3,6 +3,8 @@ html, body {
     max-width: 650px;
     line-height: 1.6;
     padding: 0 10px;
+    background-image: url('https://media.giphy.com/media/E2hsW1Fu6q4qk/giphy.gif');
+    background-size: cover;
     background-color: #1D1075;
     color: #ffffff;
     font-family: 'VT323', monospace;
