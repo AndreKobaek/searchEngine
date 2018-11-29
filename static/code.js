@@ -13,7 +13,7 @@ $(document).ready(function() {
             $("#responsesize").html("<p>" + data.length + " websites retrieved</p>");
             var buffer = "<ul>\n";
             $.each(data, function(index, value) { 
-                buffer += "<li><a href=\"" + value.url + "\">" + value.title + "</a></li>\n";
+                buffer += "<li><a href=\"" + value.url + "\" target=\"_blank\">" + value.title + "</a></li>\n";
             });
             buffer += "</ul>";
             $("#urllist").html(buffer);
