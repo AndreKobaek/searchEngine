@@ -3,9 +3,6 @@ html, body {
     max-width: 650px;
     line-height: 1.6;
     padding: 0 10px;
-    /* background-image: url('https://media.giphy.com/media/xTiTnnoIvpGzNOt2O4/giphy.gif');
-    background-size: cover;
-    background-position: center; */
     background-color: #1D1075;
     color: #ffffff;
     font-family: 'VT323', monospace;
@@ -55,15 +52,29 @@ button {
     line-height: 2;
 }
 
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+a {
+    color: #fff;
+}
+
+a:hover, a:focus {
+    text-decoration: none;
+}
+
+
 #urllist {
     color: #969696;
-    border: 1px solid #dcdcdc;
+    /* border: 1px solid #dcdcdc; */
     border-radius: 2px;
 }
 
 input[type="text"] {
     padding: 10px;
-    margin: 10px;
+    margin: 1em 0;
     border: solid 1px #dcdcdc;
     border-radius: 2px;
     min-width: 200px;
