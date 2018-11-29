@@ -35,16 +35,24 @@ main {
     align-content: center;
 }
 
-form {
+section {
     display: flex;
     max-width: 720px;
     flex-direction: column;
     align-content: center;
 }
 
+input {
+    font-family: inherit;
+    font-size: inherit;
+}
+
 button {
+    margin: auto;
     text-align: center;
     font-family: inherit;
+    font-size: inherit;
+    line-height: 2;
 }
 
 #urllist {
