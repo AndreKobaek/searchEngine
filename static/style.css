@@ -1,11 +1,11 @@
-html, body {
+html {
     margin: 40px auto;
     max-width: 650px;
     line-height: 1.6;
     padding: 0 10px;
-    background-image: url('https://media.giphy.com/media/E2hsW1Fu6q4qk/giphy.gif');
-    background-size: cover;
+    background: url('https://media.giphy.com/media/3ov9k1173PdfJWRsoE/giphy-downsized.gif') no-repeat center center fixed;
     background-color: #1D1075;
+    background-size: cover;
     color: #ffffff;
     font-family: 'VT323', monospace;
     font-size: 18px;
