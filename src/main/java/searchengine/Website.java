@@ -6,8 +6,11 @@ import java.util.HashMap;
 
 /**
  * A website is the basic entity of the search engine. It has a url, a title, and a list of words.
+ * It also has a map (wordMap) that relates a word to the number of times it appears on the site,
+ * and the total number of words on the site (wordSize). These fields are usefull when calculating the rank of the site.
+ * As mentioned above the website also has a rank. The rank is supposed to be set by an external ranking algorithm. 
+ * This is necessary because a website rank depends on both all the other websites in the database/corpus, and the specific query.   
  *
- * @author Martin Aumüller
  */
 public class Website {
 
@@ -28,20 +31,18 @@ public class Website {
   private List<String> words;
 
   /**
-   * a map from word to wordcount
+   * A map from a specific word to the number of times it appear on the site.
+   * The map is made package private so that the map can be conveniently accessed 
+   * by the ranking methods thats will calculate the site rank according to a specific query. 
    */
   Map<String, Integer> wordMap; // package private
 
   /**
-   * the number of words on the website.
+   * The currently assigned rank of the website. 
+   * Rank depends on both the query and the other websites in the database/corpus, as well as on the ranking method.  
+   * If the rank has not (yet) been set by an external ranking method it has the value of 0. 
    */
-  private int wordSize;
-
-  /**
-   * the current rank of the website. Depends on both the query and the other websites in the
-   * "corpus".
-   */
-  private double rank;
+  private double rank = 0;
 
   /**
    * Creates a {@code Website} object from a url, a title, and a list of words that are contained on
@@ -55,9 +56,8 @@ public class Website {
     this.url = url;
     this.title = title;
     this.words = words;
-    this.wordSize = words.size();
 
-    // build the map which holds words and corresponding word counts for the website.
+    // build the map which holds the words and the corresponding word counts for the website.
     wordMap = new HashMap<>();
     for (String word : words) {
       if (wordMap.containsKey(word)) {
@@ -96,18 +96,29 @@ public class Website {
   }
 
   /**
-   * Returns the number of words in list of words.
+   * Returns the number of words in list of words. I.e the number of words on the site. 
    * 
    * @return number of words in list of words.
    */
   public int getWordSize() {
-    return wordSize;
+    return words.size();
   }
 
+  /**
+   * Returns the currently assigned rank of the website. 
+   * 
+   * @return the current rank of the website. 
+   */
   public double getRank() {
     return rank;
   }
 
+  /** 
+   * Set the rank of the site. This method is used by an external ranking method
+   * to set the rank of the site. 
+   * 
+   * @param rank the rank that is to be assigned to the website.  
+   */
   public void setRank(double rank) {
     this.rank = rank;
   }
