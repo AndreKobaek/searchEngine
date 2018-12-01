@@ -7,8 +7,8 @@ import java.util.HashMap;
 /**
  * A website is the basic entity of the search engine. It has a url, a title, and a list of words.
  * It also has a map (wordMap) that relates a word to the number of times it appears on the site,
- * and the total number of words on the site (wordSize). These fields are usefull when calculating the rank of the site.
- * As mentioned above the website also has a rank. The rank is supposed to be set by an external ranking algorithm. 
+ * This field are useful when calculating the rank of the site.
+ * As mentioned the website also has a rank. The rank is supposed to be set by an external ranking algorithm. 
  * This is necessary because a website rank depends on both all the other websites in the database/corpus, and the specific query.   
  *
  */
@@ -66,6 +66,7 @@ public class Website {
         wordMap.put(word, 1);
       }
     }
+    assert words.size() == wordMap.values().stream().reduce(0, (total, count) -> total + count) : "Word count in the map is wrong."; // Sanity check, that all the words have been correctly counted.
   }
 
   /**
