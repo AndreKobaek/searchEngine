@@ -24,13 +24,14 @@ public abstract class InvertedIndex implements Index {
    * the value is a set of all the websites containing that key word.
    * 
    * @param sites The set of websites that should be indexed
+   * @throws IllegalArgumentException if sites contains null. NullPointerException if map has not been instantiated.  
    */
   @Override
   public void build(Set<Website> sites) {
 
     // check if the input to build is valid.
     if (sites == null) {
-      throw new IllegalArgumentException(); // should it throw a nullpointer exception instead?
+      throw new IllegalArgumentException();
     }
 
     if (sites.contains(null)) {

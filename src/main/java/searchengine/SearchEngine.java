@@ -33,7 +33,7 @@ public class SearchEngine {
   }
 
   /**
-   * Returns the list of websites matching the query.
+   * Returns the list of websites matching the query. 
    *
    * @param query the query
    * @return the list of websites matching the query
@@ -45,7 +45,7 @@ public class SearchEngine {
     Set<Website> results = queryHandler.getMatchingWebsites(query);
     
     // rank the websites that matches the query
-    Score.rankSites(results, this.corpus, query); // using the static method Score.rankSites, maybe not be OO-style.
+    Score.rankSites(results, this.corpus, query); // using the static method Score.rankSites.
     
     // OBS: convert set of websites to a list since the sort method only works for list.
     // this can potentially take some time if many websites has been returned. 
