@@ -20,7 +20,8 @@ public class Corpus {
 
   /**
    * The total number of words in the corpus. The number is made package private to allow convenient
-   * access for external ranking methods.
+   * access for external ranking methods. The variable is given the value 0, so that it can be used
+   * as the initial value for the loop that counts the words in the corpus. 
    */
   int wordSize = 0; // package private
 
@@ -97,5 +98,6 @@ public class Corpus {
         wordSize += n;
       });
     }
+    assert wordSize == allSites.stream().map(Website::getWordSize).reduce(0, (total, count) -> total + count); // sanity check, that wordSize is calculated correctly.
   }
 }
