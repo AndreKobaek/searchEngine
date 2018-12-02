@@ -6,13 +6,18 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * The InvertedIndex data structure provides a way to build an index from a list of websites. It
+ * The InvertedIndex data structure provides a way to build an index from a set of websites. It
  * allows to lookup the websites that contain a query word. The InvertedIndex maps query words to
  * websites allowing for a more effective lookup
  */
 public abstract class InvertedIndex implements Index {
 
-  protected Map<String, Set<Website>> map;
+  /**
+   * The map that relates a word to the websites it appears on. The map is made package private so
+   * that it can conveniently be accessed from other classes in the package. The map is instantiated
+   * in subclasses that extends this abstract class.
+   */
+  Map<String, Set<Website>> map;
 
   /**
    * Takes a set of websites and creates a map. The keys are the words contained in these websites,
@@ -23,14 +28,22 @@ public abstract class InvertedIndex implements Index {
   @Override
   public void build(Set<Website> sites) {
 
+    // check if the input to build is valid.
     if (sites == null) {
-      throw new IllegalArgumentException();
+      throw new IllegalArgumentException(); // should it throw a nullpointer exception instead?
     }
 
     if (sites.contains(null)) {
       throw new IllegalArgumentException();
     }
 
+    // check if map is instantiated
+    if (map == null) {
+      throw new NullPointerException(
+          "The index map must be instantiated before the build method is run.");
+    }
+
+    // build the index map.
     for (Website site : sites) {
       for (String word : site.getWords()) {
 
@@ -49,14 +62,13 @@ public abstract class InvertedIndex implements Index {
     }
   }
 
-
   /**
-   * Returns the set of websites which contains the query String, returns null if the map does not
-   * contain the key.
+   * Returns the set of websites which contains the query String, returns an empty set if the map
+   * does not contain the key.
    * 
    * @param query The query
-   * @return the Set of websites that contain the query word, or null if the query word is not among
-   *         the map keys.
+   * @return the Set of websites that contain the query word, or an empty set if the query word is
+   *         not among the map keys.
    */
   @Override
   public Set<Website> lookup(String query) {
