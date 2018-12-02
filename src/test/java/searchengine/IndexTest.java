@@ -38,13 +38,13 @@ class IndexTest {
     });
   }
 
-  @Disabled("We decided that this is currently not a requirement.")
+  //@Disabled("We decided that this is currently not a requirement.")
   @Test
   void buildNullHash() {
     buildNull(hashIndex);
   }
 
-  @Disabled("We decided that this is currently not a requirement.")
+  //@Disabled("We decided that this is currently not a requirement.")
   @Test
   void buildNullTree() {
     buildNull(treeIndex);
@@ -73,13 +73,13 @@ class IndexTest {
     });
   }
 
-  @Disabled("We decided that this is currently not a requirement.")
+  //Disabled("We decided that this is currently not a requirement.")
   @Test
   void buildListOfNullsHash() {
     buildListOfNulls(hashIndex);
   }
 
-  @Disabled("We decided that this is currently not a requirement.")
+  //Disabled("We decided that this is currently not a requirement.")
   @Test
   void buildListOfNullsTree() {
     buildListOfNulls(treeIndex);

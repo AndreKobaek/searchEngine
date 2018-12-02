@@ -8,20 +8,27 @@ class FileHelperTest {
   @Test
   void parseGoodFile() {
     Set<Website> sites = FileHelper.parseFile("data/test-file.txt");
-    assertEquals(2, sites.size());
-    // assertEquals("title1", sites.get(0).getTitle());
-    // assertEquals("title2", sites.get(1).getTitle());
-    // assertTrue(sites.get(0).containsWord("word1"));
-    // assertFalse(sites.get(0).containsWord("word3"));
+    testSites(sites);
   }
-
+  
   @Test
   void parseBadFile() {
     Set<Website> sites = FileHelper.parseFile("data/test-file-errors.txt");
-    assertEquals(2, sites.size());
-    // assertEquals("title1", sites.get(0).getTitle());
-    // assertEquals("title2", sites.get(1).getTitle());
-    // assertTrue(sites.get(0).containsWord("word1"));
-    // assertFalse(sites.get(0).containsWord("word3"));
+    testSites(sites);
   }
+  
+  private void testSites(Set<Website> sites) {
+    assertEquals(2, sites.size());
+    for (Website site : sites ) {
+      if (site.getTitle().equals("title1")) {
+        assertTrue(site.containsWord("word1"));
+        assertFalse(site.containsWord("word3"));
+      } else if (site.getTitle().equals("title2")) {
+        assertTrue(site.containsWord("word1"));
+      } else {
+        fail("The title should either be title1 or title2");
+      }
+    }
+  }
+
 }
