@@ -49,6 +49,7 @@ public class Website {
     this.title = title;
     this.words = words;
     wordTfScore = new TreeMap<>();
+    wordTfIdfScore = new TreeMap<>();
   }
 
   /**
@@ -95,11 +96,11 @@ public class Website {
   }
 
   /**
-   * Get the value of wordTfScore map
+   * Get the score of a single word into the wordTFScore
    * @return wordTfScore map
    */
-  public Map<String, Double> getWordTfScore() {
-    return wordTfScore;
+  public Double getWordTfScore(String word) {
+    return wordTfScore.get(word);
   }
 
   /**
@@ -108,16 +109,18 @@ public class Website {
    * @param score
    */
   public void setWordTFScore(String word, Double score) {
-    wordTfScore.put(word,score);
+    wordTfScore.put(word.toLowerCase(),score);
   }
 
   /**
-   * Get the value of wordTfIdfScore map
+   * Get the score of a single word into the wordTfIdfScore
    * @return wordTfIdfScore
    */
-  public Map<String, Double> getWordTfIdfScore() {
-    return wordTfIdfScore;
+  public Double getWordTfIdfScore(String word) {
+
+    return wordTfIdfScore.get(word.toLowerCase());
   }
+
 
   /**
    * Takes a word and a score and put it into a TreeMap
@@ -125,6 +128,8 @@ public class Website {
    * @param score
    */
   public void setWordTfIdfScore(String word, Double score) {
+
+    word = word.toLowerCase();
     wordTfIdfScore.put(word, score);
   }
 }

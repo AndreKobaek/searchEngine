@@ -11,5 +11,5 @@ public interface Score {
      * @param website
      * @return a float number representing the tf-idf score of the word in the website
      */
-    double getScore(String word, Website website);
+    double getScore(String word, Website website, Index idx);
 }
