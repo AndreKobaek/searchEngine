@@ -3,8 +3,8 @@ html {
     max-width: 650px;
     line-height: 1.6;
     padding: 0 10px;
-    background: url('https://media.giphy.com/media/3ov9k1173PdfJWRsoE/giphy-downsized.gif') no-repeat center center fixed;
-    background-color: #1D1075;
+    /* background: #1D1075 url('https://media.giphy.com/media/3ov9k1173PdfJWRsoE/giphy-downsized.gif') no-repeat center center fixed; */
+    background: #1D1075;
     background-size: cover;
     color: #ffffff;
     font-family: 'VT323', monospace;
@@ -39,6 +39,12 @@ section {
     max-width: 720px;
     flex-direction: column;
     align-content: center;
+}
+
+#urllist div {
+    border: #fff 1px solid;
+    overflow: hidden;
+    margin: 0.5em;
 }
 
 input {

@@ -11,11 +11,15 @@ $(document).ready(function() {
         }).success( function (data) { 
             console.log("Received response " + data);
             $("#responsesize").html("<p>" + data.length + " websites retrieved</p>");
-            var buffer = "<ul>\n";
+            // var buffer = "<ul>\n";
+            // $.each(data, function(index, value) { 
+            //     buffer += "<li><a href=\"" + value.url + "\" target=\"_blank\">" + value.title + "</a></li>\n";
+            // });
+            // buffer += "</ul>";
+            var buffer = "";
             $.each(data, function(index, value) { 
-                buffer += "<li><a href=\"" + value.url + "\" target=\"_blank\">" + value.title + "</a></li>\n";
+                buffer += "<div><a href=\"" + value.url + "\" target=\"_blank\">" + value.title + "</a>\n<p>" + value.words + "</p></div>\n";
             });
-            buffer += "</ul>";
             $("#urllist").html(buffer);
         });
     });
