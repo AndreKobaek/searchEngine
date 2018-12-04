@@ -18,7 +18,8 @@ $(document).ready(function() {
             // buffer += "</ul>";
             var buffer = "";
             $.each(data, function(index, value) { 
-                buffer += "<div><a href=\"" + value.url + "\" target=\"_blank\">" + value.title + "</a>\n<p>" + value.words + "</p></div>\n";
+                var preview = JSON.stringify(value.words).replace(/,/g, " ");
+                buffer += "<div>\n<a href=\"" + value.url + "\" target=\"_blank\">" + value.title + "</a>\n<p>" + preview + "</p></div>\n";
             });
             $("#urllist").html(buffer);
         });
