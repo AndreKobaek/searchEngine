@@ -31,4 +31,21 @@ The results of the benchmarking can be found in appendix A.
 Analysis and discussion:
 The results of the benchmarking did not align completely with the result that was expected, the TreeMap implementation did not manage to outperform HashMap, evidently due to the limited size of the datafiles. 
 
+\begin{table}[t]
+\begin{tabular}{@{}llr@{}r} \toprule
+	Index & File & Avg. lookup time (ms) &Error \\ \midrule
+	SimpleIndex  & enwiki-tiny.txt	& -- & -- \\ 
+				 & enwiki-small.txt	& -- & -- \\
+				 & enwiki-medium.txt& -- & -- \\
+	InvertedIndexTreeMap	& enwiki-tiny.txt	& -- & --\\
+							& enwiki-small.txt	& -- & --\\
+							& enwiki-medium.txt & -- & --\\
+	InvertedIndexHashMap	& enwiki-tiny.txt	& -- & --\\
+							& enwiki-small.txt	& -- & --\\
+							& enwiki-medium.txt & -- & --\\ \bottomrule
+\end{tabular}
+	\caption{Running times for different index implementations.}
+\label{tab:benchmark:indices}
+\end{table}
+
 
