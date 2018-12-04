@@ -13,6 +13,15 @@ Is this relevant?
 When we create an object using a subclass as dynamic type, the constructor of the subclass will initialize the map object respectively as a HashMap or a TreeMap. Then when a method is called on the object, the compiler will perform a method-lookup, which means that it will look for the method in the subclass. But in this case it will find only the constructor, then it will look into the superclass that contain the build method and the lookup method. These two methods will perform their operations on the map object which was initialized into the sub-class constructor, so we use a TreeMap or a HashMap depending on the dynamic type declared at the object creation.
 
 
+\begin{figure}[t]
+	\centering
+	\includegraphics[width=\textwidth]{graphics/diagram-index.png}
+	\caption{UML Diagram for the Software Architecture of Index data structures.}
+	\label{fig:index:uml}
+\end{figure}
+
+
+
 \subsection{Benchmarking}
 The different implementations are to be benchmarked and compared, the expected findings were that the TreeMap would outperform the HashMap implementation due to TreeMaps logarithmic growth of time cost of the .get method based on the map size, compared to the constant growth of time cost in the HashMap. 
 The efficiency of the two indices is then expected to intersect at some map size, with HashMap being the most efficient up until a certain map size and TreeMap being efficient of sizes bigger than that.
