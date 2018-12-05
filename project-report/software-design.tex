@@ -1,15 +1,24 @@
  \section{Software Design}
 
  \subsection{Coupling}
- When writing a program one should aim for low (or loose) coupling between classes. Low coupling means that classes are largely independent and communicate via a small well-defined interface \cite[p.259]{BK}. Hence a class should never depend on parts of another class that are not exposed via it's interface. The interface of a class correpponds to its public methods and fields. 
- \todo{Is package private fields part of the interface? I think it' is. Only if it not explicitly made private it is part of the interface.}
- 
- 
+ When writing a program one should aim for low (or loose) coupling between classes. Low coupling means that classes are largely independent and communicate via a small well-defined interface \cite[p.259]{BK}. Hence a class should never depend on parts of another class that are not exposed via it's interface. The interface of a class correpponds to its public methods and fields.
+
  \begin{figure}[t]
- 	\centering
- 	\caption{UML Diagram for the class Website.}
- 	\label{fig:uml:single-class-website}
- \end{figure}
+	\centering
+	\caption{UML Diagram for the class Website.}
+	\label{fig:uml:single-class-website}
+\end{figure}
+
+
+ \subsubsection{A note about the package private modifier}
+ When working within a package, one could argue that all non-private fields (and methods) are part of the interface, since they are allowed to be accessed by other classes in the package. 
+ 
+ Package private access to a field in \code{Class} allows \code{OtherClass} to tinker with the state of \code{Class}, just as a setter method would.
+ A public getter method in \code{Class} on the other hand .... would have exactly the same effect!
+ A getter method supplies the calling class \code{OtherClass} with a reference to the field, and thus changing the returned map will also change the state of \code{Class}.
+ 
+ For primitive types (and strings), getter methods doesn't expose state, but for fileds of type \code{Map} \code{Set} or \code{List}, care should be taken if we not want to expose the state.
+ In the above cases a package private modifier would not be a worse choice than the combination of private field and a getter method that returns the object \emph{reference}. To avoid exposing state one could choose to clone/copy the object and then return the clone/copy in the getter method. 
 
 
 \subsection{Cohesion}
@@ -31,7 +40,15 @@ One argument for placing the ranking inside the \code{QueryHandler} is, that thi
 
 But despite this we decided that the ranking task should rather be done inside the \code{search} method of the \code{SearchEngine}, to keep the task more ...
 
+\subsection{Encapsulation} 
+
+\subsection{Responsibility-driven design}
+Each class should have the data related to it.
+Class responsible for storing data should also be responsible for manipulating it \cite{BK}.
  
+\subsection{Inheritance} 
+
+\subsection{Polymorphism} 
 
 \subsection{Another design related concept}
 something...
