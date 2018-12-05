@@ -15,9 +15,11 @@ When we create an object using a subclass as dynamic type, the constructor of th
 
 \subsection{Benchmarking}
 The different index implementations of the were to be benchmarked and compared. The expected 	findings were that the \verb+TreeMap+ would outperform the \verb+HashMap+ implementation due to \verb+TreeMap+s logarithmic growth of time cost of the \verb+.get+ method based on the map size, compared to the constant growth of time cost in the \verb+HashMap+. \\
-The efficiency of the two indices is then expected to intersect at some map size, with \verb+HashMap+ being the most efficient up until a certain map size and \verb+TreeMap+ being efficient of sizes bigger than that.
-The benchmark process was carried out multiple times in an attempt to reduce the error size of the process. This was to some extent possible although the error did not become entirely neglectable.
-The results of the benchmarking can be found in Appendix A.
+The efficiency of the two indices was then expected to intersect at some map size, with \verb+HashMap+ being the most efficient up until the intersection size and then the \verb+TreeMap+ would be the most efficient of sizes bigger than that. \\
+%The benchmark process was carried out multiple times in an attempt to reduce the error size of the process. This was to some extent possible although the error did not become entirely neglectable.
+%The results of the benchmarking can be found in Appendix A.
+
+
 
 Analysis and discussion:
 The results of the benchmarking did not align completely with the result that was expected, the \verb+TreeMap+ implementation did not manage to outperform \verb+HashMap+, evidently due to the limited size of the data files. 
