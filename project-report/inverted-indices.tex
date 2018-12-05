@@ -13,6 +13,15 @@ Is this relevant?
 When we create an object using a subclass as dynamic type, the constructor of the subclass will initialize the map object respectively as a HashMap or a TreeMap. Then when a method is called on the object, the compiler will perform a method-lookup, which means that it will look for the method in the subclass. But in this case it will find only the constructor, then it will look into the superclass that contain the build method and the lookup method. These two methods will perform their operations on the map object which was initialized into the sub-class constructor, so we use a TreeMap or a HashMap depending on the dynamic type declared at the object creation.
 
 
+\begin{figure}[t]
+	\centering
+	\includegraphics[width=\textwidth]{graphics/diagram-index.png}
+	\caption{UML Diagram for the Software Architecture of Index data structures.}
+	\label{fig:index:uml}
+\end{figure}
+
+
+
 \subsection{Benchmarking}
 The different index implementations of the were to be benchmarked and compared. The expected 	findings were that the \verb+TreeMap+ would outperform the \verb+HashMap+ implementation due to \verb+TreeMap+s logarithmic growth of time cost of the \verb+.get+ method based on the map size, compared to the constant growth of time cost in the \verb+HashMap+. \\
 The efficiency of the two indices was then expected to intersect at some map size, with \verb+HashMap+ being the most efficient up until the intersection size and then the \verb+TreeMap+ would be the most efficient of sizes bigger than that. \\
@@ -23,5 +32,22 @@ The efficiency of the two indices was then expected to intersect at some map siz
 
 Analysis and discussion:
 The results of the benchmarking did not align completely with the result that was expected, the \verb+TreeMap+ implementation did not manage to outperform \verb+HashMap+, evidently due to the limited size of the data files. 
+
+\begin{table}[t]
+\begin{tabular}{@{}llr@{}r} \toprule
+	Index & File & Avg. lookup time (ms) &Error \\ \midrule
+	SimpleIndex  & enwiki-tiny.txt	& -- & -- \\ 
+				 & enwiki-small.txt	& -- & -- \\
+				 & enwiki-medium.txt& -- & -- \\
+	InvertedIndexTreeMap	& enwiki-tiny.txt	& -- & --\\
+							& enwiki-small.txt	& -- & --\\
+							& enwiki-medium.txt & -- & --\\
+	InvertedIndexHashMap	& enwiki-tiny.txt	& -- & --\\
+							& enwiki-small.txt	& -- & --\\
+							& enwiki-medium.txt & -- & --\\ \bottomrule
+\end{tabular}
+	\caption{Running times for different index implementations.}
+\label{tab:benchmark:indices}
+\end{table}
 
 

@@ -1,0 +1,43 @@
+ \section{Software Design}
+
+ \subsection{Coupling}
+ When writing a program one should aim for low (or loose) coupling between classes. Low coupling means that classes are largely independent and communicate via a small well-defined interface \cite[p.259]{BK}. Hence a class should never depend on parts of another class that are not exposed via it's interface. The interface of a class correpponds to its public methods and fields. 
+ \todo{Is package private fields part of the interface? I think it' is. Only if it not explicitly made private it is part of the interface.}
+ 
+ 
+ \begin{figure}[t]
+ 	\centering
+ 	\caption{UML Diagram for the class Website.}
+ 	\label{fig:uml:single-class-website}
+ \end{figure}
+
+
+\subsection{Cohesion}
+A program should aim for high cohesion. High cohesion means that a single method is responsible for a single task, and that a class has well defined area of responsibility. 
+
+The class \code{QueryHandler} is responsible for handling queries, when it's method \code{getMatchingWebsites} is supplied with a query it fetches the matching websites. But should the \code{QueryHandler} also rank the sites it fetches via \code{getMatchingWebsites}? 
+
+One argument for placing the ranking inside the \code{QueryHandler} is, that this would allow us to get rid of the duplicate code that splits the query string into subqueries and then single words.  
+      
+\begin{lstlisting}[language=Java, caption=Splitting a query into single words.]
+
+//  ... in the QueryHandler.
+
+
+// ... for the ranking.
+
+\end{lstlisting}
+ 
+
+But despite this we decided that the ranking task should rather be done inside the \code{search} method of the \code{SearchEngine}, to keep the task more ...
+
+ 
+
+\subsection{Another design related concept}
+something...
+ 
+\subsection{Streams and Lambdas}
+Maybe a section about streams and lambdas? When are they useful, an when are they not?
+
+
+ 
