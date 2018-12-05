@@ -9,7 +9,6 @@ On the other hand we have the InvertedIndexTreeMap, which instantiate a TreeMap 
 
 As said previously mentioned these two classes extend the superclass InvertedIndex which is an abstract class, this means that is not possible to instantiate an InvertedIndex object directly. This structure allows us to write the code in a more structured way, avoiding duplicate code and leading to easy extensibility of the application. Hence, we implement all the common behaviour of an index into the InvertedIndex superclass and then we implement the details into the specific subclasses.
 
-Is this relevant?
 When we create an object using a subclass as dynamic type, the constructor of the subclass will initialize the map object respectively as a HashMap or a TreeMap. Then when a method is called on the object, the compiler will perform a method-lookup, which means that it will look for the method in the subclass. But in this case it will find only the constructor, then it will look into the superclass that contain the build method and the lookup method. These two methods will perform their operations on the map object which was initialized into the sub-class constructor, so we use a TreeMap or a HashMap depending on the dynamic type declared at the object creation.
 
 
@@ -23,29 +22,28 @@ When we create an object using a subclass as dynamic type, the constructor of th
 
 
 \subsection{Benchmarking}
-The different implementations are to be benchmarked and compared, the expected findings were that the TreeMap would outperform the HashMap implementation due to TreeMaps logarithmic growth of time cost of the .get method based on the map size, compared to the constant growth of time cost in the HashMap. 
-The efficiency of the two indices is then expected to intersect at some map size, with HashMap being the most efficient up until a certain map size and TreeMap being efficient of sizes bigger than that.
-The benchmark process was carried out multiple times in an attempt to reduce the error size of the process. This was to some extent possible although the error did not become entirely neglectable.
-The results of the benchmarking can be found in appendix A.
+The different index implementations of the were to be benchmarked and compared. 
+The benchmarking process would look up a list of 20 different queries, on a given database file with a given index. The expected findings in terms of performance were that the \code{TreeMap} implementation would faster than the \code{HashMap} implementation on larger data file sizes. This expectation was due to \code{TreeMap} having a logarithmic growth in time cost of the \code{.get} method proportionate to map size, compared to the constant growth in time cost for the \code{HashMap}. \\
+The efficiency of the two indices was then expected to intersect at some map size, with \code{HashMap} being the most efficient up until the intersection size and then the \code{TreeMap} would be the most efficient of sizes bigger than that. \\
+The benchmark was applied on all the handed out file sizes and for all the available index implementations. The results of the benchmarking can be found in the Table \ref{tab:benchmark:indices}.
 
-Analysis and discussion:
-The results of the benchmarking did not align completely with the result that was expected, the TreeMap implementation did not manage to outperform HashMap, evidently due to the limited size of the datafiles. 
+\paragraph{Analysis and discussion:}
+The results of the benchmarking did not align completely with our expectations. As can be seen from the results, the \code{InvertedIndexTreeMap} did not manage to outperform \code{InvertedIndexHashMap}. This was probably due to the data files not having a sufficient size for \code{TreeMap} to overshadow the \code{HashMap}. The performance for the two inverted indices were very similar, with the relative difference deteriorating as the data file sizes increase. Judging from the development in the differences it would take a significantly bigger data size for the \code{TreeMap} to be the better option. Since we do expect to end up using a much bigger data file, and the negligible difference between the two in general we decided to keep the \code{TreeMap} implementation in our code for now.
 
 \begin{table}[t]
-\begin{tabular}{@{}llr@{}r} \toprule
-	Index & File & Avg. lookup time (ms) &Error \\ \midrule
-	SimpleIndex  & enwiki-tiny.txt	& -- & -- \\ 
-				 & enwiki-small.txt	& -- & -- \\
-				 & enwiki-medium.txt& -- & -- \\
-	InvertedIndexTreeMap	& enwiki-tiny.txt	& -- & --\\
-							& enwiki-small.txt	& -- & --\\
-							& enwiki-medium.txt & -- & --\\
-	InvertedIndexHashMap	& enwiki-tiny.txt	& -- & --\\
-							& enwiki-small.txt	& -- & --\\
-							& enwiki-medium.txt & -- & --\\ \bottomrule
+\centering
+\begin{tabular}{llrr} \toprule
+	Index					& File size & Avg LUT 	& $\pm$ Error \\ \midrule
+	SimpleIndex				& tiny		& 22.92  	&	 0.76 \\ 
+						 	& small		& 10832.42 	&	 2088.43 \\
+							& medium 	& 283513.44 & 	 7717.45 \\ \hline
+	InvertedIndexTreeMap	& tiny 		& 5.44 		& 	 0.29 \\
+							& small 	& 9.28 		& 	 0.20  \\
+							& medium 	& 135.26 	& 	 2.57 \\ \hline
+	InvertedIndexHashMap	& tiny		& 4.68 		& 	 0.15 \\
+							& small		& 8.16 		& 	 0.30 \\
+							& medium 	& 120.40 	& 	 4.36 \\ \bottomrule
 \end{tabular}
-	\caption{Running times for different index implementations.}
+	\caption{Running times for different index implementations.}	
 \label{tab:benchmark:indices}
-\end{table}
-
-
+\end{table} 	
