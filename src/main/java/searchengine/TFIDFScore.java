@@ -1,10 +1,12 @@
 package searchengine;
 
+import java.util.List;
+
 public class TFIDFScore implements Score{
   
  // Rank the site according to the whole query.
- public Double rank(Website site, Corpus corpus, String query) {
-     return rankQueryTFIDF(site, corpus, query);
+ public Double rank(Website site, Corpus corpus, List<List<String>> structuredQuery) {
+     return rankQueryTFIDF(site, corpus, structuredQuery);
  }
  
   private Double rankSingleTFIDF(Website site, Corpus corpus, String word) {
@@ -17,20 +19,16 @@ public class TFIDFScore implements Score{
     return (wordCount / wordSize) * Math.log(corpus.totalNumberOfSites / siteCount);
   }
 
-  private Double rankQueryTFIDF(Website site, Corpus corpus, String query) {
+  private Double rankQueryTFIDF(Website site, Corpus corpus, List<List<String>> structuredQuery) {
 
     double maxScoreSubQuery = 0;
 
-    // split the query into subqueries
-    String[] subquerys = query.split("\\sOR\\s");
-    for (int j = 0; j < subquerys.length; j++) {
-      String[] words = subquerys[j].split("\\s");
-
+    for (List<String> subquery : structuredQuery) {
       // sum the scores for the individual words in the subquery.
       double sum = 0;
-      for (int k = 0; k < words.length; k++) {
-        if (site.getWords().contains(words[k])) {
-          sum += rankSingleTFIDF(site, corpus, words[k]);
+      for (String word : subquery) {
+        if (site.getWords().contains(word)) {
+          sum += rankSingleTFIDF(site, corpus, word);
         }
       }
 

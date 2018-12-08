@@ -1,11 +1,10 @@
 package searchengine;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.HashSet;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * This class is responsible for answering queries to our search engine.
@@ -35,6 +34,10 @@ public class QueryHandler {
    */
   public List<Website> getMatchingWebsites(List<List<String>> structuredQuery) {
     
+    if (structuredQuery == null || structuredQuery.isEmpty()) {
+      throw new IllegalArgumentException();
+    }
+    
     // Set for storing the combined results
     Set<Website> results = new HashSet<>();
 
@@ -51,9 +54,14 @@ public class QueryHandler {
   }
   
   private Set<Website> intersect(List<String> words) {
+
+    if (words.isEmpty()) {
+      return Collections.emptySet();
+    }
+    
     Set<Website> results = new HashSet<>();
     
-    // intersection of sets of websites containing the words
+    // intersection of sets of websites containing all the words
     results.addAll(idx.lookup(words.get(0)));
     for (int i=1; i<words.size(); i++) {
         results.retainAll(idx.lookup(words.get(i)));
