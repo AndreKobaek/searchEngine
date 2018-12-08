@@ -20,8 +20,11 @@ public class QueryHandler {
    * {@code Matcher} objects.
    */
   private final String REGEX = "\\b([-\\w]+)\\b";
+  private final String URLREGEX = "^site:(\\S+)";
   private Pattern pattern;
   private Matcher matcher;
+  private Matcher urlMatcher;
+  private Pattern urlPattern;
 
   /**
    * The constructor
@@ -31,6 +34,7 @@ public class QueryHandler {
   public QueryHandler(Index idx) {
     this.idx = idx;
     pattern = Pattern.compile(REGEX);
+    urlPattern = Pattern.compile(URLREGEX);
   }
 
   /**
@@ -43,10 +47,15 @@ public class QueryHandler {
    * @return the set of websites that matches the query
    */
   public List<Website> getMatchingWebsites(String input) {
-
     // Set for storing the combined results
     Set<Website> results = new HashSet<>();
 
+    String siteUrl = null;
+    urlMatcher = urlPattern.matcher(input);
+    if (urlMatcher.find()){
+      siteUrl = urlMatcher.group(1);
+      input = input.replace(urlMatcher.group(),"");
+    }
     // The search query is split into sub queries by the keyword 'OR'
     String[] subQueries = input.split("\\bOR\\b");
 
