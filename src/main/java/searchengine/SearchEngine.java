@@ -57,7 +57,7 @@ public class SearchEngine {
 
 
   /**
-   * 
+   * Restructure and possibly expand a raw string query.
    */
   private List<List<String>> structureQuery(String rawQuery) {
 
@@ -76,7 +76,7 @@ public class SearchEngine {
         if (!corpus.index.containsKey(word)) {
           System.out.println("Cannot find word " + word);
           Set<String> fuzzySet = fuzzyExpand(word);
-          System.out.println("Instead I'll try with: " + fuzzySet.toString());
+          System.out.println("Instead I'll make the search with: " + fuzzySet.toString());
 
           // make a new reference to existing set of sets object.
           Set<List<String>> temporaryStorage = childQueries;
@@ -93,6 +93,7 @@ public class SearchEngine {
               for (List<String> oldList : temporaryStorage) {
                 newList.addAll(oldList);
                 childQueries.add(newList);
+                newList.removeAll(oldList);    
               }
             }
           }
@@ -118,7 +119,7 @@ public class SearchEngine {
 
   private Set<String> fuzzyExpand(String unknownWord) {
 
-    int delta = unknownWord.length() / 2; // maximum allowed edit distance.
+    int delta = 2; // maximum allowed edit distance. Depends on word length.
     int gramSize = 2; // only looking at 2-grams for now.
 
     int ncols = corpus.wordsInCorpus.size();
@@ -136,21 +137,25 @@ public class SearchEngine {
     // add approximate words
     for (int i = 0; i < summedRowVector.length; i++) {
       int commonGramsBound = Math.max(unknownWord.length(), corpus.wordsInCorpus.get(i).length())
-          - 1 - (delta - 1) * gramSize + 2;
+          - 1 - (delta - 1) * gramSize;
       if (summedRowVector[i] >= commonGramsBound) {
         approximateStrings.add(corpus.wordsInCorpus.get(i));
       }
     }
+    // print message
+    System.out.println("Other related words based on 2-gram index: ");
+    System.out.println(approximateStrings.toString());
 
     // pick the best of the approximate strings, the one(s) with the smallest edit distance.
     Set<String> fuzzyStrings = new HashSet<>();
     for (String approxString : approximateStrings) {
 
       // check if editDistance is smaller than delta
-      if (editDistance(unknownWord, approxString) < delta) {
+      int ED = editDistance(unknownWord, approxString);
+      if ( ED <= delta) {
         fuzzyStrings.add(approxString);
       } else {
-        System.out.println("Discards: " + approxString + " (becuase of ED)");
+        System.out.println("Discard: " + approxString + " (Edit Distance = " + ED + " > " + delta + ")");
       }
     }
     return fuzzyStrings;
@@ -163,37 +168,38 @@ public class SearchEngine {
    */
   private int editDistance(String x, String y) {
 
-    // cost "function" for an edit. All edits have the same cost.
-    int cost = 1;
+    // cost "function" for allowed edits. All edits have the same cost.
+    int deleteCost = 1;
+    int insertCost = 1;
+    int changeCost = 1;
 
     // instantiate matrix D
-    int[][] D = new int[x.length()][y.length()];
-    assert D[0][0] == 0;
-
+    int[][] D = new int[x.length()+1][y.length()+1];
+    
     // loop over string x.length. Populate first column.
-    for (int i = 1; i < x.length() + 1; i++) {
-      D[i][0] = D[i - 1][0] + i * cost;
+    for (int i = 1; i < x.length()+1; i++) {
+      D[i][0] = D[i - 1][0] + deleteCost;
     }
 
     // loop over string y.length. Populate first row.
-    for (int j = 1; j < y.length() + 1; j++) {
-      D[0][j] = D[0][j - 1] + j * cost;
+    for (int j = 1; j < y.length()+1; j++) {
+      D[0][j] = D[0][j - 1] + insertCost;
     }
 
     // calculate remaining matrix elements.
-    for (int i = 1; i < x.length() + 1; i++) {
-      for (int j = 1; j < y.length() + 1; j++) {
+    for (int i = 1; i < x.length()+1; i++) {
+      for (int j = 1; j < y.length()+1; j++) {
 
         // calculate
-        int equalIndicator = 1;
+        int equalIndicator = changeCost;
         if (x.substring(i - 1, i).equals(y.substring(j - 1, j))) {
           equalIndicator = 0;
         }
 
         // do something
-        int m1 = D[i - 1][j - 1] + Math.abs(i - j) * cost + equalIndicator;
-        int m2 = D[i - 1][j] + i * cost;
-        int m3 = D[i][j - 1] + j * cost;
+        int m1 = D[i - 1][j - 1] + equalIndicator;
+        int m2 = D[i - 1][j] + deleteCost;
+        int m3 = D[i][j - 1] + insertCost;
         D[i][j] = Math.min(m1, Math.min(m2, m3));
       }
     }
