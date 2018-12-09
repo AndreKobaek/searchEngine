@@ -34,8 +34,12 @@ public class QueryHandler {
    */
   public List<Website> getMatchingWebsites(List<List<String>> structuredQuery) {
     
-    if (structuredQuery == null || structuredQuery.isEmpty()) {
-      throw new IllegalArgumentException();
+    if (structuredQuery == null) {
+      throw new NullPointerException();
+    }
+    
+    if (structuredQuery.isEmpty()) {
+      return Collections.emptyList();
     }
     
     // Set for storing the combined results
