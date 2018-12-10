@@ -1,15 +1,16 @@
 package searchengine;
 
-public class TFIDFScore implements Score {
+import java.util.List;
 
-  // Rank the site according to the whole query, and the Corpus.
-  @Override
-  public Double rank(Website site, Corpus corpus, String query) {
-    return rankQueryTFIDF(site, corpus, query);
-  }
+public class TFIDFScore implements Score{
+  
+ // Rank the site according to the whole query.
+ public Double rank(Website site, Corpus corpus, List<List<String>> structuredQuery) {
+     return rankQueryTFIDF(site, corpus, structuredQuery);
+ }
+ 
 
-
-  /**
+   /**
    * Rank a single website according to a single word. Ranking algorithm is TFIDF.
    * 
    * @param site a single website that will be ranked.
@@ -39,24 +40,18 @@ public class TFIDFScore implements Score {
    * 
    * @param site the website that are to be ranked.
    * @param corpus the corpus of all websites.
-   * @param query the search query string.
+   * @param structured query 
    * 
    * @return Double value
    */
-  private Double rankQueryTFIDF(Website site, Corpus corpus, String query) {
+  private Double rankQueryTFIDF(Website site, Corpus corpus, List<List<String>> structuredQuery) {
 
     double maxScoreSubQuery = 0;
 
-    // split the query into subqueries
-    // FIX ME!!. This should be changed to be aligned with how the query is split in queryHandler.
-    String[] subquerys = query.split("\\sOR\\s");
-    for (int j = 0; j < subquerys.length; j++) {
-      String[] words = subquerys[j].split("\\s");
-
+    for (List<String> subquery : structuredQuery) {
       // sum the scores for the individual words in the subquery.
       double sum = 0;
-      for (int k = 0; k < words.length; k++) {
-        String word = words[k].toLowerCase();
+      for (String word : subquery) {
         if (site.getWords().contains(word)) {
           sum += rankSingleTFIDF(site, corpus, word);
         }

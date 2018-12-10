@@ -1,11 +1,13 @@
 package searchengine;
 
+import java.util.List;
+
 public class TFICFScore implements Score {
 
   // Rank the site according to the whole query, and the corpus.
   @Override
-  public Double rank(Website site, Corpus corpus, String query) {
-    return rankQueryTFICF(site, corpus, query);
+  public Double rank(Website site, Corpus corpus, List<List<String>> structuredQuery) {
+    return rankQueryTFICF(site, corpus, structuredQuery);
   }
 
   /**
@@ -45,20 +47,14 @@ public class TFICFScore implements Score {
    * 
    * @return Double value
    */
-  private Double rankQueryTFICF(Website site, Corpus corpus, String query) {
+  private Double rankQueryTFICF(Website site, Corpus corpus, List<List<String>> structuredQuery) {
 
     double maxScoreSubQuery = 0;
 
-    // split the query into subqueries
-    // FIX ME!!. This should be changed to be aligned with how the query is split in queryHandler.
-    String[] subquerys = query.split("\\sOR\\s");
-    for (int j = 0; j < subquerys.length; j++) {
-      String[] words = subquerys[j].split("\\s");
-
+    for (List<String> subquery : structuredQuery) {
       // sum the scores for the individual words in the subquery.
       double sum = 0;
-      for (int k = 0; k < words.length; k++) {
-        String word = words[k].toLowerCase();
+      for (String word : subquery) {
         if (site.getWords().contains(word)) {
           sum += rankSingleTFICF(site, corpus, word);
         }
