@@ -89,7 +89,7 @@ public class Corpus {
     for (int i=0; i<nrows; i++) {
       int[] rowVector = new int[ncols];
       for (int j=0; j<ncols; j++) {
-        if (calculate2Gram(wordsInCorpus.get(j)).contains(allBiGrams.get(i))) {
+        if (calculate2Gram(wordsInCorpus.get(j)).contains(allBiGrams.get(i))) { // inefficient, calculates grams to many times.
           rowVector[j] = 1;
         } else {
           rowVector[j] = 0;
@@ -104,18 +104,19 @@ public class Corpus {
    * Calculate 2-grams for a word.
    */
   private Set<String> calculate2Gram(String word) {
-  
+
     if (word.length() <= 1) {
       return Collections.emptySet();
     }
-    
+
     Set<String> biGrams = new HashSet<>();
     biGrams.add("$" + word.charAt(0));
-    for (int i=0; i<word.length()-1; i++) {
-      String biGram = word.substring(i, i+2);
+    for (int i = 0; i < word.length() - 1; i++) {
+      String biGram = word.substring(i, i + 2);
       biGrams.add(biGram);
     }
-    return biGrams; 
+    biGrams.add(word.charAt(word.length() - 1) + "$");
+    return biGrams;
   }
   
   

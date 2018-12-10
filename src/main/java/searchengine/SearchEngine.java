@@ -60,9 +60,10 @@ public class SearchEngine {
    * Restructure and possibly expand a raw string query.
    */
   private List<List<String>> structureQuery(String rawQuery) {
-
+    
     // Array for processed/expanded subqueries.
     List<List<String>> queryArray = new ArrayList<>(new ArrayList<>());
+    
     // split the query into subqueries
     String[] subqueries = rawQuery.split("(\\s)*OR(\\s)+");
     for (int j = 0; j < subqueries.length; j++) {
@@ -85,15 +86,17 @@ public class SearchEngine {
           childQueries = new HashSet<>(Collections.emptyList());
           // create a new child subquery for each word in fuzzySet
           for (String fword : fuzzySet) {
-            List<String> newList = new ArrayList<>();
-            newList.add(fword);
+            List<String> newList;
             if (temporaryStorage.isEmpty()) {
+              newList = new ArrayList<>();
+              newList.add(fword);
               childQueries.add(newList);
             } else {
               for (List<String> oldList : temporaryStorage) {
+                newList = new ArrayList<>();
+                newList.add(fword);
                 newList.addAll(oldList);
                 childQueries.add(newList);
-                newList.removeAll(oldList);    
               }
             }
           }
@@ -119,7 +122,7 @@ public class SearchEngine {
 
   private Set<String> fuzzyExpand(String unknownWord) {
 
-    int delta = 2; // maximum allowed edit distance. Depends on word length.
+    int delta = 2; // maximum allowed edit distance.
     int gramSize = 2; // only looking at 2-grams for now.
 
     int ncols = corpus.wordsInCorpus.size();
