@@ -114,7 +114,7 @@ public class QueryHandler {
     while (websiteIterator.hasNext()){
       String websiteUrl = websiteIterator.next().getUrl();
       // if the url of the website of a substring of it is not equal to the search site url the website is removed.
-      if (websiteUrl.length() > siteURL.length() || !websiteUrl.substring(0,siteURL.length()).equals(siteURL)){
+      if (websiteUrl.length() < siteURL.length() || !websiteUrl.substring(0,siteURL.length()).equals(siteURL)){
         websiteIterator.remove();
       }
     }

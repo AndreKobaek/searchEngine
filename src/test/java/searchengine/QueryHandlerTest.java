@@ -65,8 +65,12 @@ class QueryHandlerTest {
   }
   @Test
   void testUrlSearch(){
+    // Check against non existing site.
+    assertEquals(0, qh.getMatchingWebsites("site:sjdka.com word3").size());
+    // Check against existing site with existing word
     assertEquals(1, qh.getMatchingWebsites("site:3.com word3").size());
-    assertEquals(1, qh.getMatchingWebsites("site:2.com word3").size());
+    // Check against existing site with nonexistent word
+    assertEquals(0, qh.getMatchingWebsites("site:2.com wordWoRD").size());
   }
 
 }
