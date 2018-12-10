@@ -1,7 +1,7 @@
  \section{Software Design}
 
  \subsection{Coupling}
- When writing a program one should aim for low (or loose) coupling between classes. Low coupling means that classes are largely independent and communicate via a small well-defined interface \cite[p.259]{BK}. Hence a class should never depend on parts of another class that are not exposed via it's interface. The interface of a class correpponds to its public methods and fields.
+When writing a program one should aim for low (or loose) coupling between classes. Low coupling means that classes are largely independent and communicate via a small well-defined interface \cite[p.259]{BK}. Hence a class should never depend on parts of another class that are not exposed via its interface. The interface of a class corresponds to its public methods and fields.
 
  \begin{figure}[t]
 	\centering
@@ -11,14 +11,14 @@
 
 
  \subsubsection{A note about the package private modifier}
- When working within a package, one could argue that all non-private fields (and methods) are part of the interface, since they are allowed to be accessed by other classes in the package. 
+When working within a package, one could argue that all non-private fields (and methods) are part of the interface, since they are allowed to be accessed by other classes in the package. 
  
- Package private access to a field in \code{Class} allows \code{OtherClass} to tinker with the state of \code{Class}, just as a setter method would.
- A public getter method in \code{Class} on the other hand .... would have exactly the same effect!
- A getter method supplies the calling class \code{OtherClass} with a reference to the field, and thus changing the returned map will also change the state of \code{Class}.
+Package private access to a field in \code{Class} allows \code{OtherClass} to tinker with the state of \code{Class}, just as a setter method would.
+A public getter method in \code{Class} on the other hand .... would have exactly the same effect!
+A getter method supplies the calling class \code{OtherClass} with a reference to the field, and thus changing the returned map will also change the state of \code{Class}.
  
- For primitive types (and strings), getter methods doesn't expose state, but for fileds of type \code{Map} \code{Set} or \code{List}, care should be taken if we not want to expose the state.
- In the above cases a package private modifier would not be a worse choice than the combination of private field and a getter method that returns the object \emph{reference}. To avoid exposing state one could choose to clone/copy the object and then return the clone/copy in the getter method. 
+For primitive types (and strings), getter methods doesn't expose state, but for fields of for example type \code{Map} \code{Set} or \code{List}, care should be taken if ones do not intend to expose the state.
+In the cases above a package private modifier would not be a worse choice than the combination of private field and a getter method that returns the object \emph{reference}. To avoid exposing state one could choose to clone/copy the object and then return the clone/copy in the getter method. 
 
 
 \subsection{Cohesion}
