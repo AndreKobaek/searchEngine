@@ -1,6 +1,7 @@
 package searchengine;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.HashSet;
@@ -98,12 +99,24 @@ public class QueryHandler {
     resultsAsList.addAll(results);
 
     if (siteUrl!=null){
-      for (int i = 0; i < resultsAsList.size(); i++) {
-        if (siteUrl.length()>= resultsAsList.get(i).getUrl().length() ||!resultsAsList.get(i).getUrl().substring(0,siteUrl.length()).equals(siteUrl)){
-          resultsAsList.remove(i);
-        }
-      }
+      checkListForUrl(resultsAsList,siteUrl);
     }
     return resultsAsList;
+  }
+
+  /**
+   * Remove the websites from the result list that does not match the site url
+   * @param currentResults list of websites
+   * @param siteURL {@code String} containing the site url.
+   */
+  public void checkListForUrl(List<Website> currentResults, String siteURL){
+    Iterator<Website> websiteIterator = currentResults.iterator();
+    while (websiteIterator.hasNext()){
+      String websiteUrl = websiteIterator.next().getUrl();
+      // if the url of the website of a substring of it is not equal to the search site url the website is removed.
+      if (websiteUrl.length() > siteURL.length() || !websiteUrl.substring(0,siteURL.length()).equals(siteURL)){
+        websiteIterator.remove();
+      }
+    }
   }
 }

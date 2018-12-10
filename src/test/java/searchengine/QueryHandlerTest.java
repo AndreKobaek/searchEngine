@@ -63,5 +63,10 @@ class QueryHandlerTest {
   void testCornerCases() {
 
   }
+  @Test
+  void testUrlSearch(){
+    assertEquals(1, qh.getMatchingWebsites("site:3.com word3").size());
+    assertEquals(1, qh.getMatchingWebsites("site:2.com word3").size());
+  }
 
 }
