@@ -20,7 +20,7 @@ public class QueryHandler {
    * {@code Matcher} objects.
    */
   private final String REGEX = "\\b([-\\w]+)\\b";
-  private final String URLREGEX = "^site:(\\S+)";
+  private final String URLREGEX = "^\\s*site:(\\S+)";
   private Pattern pattern;
   private Matcher matcher;
   private Matcher urlMatcher;
@@ -50,10 +50,12 @@ public class QueryHandler {
     // Set for storing the combined results
     Set<Website> results = new HashSet<>();
 
+    // check if input string starts with "site:", if so the following string until the next white space
+    // is saved for later, and the matched part is removed from the input string.
     String siteUrl = null;
     urlMatcher = urlPattern.matcher(input);
     if (urlMatcher.find()){
-      siteUrl = urlMatcher.group(1);
+      siteUrl = urlMatcher.group(1).toLowerCase();
       input = input.replace(urlMatcher.group(),"");
     }
     // The search query is split into sub queries by the keyword 'OR'
@@ -95,6 +97,13 @@ public class QueryHandler {
     List<Website> resultsAsList = new ArrayList<>();
     resultsAsList.addAll(results);
 
+    if (siteUrl!=null){
+      for (int i = 0; i < resultsAsList.size(); i++) {
+        if (siteUrl.length()>= resultsAsList.get(i).getUrl().length() ||!resultsAsList.get(i).getUrl().substring(0,siteUrl.length()).equals(siteUrl)){
+          resultsAsList.remove(i);
+        }
+      }
+    }
     return resultsAsList;
   }
 }
