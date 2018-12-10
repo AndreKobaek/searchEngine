@@ -118,7 +118,7 @@ public class Corpus {
     assert wordSize == allSites.stream().map(Website::getWordSize).reduce(0,
         (total, count) -> total + count); // sanity check, that wordSize is calculated correctly.
   }
-}
+
   
   public void build2GramIndex() {
     

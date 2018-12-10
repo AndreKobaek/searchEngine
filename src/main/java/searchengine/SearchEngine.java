@@ -15,8 +15,8 @@ import java.util.Set;
  */
 public class SearchEngine {
 
+  private InvertedIndex idx;
   private Corpus corpus;
-  private QueryHandler queryHandler;
   private Score score;
   private QueryFormat queryFormat;
 
@@ -26,7 +26,7 @@ public class SearchEngine {
    * @param sites the list of websites
    */
   public SearchEngine(Set<Website> sites) {
-    Index idx = new InvertedIndexTreeMap();
+    idx = new InvertedIndexTreeMap();
     System.out.println("Building index...");
     idx.build(sites);
     corpus = new Corpus(sites);
@@ -34,8 +34,6 @@ public class SearchEngine {
     corpus.build(); // corpus is kept in SearchEngine since this is where ranking is done.
     System.out.println("Building 2-gram index, this may take a while...");
     corpus.build2GramIndex(); // build 2gram inverse index, for fuzzy matching.
-    queryHandler = new QueryHandler(idx); // index is passed to QueryHandler since this is where
-                                          // lookup is done.
     score = new TFIDFScore(); // choose the scoring algorithm to use.
     queryFormat = new QueryFormat(corpus);
   }
@@ -52,7 +50,7 @@ public class SearchEngine {
     }
 
     List<List<String>> structuredQuery = queryFormat.structure(query);
-    List<Website> results = queryHandler.getMatchingWebsites(structuredQuery);
+    List<Website> results = idx.getMatchingWebsites(structuredQuery);
 
     // the websites are ordered according to rank.
     return orderWebsites(results, structuredQuery);
