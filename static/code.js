@@ -26,14 +26,26 @@ function lookup() {
     }).success(function (data) {
         var t1 = performance.now();
         console.log("Received response " + data);
-        $("#responsesize").html("<p>" + data.length + " websites retrieved</p>\n<p>Deep Blue performed the search in " + (t1 - t0) + " milliseconds</p>\n<p>Garry Kasparov is still computing</p>");
+        $("#responsesize").html("<p>Deep Blue retrieved " + data.length + " websites in " + (t1 - t0) + " milliseconds. " + kasparov() + ".</p>");
+        
+        const regex = /"|\[|\]/gm;
         var buffer = "";
 
         $.each(data, function (index, value) {
-            var preview = JSON.stringify(value.words).replace(/,/g, " ");
-            buffer += "<div>\n<a href=\"" + value.url + "\" target=\"_blank\">" + value.title + "</a>\n<p>" + preview + "</p></div>\n";
+            // Convert the JSON data to a string, replace commas with spaces 
+            // and the special characters defined by the regular expression by the empty string. 
+            // Finally, get the substring from index 0 to 140
+            var preview = JSON.stringify(value.words).replace(/,/g, " ").replace(regex, "").substring(0, 140);
+            buffer += "<div>\n<a href=\"" + value.url + "\" target=\"_blank\">" + value.title + "</a>\n<p>" + preview + "...</p></div>\n";
         });
 
         $("#urllist").html(buffer);
     });
+}
+
+// Returns a random response regarding the activities of Garry Kasparov
+function kasparov(){
+    var responses = ["Garry Kasparov is still computing", "Kasparov is contemplating e4", "Kasparov retrieved none"];
+    
+    return responses[Math.floor(Math.random() * responses.length)];
 }

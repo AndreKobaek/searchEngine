@@ -2,7 +2,7 @@ html {
     margin: 40px auto;
     max-width: 650px;
     padding: 0 10px;
-    background: #1D1075 url('https://media.giphy.com/media/3ov9k1173PdfJWRsoE/giphy-downsized.gif') no-repeat center center fixed;
+    background: #0e0e0e url('https://media.giphy.com/media/3ov9k1173PdfJWRsoE/giphy-downsized.gif') no-repeat center center fixed;
     background-size: cover;
     color: #ffffff;
     font-family: 'VT323', monospace;
@@ -50,7 +50,7 @@ section {
 }
 
 #urllist a {
-    font-size: 1.2em;
+    font-size: 1.3em;
 }
 
 input {
