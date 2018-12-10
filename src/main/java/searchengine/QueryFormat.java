@@ -24,7 +24,7 @@ public class QueryFormat {
     List<List<String>> queryArray = new ArrayList<>(new ArrayList<>());
 
     // split the query into subqueries
-    String[] subqueries = rawQuery.split("(\\s)*OR(\\s)+");
+    String[] subqueries = rawQuery.trim().split("(\\s)*OR(\\s)+");
     for (int j = 0; j < subqueries.length; j++) {
       String[] subquery = subqueries[j].split("(\\s)+");
 
