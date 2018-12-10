@@ -34,7 +34,7 @@ public class QueryFormat {
       for (String word : subquery) { // always at least 1 word.
         word = word.toLowerCase();
         if (!corpus.index.containsKey(word)) {
-          System.out.println("Cannot find word " + word);
+          System.out.println("Cannot find word: " + word);
           Set<String> fuzzySet = fuzzyExpand(word);
           System.out.println("Instead I'll make the search with: " + fuzzySet.toString());
 
@@ -75,6 +75,8 @@ public class QueryFormat {
       // add all relevant subqueries to queryArray.
       queryArray.addAll(childQueries);
     }
+    System.out
+        .println("Final restructured search query is:" + System.lineSeparator() + queryArray.toString());
     return queryArray;
   }
 
@@ -112,12 +114,12 @@ public class QueryFormat {
     for (String approxString : approximateStrings) {
 
       // check if editDistance is smaller than delta
-      int ED = editDistance(unknownWord, approxString);
-      if (ED <= delta) {
+      int editDistance = editDistance(unknownWord, approxString);
+      if (editDistance <= delta) {
         fuzzyStrings.add(approxString);
       } else {
-        System.out
-            .println("Discard: " + approxString + " (Edit Distance = " + ED + " > " + delta + ")");
+        System.out.println(
+            "Discard: " + approxString + " (Edit Distance = " + editDistance + " > " + delta + ")");
       }
     }
     return fuzzyStrings;
