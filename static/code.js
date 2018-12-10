@@ -26,7 +26,7 @@ function lookup() {
     }).success(function (data) {
         var t1 = performance.now();
         console.log("Received response " + data);
-        $("#responsesize").html("<p>Deep Blue retrieved " + data.length + " websites in " + (t1 - t0) + " milliseconds. " + kasparov() + ".</p>");
+        $("#responsesize").html("<p>Deep Blue retrieved " + data.length + " websites in " + (t1 - t0) + " milliseconds. " + kasparov(data.length) + ".</p>");
         
         const regex = /"|\[|\]/gm;
         var buffer = "";
@@ -36,7 +36,14 @@ function lookup() {
             // and the special characters defined by the regular expression by the empty string. 
             // Finally, get the substring from index 0 to 140
             var preview = JSON.stringify(value.words).replace(/,/g, " ").replace(regex, "").substring(0, 140);
-            buffer += "<div>\n<a href=\"" + value.url + "\" target=\"_blank\">" + value.title + "</a>\n<p>" + preview + "...</p></div>\n";
+            buffer +=   "<div>\n" + 
+                            "<a href=\"" + value.url + "\" target=\"_blank\" rel=\"noopener\">\n" + 
+                                "<span>" + value.title + "</span>\n" + 
+                                "<br>\n" + 
+                                "<cite>" + value.url + "</cite>" + 
+                            "</a>\n" + 
+                            "<p>" + preview + "...</p>\n" +
+                        "</div>\n";
         });
 
         $("#urllist").html(buffer);
@@ -44,8 +51,12 @@ function lookup() {
 }
 
 // Returns a random response regarding the activities of Garry Kasparov
-function kasparov(){
-    var responses = ["Garry Kasparov is still computing", "Kasparov is contemplating e4", "Kasparov retrieved none"];
+function kasparov(responseSize){
+    var responses = ["Kasparov is still computing", "Kasparov is contemplating e4", "Kasparov retrieved none", "Kasparov regrets the Sicilian Defense"];
     
-    return responses[Math.floor(Math.random() * responses.length)];
+    if(responseSize > 0){
+        return responses[Math.floor(Math.random() * responses.length)];
+    } else {
+        return "Kasparov gloats excessively"
+    }
 }

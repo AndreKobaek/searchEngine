@@ -13,17 +13,6 @@ header {
     text-align: center;
 }
 
-header p {
-    font-style: italic;
-    margin-top: 0;
-}
-
-h1 {
-    margin: 0.2em;
-    font-size: 3em;
-    line-height: 1;
-}
-
 main {
     display: flex;
     min-height: 100%;
@@ -39,57 +28,91 @@ section {
     align-content: center;
 }
 
+/* TYPOGRAPHY */
+
+header p {
+    font-style: italic;
+    margin-top: 0;
+}
+
+h1 {
+    margin: 0.2em;
+    font-size: 3em;
+    line-height: 1;
+}
+
+span {
+    font-size: 1.2em;
+    text-decoration: underline;
+}
+
+cite {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.8em;
+    font-style: normal;
+    text-decoration: none;
+}
+
+a {
+    color: #fff;
+    text-decoration: none;
+}
+
+a:hover span, a:focus span {
+    text-decoration: none;
+}
+
+/* SEARCH DETAILS */
+
+#responsesize {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.4);
+    font-style: italic;
+}
+
+/* RESULTS */
+
 #urllist div {
     box-sizing: border-box;
     background: rgba(29, 16, 117, 0.3);
     border: #fff 1px solid;
     border-radius: 0.1em;
     overflow: hidden;
-    margin-top: 0.5em;
+    margin-bottom: 1em;
     padding: 0.5em;
 }
 
-#urllist a {
-    font-size: 1.3em;
-}
-
-input {
-    font-family: inherit;
-    font-size: inherit;
-}
-
-button {
-    margin: auto;
-    text-align: center;
-    font-family: inherit;
-    font-size: inherit;
-    line-height: 2;
-}
-
-ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-a {
-    color: #fff;
-}
-
-a:hover, a:focus {
-    text-decoration: none;
-}
+/* FORM ELEMENTS */
 
 input[type="text"] {
+    font-family: inherit;
+    font-size: inherit;
     padding: 10px;
     margin: 1em 0;
-    border: solid 1px #dcdffcdc;
+    border: 1px solid rgba(29, 16, 117, 0.3);
     border-radius: 0.1em;
     min-width: 200px;
-    transition: box-shadow 0.3s, border 0.3s;
+    transition: box-shadow 0.2s, border 0.2s;
 }
 
 input[type="text"]:focus,
 input[type="text"].focus {
+    border: solid 1px #707070;
+    box-shadow: 0 0 5px 1px #969696;
+}
+
+button {
+    margin: auto;
+    border: 1px solid rgba(29, 16, 117, 0.3);
+    text-align: center;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: 2;
+    box-shadow: none;
+    transition: box-shadow 0.2s ease;
+}
+
+button:hover {
     border: solid 1px #707070;
     box-shadow: 0 0 5px 1px #969696;
 }
