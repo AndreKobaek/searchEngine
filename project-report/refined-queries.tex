@@ -7,12 +7,14 @@ For the refined queries, we build upon this functionality.
 \subsection{Multiple Words}
 First off, we add logic to handle multiple words in a search query. We need to return the websites containing all the words in the query string. Since we utilise \code{Pattern} and \code{Matcher}, the procedure is quite simple: If there is more than one match, the results from the first lookup is stored in a set and the results from the following lookups are retained from the same set. After the final lookup, a list is returned (since this is what \code{SearchEngine} and \code{WebApplication} expects).
 
-Tests for the implementation are located in \code{QueryHandlerTest.java}
+Tests for the implementation are located in \code{QueryHandlerTest.java}.
 
 \subsection{Merging via "OR"}
 Second, we implement functionality to allow merging word sequences via "OR". The search query is split around the matches of the regular expression \code{\\\\bOR\\\\b}. The resulting sequences are stored in an array of strings, and for each of these strings a set of matching websites is found. The union of these sets form the response to the query. The nature of sets prevent duplicate elements. Finally, the results are added to a list which is returned.
 
-Tests for the implementation are located in \code{QueryHandlerTest.java}
+Tests for the implementation are located in \code{QueryHandlerTest.java}.
 
 \subsection{URL Filter}
-We added this stupid URL filter too..
+Additionally, we added an URL filter to the \code{QueryHandler}. The intention of the URL filter is to let the user specify which websites he/she wants to receive results from. This is done by using the syntax \code{site:https://website.url/ } when writing a query. This functionality is implemented in the \code{getMathcingWebsites}, using, primarily, a regular expression: \code{^\\\\s*site:(\\\\S+)}. The captured URL string is then applied to verify the matching websites found by the method. Only the verified methods are returned.
+
+The functionality is effectively useless on the available database files, since they all share the same domain which has a flat hierarchy. But the functionality is proved in the tests which are located in \code{QueryHandlerTest.java}.
