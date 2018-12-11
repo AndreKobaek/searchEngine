@@ -13,6 +13,7 @@ import static java.util.Collections.max;
  * when it finds the minumum distance (which is the higher value of cosine similarity) of a website from that centroid it assigns
  * the website to the centroid.
  */
+
 public class Kmeans {
     private List<Website> dataset;
     private SortedSet<String> totalWords;
@@ -33,7 +34,7 @@ public class Kmeans {
         this.corpus = corpus;
         this.score = score;
     }
-
+    
     /**
      * It starts the K-means algorithm performing the initial settings and then getting into the loop which recalculates centroids and every time
      * reassigns the websites to the new calculated centroids until the n and n-1 iterations have the same centroids as result.
@@ -173,7 +174,7 @@ public class Kmeans {
 
         for(int i=0; i<centroids1.size(); i++){
             for(int x=0; x<centroids1.get(i).getCentroidValues().size(); x++){
-/
+
                 Double a = centroids1.get(i).getCentroidValues().get(x);
                 Double b = centroids2.get(i).getCentroidValues().get(x);
                 if(a.isNaN()){
@@ -182,11 +183,9 @@ public class Kmeans {
                 if(b.isNaN()){
                     b = 0.0;
                 }
-//                System.out.println("Comparin Centroids:");
-//                System.out.println("Cent a"+i+": "+a+" Cent b: "+b);
 
-                //Try to implement like
                 Double tolerance = 0.001;
+
                 if(Math.abs(a-b)<tolerance){
                     compared += 0;
                 }else{
@@ -207,6 +206,7 @@ public class Kmeans {
 
     public int calculateClosestCentroid(List<Double> distance){
         int index = 0;
+
 
         //Takes the list and retrieves the maximum value in the list
         Double maxValue = Collections.max(distance);
@@ -271,3 +271,4 @@ public class Kmeans {
         return new Centroid(v.getVectorValues(), clusterName);
     }
 }
+
