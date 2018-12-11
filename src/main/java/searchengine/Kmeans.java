@@ -7,7 +7,7 @@ import static java.util.Collections.max;
 
 public class Kmeans {
     private List<Website> dataset;
-    private Set<String> totalWords;
+    private SortedSet<String> totalWords;
     private List<Centroid> centroids;
     private List<Centroid> oldCentroids;
     private List<Vector> vectors;
@@ -33,7 +33,7 @@ public class Kmeans {
     public void startKmeans(int k){
 
         calculateTotalWords();
-        createVectors(idx);
+        createVectors();
         //randomize centroids
         centroids = calculateInitialCentroids(k);
 
@@ -242,14 +242,19 @@ public class Kmeans {
         }
     }
 
-    public void createVectors(Index idx){
+    public void createVectors(){
         // for every website calculate its vector-representation according to database/corpus.
          for(Website website : dataset){
+           //System.out.println(website.toString());
             Vector vector = new Vector(website);
             for(String word: totalWords){
-
-              // calculate a score and put it in the vector.
-              vector.addVectorValue(word, score.rankSingle(website, corpus, word));
+              
+              if (website.containsWord(word)) {
+                // calculate a score and put it in the vector.
+                vector.addVectorValue(word, score.rankSingle(website, corpus, word));
+              } else {
+                vector.addVectorValue(word, 0.0);
+              }
             }
             vectors.add(vector);
         }
