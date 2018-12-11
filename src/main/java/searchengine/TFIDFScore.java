@@ -5,7 +5,6 @@ import java.util.*;
 public class TFIDFScore extends TFScore {
 
     private List<Website> list;
-    private Set<Website> set;
 
 
     public TFIDFScore(List<Website> list){
@@ -17,10 +16,10 @@ public class TFIDFScore extends TFScore {
      * for each word into the website wordTfIdfScore collection
      * @param sites
      */
-//    @Override
+
 //    public List<Website> insertScore(Collection<Website> sites, Index idx){
 //
-//        set = new HashSet<>();
+//        Set<Website> set = new HashSet<>();
 //        for (Website website: sites){
 //            for(String word: website.getWords()){
 //                website.setWordTfIdfScore(word, getScore(word, website, idx));
@@ -41,10 +40,20 @@ public class TFIDFScore extends TFScore {
     @Override
     public double getScore(String word, Website website, Index idx) {
 
-        double tf = super.getScore(word, website, idx);
-
-
         double numberOfWords = 0;
+        double totalWords = 0;
+
+        for(String wordMatch: website.getWords()){
+            totalWords++;
+            if(wordMatch.equalsIgnoreCase(word)){
+                numberOfWords++;
+            }
+        }
+        double tf = numberOfWords/totalWords;
+//        double tf = super.getScore(word, website, idx);
+
+
+        double numberOfTotalWords = 0;
         double totalNumber = 0;
 
         //Probably delete this part commented
@@ -63,6 +72,8 @@ public class TFIDFScore extends TFScore {
 
         //FIX this the totalNumber needs to be the number of websites in the database and numberOfWords is the number of websites where the word occours
         double idf = Math.log(totalDouble/numberOfDouble);
+
+        website.setWordTfIdfScore(word, (tf*idf));
 
         return tf*idf;
     }

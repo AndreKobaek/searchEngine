@@ -29,6 +29,9 @@ public class SearchEngine {
     idx = new InvertedIndexTreeMap();
     idx.build(sites);
     queryHandler = new QueryHandler(idx);
+    Kmeans kmeans = new Kmeans(sites, idx);
+    kmeans.startKmeans(10);
+
 
   }
 
@@ -44,8 +47,9 @@ public class SearchEngine {
     }
     List<Website> resultList = queryHandler.getMatchingWebsites(query);
 
-    System.out.println("Into the search method");
-    resultList = orderWebsites(query, resultList);
+//    System.out.println("Into the search method");
+//    resultList = orderWebsites(query, resultList);
+
 
     return resultList;
   }
@@ -58,11 +62,23 @@ public class SearchEngine {
     for(Website w: resultList){
       System.out.println(w.getTitle() + " value double: "+ w.getWordTfScore(query));
     }
+    for(Website w:resultList){
+        score.insertScore(resultList,idx);
+    }
     resultList.sort((Website w1, Website w2)->w2.getWordTfScore(query).compareTo(w1.getWordTfScore(query)));
     System.out.println("After ordering:");
     for(Website w: resultList){
       System.out.println(w.getTitle() +  " value double: "+ w.getWordTfScore(query));
     }
+    CosineSimilarity cosine = new CosineSimilarity();
+
+//    for(Website w: resultList){
+//        for(Website site: resultList){
+//            Map<String, Double> map = w.getTfIdfMap();
+//            System.out.println("Map size: "+map.size());
+////            System.out.println("Main site "+w.getTitle()+ " similarity with "+ site.getTitle()+": "+cosine.calculateCS(w.getTfIdfMap(),site.getTfIdfMap()));
+//        }
+//    }
     return resultList;
   }
 }

@@ -48,6 +48,6 @@ public class TFScore implements Score {
             }
         }
 
-        return numberOfWords/totalWords;
+        return Math.abs(numberOfWords/totalWords);
     }
 }

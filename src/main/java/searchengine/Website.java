@@ -118,7 +118,11 @@ public class Website {
    */
   public Double getWordTfIdfScore(String word) {
 
-    return wordTfIdfScore.get(word.toLowerCase());
+    if(wordTfIdfScore.containsKey(word)){
+      return wordTfIdfScore.get(word.toLowerCase());
+    }else{
+      return 0.0;
+    }
   }
 
 
@@ -131,5 +135,9 @@ public class Website {
 
     word = word.toLowerCase();
     wordTfIdfScore.put(word, score);
+  }
+
+  public Map getTfIdfMap(){
+    return wordTfIdfScore;
   }
 }
