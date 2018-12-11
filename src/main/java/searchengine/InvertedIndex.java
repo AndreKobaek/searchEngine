@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 
+
 /**
  * The InvertedIndex data structure provides a way to build an index from a list of websites. It
  * allows to lookup the websites that contain a query word. The InvertedIndex maps query words to
@@ -52,7 +53,6 @@ public abstract class InvertedIndex implements Index {
       }
     }
   }
-
   
   
   /**
