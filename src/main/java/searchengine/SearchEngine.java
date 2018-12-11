@@ -36,6 +36,9 @@ public class SearchEngine {
     corpus.build2GramIndex(); // build 2gram inverse index, for fuzzy matching.
     score = new TFIDFScore(); // choose the scoring algorithm to use.
     queryFormat = new QueryFormat(corpus);
+
+    Kmeans kmeans = new Kmeans(sites, idx);
+    kmeans.startKmeans(10);
   }
 
   /**
@@ -54,6 +57,8 @@ public class SearchEngine {
 
     // the websites are ordered according to rank.
     return orderWebsites(results, structuredQuery);
+
+    // ??  CosineSimilarity cosine = new CosineSimilarity();
   }
 
 
