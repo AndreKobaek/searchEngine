@@ -1,0 +1,60 @@
+ \section{Software Design}
+
+ \subsection{Coupling}
+When writing a program one should aim for low (or loose) coupling between classes. Low coupling means that classes are largely independent and communicate via a small well-defined interface \cite[p.259]{BK}. Hence a class should never depend on parts of another class that are not exposed via its interface. The interface of a class corresponds to its public methods and fields.
+
+ \begin{figure}[t]
+	\centering
+	\caption{UML Diagram for the class Website.}
+	\label{fig:uml:single-class-website}
+\end{figure}
+
+
+ \subsubsection{A note about the package private modifier}
+When working within a package, one could argue that all non-private fields (and methods) are part of the interface, since they are allowed to be accessed by other classes in the package. 
+ 
+Package private access to a field in \code{Class} allows \code{OtherClass} to tinker with the state of \code{Class}, just as a setter method would.
+A public getter method in \code{Class} on the other hand .... would have exactly the same effect!
+A getter method supplies the calling class \code{OtherClass} with a reference to the field, and thus changing the returned map will also change the state of \code{Class}.
+ 
+For primitive types (and strings), getter methods doesn't expose state, but for fields of for example type \code{Map} \code{Set} or \code{List}, care should be taken if ones do not intend to expose the state.
+In the cases above a package private modifier would not be a worse choice than the combination of private field and a getter method that returns the object \emph{reference}. To avoid exposing state one could choose to clone/copy the object and then return the clone/copy in the getter method. 
+
+
+\subsection{Cohesion}
+A program should aim for high cohesion. High cohesion means that a single method is responsible for a single task, and that a class has well defined area of responsibility. 
+
+The class \code{QueryHandler} is responsible for handling queries, when it's method \code{getMatchingWebsites} is supplied with a query it fetches the matching websites. But should the \code{QueryHandler} also rank the sites it fetches via \code{getMatchingWebsites}? 
+
+One argument for placing the ranking inside the \code{QueryHandler} is, that this would allow us to get rid of the duplicate code that splits the query string into subqueries and then single words.  
+      
+\begin{lstlisting}[language=Java, caption=Splitting a query into single words.]
+
+//  ... in the QueryHandler.
+
+
+// ... for the ranking.
+
+\end{lstlisting}
+ 
+
+But despite this we decided that the ranking task should rather be done inside the \code{search} method of the \code{SearchEngine}, to keep the task more ...
+
+\subsection{Encapsulation} 
+
+\subsection{Responsibility-driven design}
+Each class should have the data related to it.
+Class responsible for storing data should also be responsible for manipulating it \cite{BK}.
+ 
+\subsection{Inheritance} 
+
+\subsection{Polymorphism} 
+
+\subsection{Another design related concept}
+something...
+ 
+\subsection{Streams and Lambdas}
+Maybe a section about streams and lambdas? When are they useful, an when are they not?
+
+
+ 
