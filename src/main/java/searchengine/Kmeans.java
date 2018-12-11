@@ -55,12 +55,6 @@ public class Kmeans {
                 centroids.get(index).assignWebsiteVectorToCentroid(vectors.get(v));
             }
 
-//            for(Centroid c: centroids){
-//                System.out.println("Centroid "+c.getClusterName()+" size: "+c.getCentroidValues().size());
-//                for(int i=0; i<c.getWebsiteVectors().size(); i++){
-//                    System.out.println("Vector "+c.getWebsiteVectors().get(i).getWebsite().getTitle()+" size: "+c.getWebsiteVectors().get(i).getVectorValues().size());
-//                }
-//            }
             System.out.println("Total word: "+totalWords.size());
             oldCentroids = new ArrayList<>();
 
@@ -69,10 +63,6 @@ public class Kmeans {
                 oldCentroids.add(new Centroid(c));
             }
 
-            //Recalculate centroids
-//            oldCentroids = new ArrayList<Centroid>(centroids); //it creates a new object not pointing to that reference
-            //oldCentroids = centroids; bad implementation it copies the reference to the object
-            //For every centroid
 
             //If the list of website assigned to the centroid is not empty
 //                if(!centroids.get(c).getWebsiteVectors().isEmpty()){
@@ -120,11 +110,6 @@ public class Kmeans {
 //                tempCentroidValue = tempCentroidValue/totalWords.size();
             }
 
-//            for(int c=0; c<centroids.size(); c++) {
-//                for(int v=0; v<centroids.get(c).getCentroidValues().size(); v++){
-//                    System.out.println("Old centroid: " + oldCentroids.get(c).getCentroidValues().get(v)+" New centroid: "+centroids.get(c).getCentroidValues().get(v));
-//                }
-//            }
 
             if(compareCentroids(centroids, oldCentroids)){
                 for(Centroid c: centroids){
@@ -136,14 +121,6 @@ public class Kmeans {
             iteration++;
         }
 
-
-//        for(int v=0; v<vectors.size(); v++){
-//            ArrayList<Double> distance = new ArrayList<>();
-//            for(int c=0; c<centroids.size(); c++){
-//                System.out.println("---------Centroid: "+centroids.get(c).getClusterName()+"--------------");
-//                System.out.println("Website: "+vectors.get(v).getWebsite().getTitle()+" distance: "+cosineSimilarity.calculateCS(centroids.get(c).getCentroidValues(), vectors.get(v).getVectorValues()));
-//            }
-//        }
 
 
         for(Centroid c: centroids){
@@ -159,6 +136,26 @@ public class Kmeans {
             }
         }
 
+//        // This is a test for securing that the words are ordered the same way in totalWords and in the vectors.
+//        ArrayList<String> totalWordList = new ArrayList();
+//        ArrayList<String> vectorList = new ArrayList();
+//
+//        int counter = 0;
+//        for (String word : totalWords) {
+//          counter ++;
+//          totalWordList.add(word);
+//        }
+//        Map<String, Double> tempMap = vectors.get(5).getWordValuesMap();
+//        
+//        for(String w: tempMap.keySet()) {
+//          vectorList.add(w);
+//        }
+//        
+//        for(int i=0; i<totalWordList.size(); i++) {
+//          System.out.println(i+" "+totalWordList.get(i)+" is equal? "+totalWordList.get(i).equals(vectorList.get(i)));
+//        }
+         
+        
     }
 
     public boolean compareCentroids(List<Centroid> centroids1, List<Centroid> centroids2){

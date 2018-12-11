@@ -30,7 +30,7 @@ public class TFIDFScore implements Score{
 
     // number of times word appear on website, i.e the term site count.
     double wordCount = (double) site.wordMap.get(word);
-
+    
     // number of times word appear on a website in the corpus, i.e the site/document count.
     double siteCount = (double) corpus.appearInSitesMap.get(word);
 

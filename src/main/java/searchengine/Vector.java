@@ -30,6 +30,10 @@ public class Vector {
     public List<Double> getVectorValues(){
         return vectorValues;
     }
+    
+    public Map<String, Double> getWordValuesMap(){
+      return wordValues;
+    }
 
     public Website getWebsite(){
         return website;
