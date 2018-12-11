@@ -1,12 +1,97 @@
 \section{Ranking Algorithms}
-section about ranking algorithms.
+When a search is done on our search-engine, the method \code{getMachingQueries} in \code{QueryHandler} finds all the websites that matches the query. But of course some of the matching websites are more relevant than others, for the given query. To show the user the most relevant pages at the top, we need a way to rank the websites according to relevance, i.e we need a ranking algorithm. There are many different ways to rank a website, we have chosen to implement the term-frequency algorithm (TF-algorithm), and the term-frequency inverse-document-frequency (TFIDF-algorithm).    
 
 \subsection{Term Frequency}
-about term frequency
+Keeping in line with the notation at \cite{wikiTFIDF} the term frequency, TF, is calculated as follows.
+
+\[ TF = \frac{f_{t,d}}{\sum_{i \in d}f_{i,d}} \]
+
+Note that we choose the term frequency that is weighted by the total number of words in the document/site. The corresponding Java implementation is shown in listing \ref{lst:tf}.
+
+\begin{lstlisting}[language=Java,
+					caption={Implementation of calculating TF rating.},
+					label={lst:tf}]
+/**
+* JavaDoc
+*
+*/
+for (Website site : sites {
+for (String word : site.getWords()) {
+// do something	
+}
+// do something more
+}
+
+\end{lstlisting}
+
 
 \subsection{Term Frequency - Inverse Document Frequency}
-now make it inverse document frequency
+\[ TFIDF = TF \cdot \log{\left(\frac{N}{|\{d \in D : t \in d \}|}\right)}  \]
+
+\begin{lstlisting}[language=Java, caption=This is a code example.]
+/**
+* JavaDoc
+*
+*/
+for (Website site : sites {
+for (String word : site.getWords()) {
+// do something	
+}
+// do something more
+}
+\end{lstlisting}
+
+
+\subsection{Term Frequency - Inverse \emph{Corpus} Frequency}
+Instead of using the inverse document frequency as above, it would also be sensible to use the \emph{inverse term frequency} with respect to the whole database/corpus. Lets call that algorithm for TFICF (Term frequency - Inverse Corpus Frequency). A Java implementation is shown in listing \ref{lst:TFICF}.
+    
+\[ TFICF = TF \cdot \log{\left( \frac{a}{b} \right) } \]
+
+
+\begin{lstlisting}[language=Java, caption=This is a code example., label=lst:TFICF]
+/**
+* JavaDoc
+*
+*/
+for (Website site : sites {
+for (String word : site.getWords()) {
+// do something	
+}
+// do something more
+}
+\end{lstlisting}
+
+
 
 
 \subsection{Comparison of Algorithms}
-which one is best?
+which one is best, TF, TFIDF OR TFITF?
+
+
+\subsection{Design considerations}
+In this section we will describe how we chose to embed/implement ranking algorithms in our search-engine. We actually have two different working implementations, and there was a passionate group discussion about which implementation to chose for our search-engine.  
+
+A common rule of thumb for deciding on how to distribute responsibility between classes and methods in a program, is to say that methods correspond to verbs, and classes to nouns. This verb/noun method is described in \cite[p.530]{BK}.
+But what kind of word is `rank` or `score`, a verb or a noun? Actually it can be both, and this suggests that we can implement a ranking algorithm using different design styles.
+
+One option is to look at score as an object. In this case it belongs to a website, in the sense that a website should have a score as a field, and the type of that field should be of type Score.
+Another option is to look at a score as a method/function, but then where do this method belong? One option is to make score a utility class, i.e a class consisting only of static methods. 
+
+\subsubsection{Option 1: Score as Interface}
+\begin{figure}[t]
+	\centering
+	%\includegraphics[width=\textwidth]{graphics/..}
+	\caption{UML Diagram for search-engine when using an interface Score.}
+	\label{fig:uml:score-as-interface}
+\end{figure}
+
+\subsubsection{Option 2: Score as Utility class}
+\begin{figure}[t]
+	\centering
+	%\includegraphics[width=\textwidth]{graphics/..}
+	\caption{UML Diagram for the search-engine when Score is a utility class.}
+	\label{fig:uml:score-as-utility}
+\end{figure}
+
+
+
