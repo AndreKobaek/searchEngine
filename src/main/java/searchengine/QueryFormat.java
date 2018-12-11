@@ -5,6 +5,9 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 
 public class QueryFormat {
 
@@ -16,10 +19,24 @@ public class QueryFormat {
 
 
   /**
+   * The regex used to validate queries - and the corresponding {@code Pattern} and
+   * {@code Matcher} objects.
+   */
+  private String regex = "\\^OR(.)";
+  private Pattern pattern = Pattern.compile(regex);
+  private Matcher matcher;
+  
+  
+  /**
    * Restructure and possibly expand a raw string query.
    */
   public List<List<String>> structure(String rawQuery) {
 
+//    // remove leading or trailing OR's - how do we do this?
+//    matcher = pattern.matcher(rawQuery);
+//    System.out.println(matcher.group());
+    
+    
     // Array for processed/expanded subqueries.
     List<List<String>> queryArray = new ArrayList<>(new ArrayList<>());
 
