@@ -10,6 +10,12 @@ public class TFICFScore implements Score {
     return rankQueryTFICF(site, corpus, structuredQuery);
   }
 
+  @Override
+  public Double rankSingle(Website site, Corpus corpus,  String word) {
+    return rankSingleTFICF(site, corpus, word);
+  }
+  
+  
   /**
    * Rank a single website according to a single word. Ranking algorithm is TFICF (i.e Inverse
    * Corpus term Frequency instead of Inverse Document Frequency).

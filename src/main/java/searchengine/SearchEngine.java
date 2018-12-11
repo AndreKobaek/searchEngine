@@ -37,7 +37,7 @@ public class SearchEngine {
     score = new TFIDFScore(); // choose the scoring algorithm to use.
     queryFormat = new QueryFormat(corpus);
 
-    Kmeans kmeans = new Kmeans(sites, idx);
+    Kmeans kmeans = new Kmeans(new ArrayList<Website>(sites), idx, corpus, score);
     kmeans.startKmeans(10);
   }
 

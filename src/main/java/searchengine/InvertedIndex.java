@@ -121,12 +121,4 @@ public abstract class InvertedIndex implements Index {
       return Collections.emptySet();
     }
   }
-
-  /**
-   * Get the map of words and websites
-   * @return map of words and websites
-   */
-  public Map<String, Collection<Website>> getMap() {
-        return map;
-  }
 }

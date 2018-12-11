@@ -13,8 +13,11 @@ public class Kmeans {
     private List<Vector> vectors;
     private CosineSimilarity cosineSimilarity;
     private Index idx;
+    
+    private Corpus corpus;
+    private Score score;
 
-    public Kmeans(List<Website> dataset, Index idx){
+    public Kmeans(List<Website> dataset, Index idx, Corpus corpus, Score score){
         this.dataset = dataset;
         totalWords = new TreeSet<>();
         centroids = new ArrayList<>();
@@ -22,6 +25,9 @@ public class Kmeans {
         cosineSimilarity = new CosineSimilarity();
         oldCentroids = new ArrayList<>();
         this.idx = idx;
+        
+        this.corpus = corpus;
+        this.score = score;
     }
 
     public void startKmeans(int k){
@@ -237,16 +243,13 @@ public class Kmeans {
     }
 
     public void createVectors(Index idx){
-        //This behaviour needs to be changed
-        TFIDFScore score = new TFIDFScore(dataset);
-        score.insertScore(dataset, idx);
-
-        //This should not be conncted directly with website trough the TFIDF calculation
-        //Mikkel implementation should be better
-        for(Website website: dataset){
+        // for every website calculate its vector-representation according to database/corpus.
+         for(Website website : dataset){
             Vector vector = new Vector(website);
             for(String word: totalWords){
-                vector.addVectorValue(word, website.getWordTfIdfScore(word));
+
+              // calculate a score and put it in the vector.
+              vector.addVectorValue(word, score.rankSingle(website, corpus, word));
             }
             vectors.add(vector);
         }
