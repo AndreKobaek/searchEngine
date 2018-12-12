@@ -1,9 +1,7 @@
 package searchengine;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 
@@ -15,7 +13,7 @@ public class Fuzzy {
   public Fuzzy(Corpus corpus) {
     this.corpus = corpus;
   }
-  
+
   /**
    * Restructure and possibly "fuzzy-expand" a raw string query.
    * 
@@ -27,73 +25,90 @@ public class Fuzzy {
    * @param the raw query string supplied by the user.
    * @return a list of list of strings
    */
-  public List<List<String>> structure(String rawQuery) {
+  // public List<List<String>> structure(String rawQuery) {
     
     
-    // Array for processed/expanded subqueries.
-    List<List<String>> queryArray = new ArrayList<>(new ArrayList<>());
+  //   // Array for processed/expanded subqueries.
+  //   List<List<String>> queryArray = new ArrayList<>(new ArrayList<>());
 
-    // split the query into subqueries
-    String[] subqueries = rawQuery.trim().split("(\\s)*OR(\\s)+");
-    for (int j = 0; j < subqueries.length; j++) {
-      String[] subquery = subqueries[j].split("(\\s)+");
+  //   // split the query into subqueries
+  //   String[] subqueries = rawQuery.trim().split("(\\s)*OR(\\s)+");
+  //   for (int j = 0; j < subqueries.length; j++) {
+  //     String[] subquery = subqueries[j].split("(\\s)+");
 
-      // check all words in subquery to see if it must be expanded.
-      // also turn all words into lower case.
-      Set<List<String>> childQueries = new HashSet<>(Collections.emptyList());
-      for (String word : subquery) { // always at least 1 word.
-        word = word.toLowerCase();
-        if (!corpus.wordsToOccurences.containsKey(word)) {
-          System.out.println("Cannot find word: " + word);
-          Set<String> fuzzySet = expand(word);
-          System.out.println("Instead I'll make the search with: " + fuzzySet.toString());
+  //     // check all words in subquery to see if it must be expanded.
+  //     // also turn all words into lower case.
+  //     Set<List<String>> childQueries = new HashSet<>(Collections.emptyList());
+  //     for (String word : subquery) { // always at least 1 word.
+  //       word = word.toLowerCase();
+  //       if (!corpus.wordsToOccurences.containsKey(word)) {
+  //         System.out.println("Cannot find word: " + word);
+  //         Set<String> fuzzySet = expand(word);
+  //         System.out.println("Instead I'll make the search with: " + fuzzySet.toString());
 
-          // make a new reference to existing set of sets object.
-          Set<List<String>> temporaryStorage = childQueries;
+  //         // make a new reference to existing set of sets object.
+  //         Set<List<String>> temporaryStorage = childQueries;
 
-          // create new object for storing queries. Overwrite old local variable childQueries.
-          childQueries = new HashSet<>(Collections.emptyList());
-          // create a new child subquery for each word in fuzzySet
-          for (String fword : fuzzySet) {
-            List<String> newList;
-            if (temporaryStorage.isEmpty()) {
-              newList = new ArrayList<>();
-              newList.add(fword);
-              childQueries.add(newList);
-            } else {
-              for (List<String> oldList : temporaryStorage) {
-                newList = new ArrayList<>();
-                newList.add(fword);
-                newList.addAll(oldList);
-                childQueries.add(newList);
-              }
-            }
-          }
-        } else {
-          // add the known word to all existing sets (corresponding to "child" subqueries).
-          if (childQueries.isEmpty()) {
-            List<String> list = new ArrayList<>();
-            list.add(word);
-            childQueries.add(list);
-          } else {
-            for (List<String> list : childQueries) {
-              list.add(word);
-            }
-          }
-        }
-      }
-      // add all relevant subqueries to queryArray.
-      queryArray.addAll(childQueries);
-    }
-    System.out
-        .println("Final restructured search query is:" + System.lineSeparator() + queryArray.toString());
-    return queryArray;
-  }
+  //         // create new object for storing queries. Overwrite old local variable childQueries.
+  //         childQueries = new HashSet<>(Collections.emptyList());
+  //         // create a new child subquery for each word in fuzzySet
+  //         for (String fword : fuzzySet) {
+  //           List<String> newList;
+  //           if (temporaryStorage.isEmpty()) {
+  //             newList = new ArrayList<>();
+  //             newList.add(fword);
+  //             childQueries.add(newList);
+  //           } else {
+  //             for (List<String> oldList : temporaryStorage) {
+  //               newList = new ArrayList<>();
+  //               newList.add(fword);
+  //               newList.addAll(oldList);
+  //               childQueries.add(newList);
+  //             }
+  //           }
+  //         }
+  //       } else {
+  //         // add the known word to all existing sets (corresponding to "child" subqueries).
+  //         if (childQueries.isEmpty()) {
+  //           List<String> list = new ArrayList<>();
+  //           list.add(word);
+  //           childQueries.add(list);
+  //         } else {
+  //           for (List<String> list : childQueries) {
+  //             list.add(word);
+  //           }
+  //         }
+  //       }
+  //     }
+  //     // add all relevant subqueries to queryArray.
+  //     queryArray.addAll(childQueries);
+  //   }
+  //   System.out
+  //       .println("Final restructured search query is:" + System.lineSeparator() + queryArray.toString());
+  //   return queryArray;
+  // }
 
   public Set<String> expand(String unknownWord) {
+    
+    // Set for storing the fuzzy strings
+    Set<String> fuzzyStrings = new HashSet<>();
 
-    int delta = 2; // maximum allowed edit distance.
-    int gramSize = 2; // only looking at 2-grams for now.
+    // maximum allowed edit distance.
+    int delta;
+    // delta is assigned based on the length of the word
+    switch (unknownWord.length()) {
+      case 3:   delta = 1;
+                break;
+      case 2:   delta = 1;
+                break;
+      case 1:   fuzzyStrings.add(unknownWord);
+                return fuzzyStrings;
+      default:  delta = 2;
+                break;
+    }
+
+    // only looking at 2-grams for now
+    int gramSize = 2; 
 
     int ncols = corpus.wordsInCorpus.size();
 
@@ -120,7 +135,6 @@ public class Fuzzy {
     System.out.println(approximateStrings.toString());
 
     // pick the best of the approximate strings, the one(s) with the smallest edit distance.
-    Set<String> fuzzyStrings = new HashSet<>();
     for (String approxString : approximateStrings) {
 
       // check if editDistance is smaller than delta
@@ -132,6 +146,9 @@ public class Fuzzy {
             "Discard: " + approxString + " (Edit Distance = " + editDistance + " > " + delta + ")");
       }
     }
+    System.out.println("I'll try to search for:");
+    System.out.println(fuzzyStrings.toString());
+    
     return fuzzyStrings;
   }
 
@@ -186,11 +203,13 @@ public class Fuzzy {
    */
   private Set<String> calculate2Gram(String word) {
 
+    Set<String> biGrams = new HashSet<>();
+
+    // If the word has <= 1 character, return an empty set
     if (word.length() <= 1) {
-      return Collections.emptySet();
+      return biGrams;
     }
 
-    Set<String> biGrams = new HashSet<>();
     biGrams.add("$" + word.charAt(0));
     for (int i = 0; i < word.length() - 1; i++) {
       String biGram = word.substring(i, i + 2);

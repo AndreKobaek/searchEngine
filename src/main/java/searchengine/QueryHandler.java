@@ -22,8 +22,8 @@ public class QueryHandler {
   private Fuzzy fuzzy;
 
   /**
-   * The regex used to validate queries - and the corresponding {@code Pattern} and
-   * {@code Matcher} objects.
+   * The regex used to validate queries - and the corresponding {@code Pattern} and {@code Matcher}
+   * objects.
    */
   private final String REGEX = "\\b([-\\w]+)\\b";
   private Pattern pattern;
@@ -34,17 +34,17 @@ public class QueryHandler {
    *
    * @param idx The index used by the QueryHandler.
    */
-  public QueryHandler(Index idx, Corpus corpus) {
+  public QueryHandler(Index idx, Corpus corpus, Fuzzy fuzzy) {
     this.idx = idx;
     this.corpus = corpus;
+    this.fuzzy = fuzzy;
     pattern = Pattern.compile(REGEX);
   }
 
   /**
    * getMachingWebsites answers queries of the type "subquery1 OR subquery2 OR subquery3 ...". A
-   * "subquery" has the form "word1 word2 word3 ...". A website matches a subquery if all the
-   * words occur on the website. A website matches the whole query, if it matches at least one
-   * subquery.
+   * "subquery" has the form "word1 word2 word3 ...". A website matches a subquery if all the words
+   * occur on the website. A website matches the whole query, if it matches at least one subquery.
    *
    * @param query the query string
    * @return the set of websites that matches the query
@@ -77,32 +77,33 @@ public class QueryHandler {
       matcher = pattern.matcher(subQuery);
 
       while (matcher.find()) {
-        
+
         // Set for storing the match or the fuzzed versions of a match
         Set<String> wordSet = new HashSet<>();
 
         // If the Corpus contains the match, add it (and nothing else) to the querySet
-        if(corpus.containsWord(matcher.group())){
+        if (corpus.containsWord(matcher.group())) {
           wordSet.add(matcher.group());
         } else {
-          // If the Corpus doesn't contain the match, add the fuzzed versions of the match to the querySet
+          // If the Corpus doesn't contain the match, add the fuzzed versions of the match to the
+          // querySet
           wordSet = fuzzy.expand(matcher.group());
         }
 
         if (!firstSubQueryDone) {
-          for (String word : wordSet){
+          for (String word : wordSet) {
             subResults.addAll(idx.lookup(word));
           }
           firstSubQueryDone = true;
-        } else {      
+        } else {
           // Set for storing the websites corresponding to the querySet
-          Set<Website> retainSet = new HashSet<>();         
-          for (String word : wordSet){
+          Set<Website> retainSet = new HashSet<>();
+          for (String word : wordSet) {
             retainSet.addAll(idx.lookup(word));
           }
           subResults.retainAll(retainSet);
         }
-        
+
       }
 
       results.addAll(subResults);
@@ -114,5 +115,25 @@ public class QueryHandler {
     resultsAsList.addAll(results);
 
     return resultsAsList;
+  }
+
+  
+  /**
+   * Restructure a raw string query. A raw query is translated into a structured format as follows:
+   * 
+   * word1 AND word2 OR word3 -> [[ ]] word1 And word2 OR word3 AND spellingError -> [[word1,
+   * word2], [word3, option1], [word3, option2]]
+   * 
+   * @param query the raw query string supplied by the user.
+   * @return a list of list of strings
+   */
+  public List<List<String>> getStructuredQuery(String query) {
+
+    // Array for processed/expanded subqueries.
+    List<List<String>> structuredQuery = new ArrayList<>();
+
+    // Magic
+
+    return structuredQuery;
   }
 }

@@ -15,7 +15,7 @@ public class TFIDFScore implements Score{
    * 
    * @param site a single website that will be ranked.
    * @param corpus of all websites that the search engine knows about.
-   * @param a single word from the search query.
+   * @param word a single word from the search query.
    * @return the rank of the site. Rank will always be non-negative.
    */
   private Double rankSingleTFIDF(Website site, Corpus corpus, String word) {
