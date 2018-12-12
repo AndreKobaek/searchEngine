@@ -28,10 +28,18 @@ public class QueryFormat {
   
   
   /**
-   * Restructure and possibly expand a raw string query.
+   * Restructure and possibly "fuzzy-expand" a raw string query.
+   * 
+   * A raw query is translated into a structured format as follows. 
+   * 
+   * word1 AND word2 OR word3 -> [[  ]]
+   * word1 And word2 OR word3 AND spellingError -> [[word1, word2], [word3, option1], [word3, option2]]  
+   * 
+   * @param the raw query string supplied by the user.
+   * @return a list of list of strings
    */
   public List<List<String>> structure(String rawQuery) {
-
+    
 //    // remove leading or trailing OR's - how do we do this?
 //    matcher = pattern.matcher(rawQuery);
 //    System.out.println(matcher.group());
