@@ -28,10 +28,10 @@ public class TFICFScore implements Score {
     double wordCount = (double) site.wordMap.get(word);
 
     // number of times word appear in the corpus, i.e the corpus count.
-    double corpusCount = (double) corpus.index.get(word);
+    double corpusCount = (double) corpus.wordsToOccurences.get(word);
 
     // total number of words in the corpus.
-    int corpusSize = corpus.wordSize;
+    int corpusSize = corpus.getWordCountTotal();
 
     return (wordCount / wordSize) * Math.log(corpusSize / corpusCount);
   }

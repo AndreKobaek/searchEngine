@@ -5,27 +5,16 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
-public class QueryFormat {
+public class Fuzzy {
 
-  Corpus corpus;
+  /** The Corpus used for fuzzy search. */
+  private Corpus corpus;
 
-  public QueryFormat(Corpus corpus) {
+  public Fuzzy(Corpus corpus) {
     this.corpus = corpus;
   }
-
-
-  /**
-   * The regex used to validate queries - and the corresponding {@code Pattern} and
-   * {@code Matcher} objects.
-   */
-  private String regex = "\\^OR(.)";
-  private Pattern pattern = Pattern.compile(regex);
-  private Matcher matcher;
-  
   
   /**
    * Restructure and possibly "fuzzy-expand" a raw string query.
@@ -39,10 +28,6 @@ public class QueryFormat {
    * @return a list of list of strings
    */
   public List<List<String>> structure(String rawQuery) {
-    
-//    // remove leading or trailing OR's - how do we do this?
-//    matcher = pattern.matcher(rawQuery);
-//    System.out.println(matcher.group());
     
     
     // Array for processed/expanded subqueries.
@@ -58,9 +43,9 @@ public class QueryFormat {
       Set<List<String>> childQueries = new HashSet<>(Collections.emptyList());
       for (String word : subquery) { // always at least 1 word.
         word = word.toLowerCase();
-        if (!corpus.index.containsKey(word)) {
+        if (!corpus.wordsToOccurences.containsKey(word)) {
           System.out.println("Cannot find word: " + word);
-          Set<String> fuzzySet = fuzzyExpand(word);
+          Set<String> fuzzySet = expand(word);
           System.out.println("Instead I'll make the search with: " + fuzzySet.toString());
 
           // make a new reference to existing set of sets object.
@@ -105,7 +90,7 @@ public class QueryFormat {
     return queryArray;
   }
 
-  private Set<String> fuzzyExpand(String unknownWord) {
+  public Set<String> expand(String unknownWord) {
 
     int delta = 2; // maximum allowed edit distance.
     int gramSize = 2; // only looking at 2-grams for now.

@@ -19,15 +19,12 @@ public class Corpus {
    * The map is build when the corpus is instantiated. The map is made package private to allow
    * convenient access for external ranking methods.
    */
-  Map<String, Integer> index; // package private. Word is mapped to the number of times it appear in
-                              // the corpus.
+  Map<String, Integer> wordsToOccurences;
 
   /**
-   * A map which relates a word in the corpus to the number of times the word appear in the corpus.
-   * The map is build when the corpus is instantiated. The map is made package private to allow
-   * convenient access for external ranking methods.
+   * The total number of words in the Corpus (duplicates allowed)
    */
-  int wordSize = 0; // package private
+  private int wordCountTotal = 0; 
 
   /**
    * A set containing all the websites in the corpus. This set must be given to the Corpus when it
@@ -76,10 +73,23 @@ public class Corpus {
    *        from an external database.
    */
   public Corpus(Set<Website> sites) {
-    index = new TreeMap<>();
+    wordsToOccurences = new TreeMap<>();
     appearInSitesMap = new TreeMap<>();
     allSites = sites;
     totalNumberOfSites = allSites.size();
+  }
+
+
+  public boolean containsWord(String word){
+    return wordsToOccurences.containsKey(word);
+  }
+
+  public int getWordCountUnique(){
+    return wordsToOccurences.keySet().size();
+  }
+
+  public int getWordCountTotal(){
+    return wordCountTotal;
   }
 
   // build the map of words
@@ -107,15 +117,15 @@ public class Corpus {
                                                            // map.
 
         // update the "index" which counts word occurrences in the whole corpus.
-        if (this.index.containsKey(w)) {
-          this.index.put(w, this.index.get(w) + n);
+        if (this.wordsToOccurences.containsKey(w)) {
+          this.wordsToOccurences.put(w, this.wordsToOccurences.get(w) + n);
         } else {
-          this.index.put(w, n);
+          this.wordsToOccurences.put(w, n);
         }
-        wordSize += n;
+        wordCountTotal += n;
       });
     }
-    assert wordSize == allSites.stream().map(Website::getWordSize).reduce(0,
+    assert wordCountTotal == allSites.stream().map(Website::getWordSize).reduce(0,
         (total, count) -> total + count); // sanity check, that wordSize is calculated correctly.
   }
 
@@ -126,7 +136,7 @@ public class Corpus {
     biGramMap = new TreeMap<>();
     
     // get all the words in the corpus, put them in an ArrayList and sort them alphabetically.
-    wordsInCorpus = new ArrayList<>(index.keySet()); 
+    wordsInCorpus = new ArrayList<>(wordsToOccurences.keySet()); 
     Collections.sort(wordsInCorpus);
     
     // create a list of all bigrams

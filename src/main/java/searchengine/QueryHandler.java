@@ -12,8 +12,14 @@ import java.util.regex.Pattern;
  */
 public class QueryHandler {
 
-  /** The index the QueryHandler uses for answering queries. */
-  private Index idx = null;
+  /** The Index the QueryHandler uses for answering queries. */
+  private Index idx;
+
+  /** The Corpus the QueryHandler used to check whether a fuzzy search should be carried out */
+  private Corpus corpus;
+
+  /** The Fuzzy object used for fuzzy search */
+  private Fuzzy fuzzy;
 
   /**
    * The regex used to validate queries - and the corresponding {@code Pattern} and
@@ -28,8 +34,9 @@ public class QueryHandler {
    *
    * @param idx The index used by the QueryHandler.
    */
-  public QueryHandler(Index idx) {
+  public QueryHandler(Index idx, Corpus corpus) {
     this.idx = idx;
+    this.corpus = corpus;
     pattern = Pattern.compile(REGEX);
   }
 
@@ -39,43 +46,63 @@ public class QueryHandler {
    * words occur on the website. A website matches the whole query, if it matches at least one
    * subquery.
    *
-   * @param input the query string
+   * @param query the query string
    * @return the set of websites that matches the query
    */
-  public List<Website> getMatchingWebsites(String input) {
+  public List<Website> getMatchingWebsites(String query) {
 
     // Set for storing the combined results
     Set<Website> results = new HashSet<>();
 
     // The search query is split into sub queries by the keyword 'OR'
-    String[] subQueries = input.split("\\bOR\\b");
+    String[] subQueries = query.split("\\bOR\\b");
 
     // Go through each of the sub queries and get the results
-    for (String query : subQueries) {
+    for (String subQuery : subQueries) {
 
       // Set for storing the results for this sub query
       Set<Website> subResults = new HashSet<>();
 
       // Boolean to define whether the lookups should be added or retained
-      boolean firstQueryDone = false;
+      boolean firstSubQueryDone = false;
 
       // If the query consists of only 'OR' the split method returns 'OR',
       // therefore there are no queries and the loop should be terminated
-      if (query.equals("OR")) {
+      if (subQuery.equals("OR")) {
         break;
       }
 
       // The query string is converted to lowercase to match the case of the data
-      query = query.toLowerCase();
-      matcher = pattern.matcher(query);
+      subQuery = subQuery.toLowerCase();
+      matcher = pattern.matcher(subQuery);
 
       while (matcher.find()) {
-        if (!firstQueryDone) {
-          subResults.addAll(idx.lookup(matcher.group()));
-          firstQueryDone = true;
+        
+        // Set for storing the match or the fuzzed versions of a match
+        Set<String> wordSet = new HashSet<>();
+
+        // If the Corpus contains the match, add it (and nothing else) to the querySet
+        if(corpus.containsWord(matcher.group())){
+          wordSet.add(matcher.group());
         } else {
-          subResults.retainAll(idx.lookup(matcher.group()));
+          // If the Corpus doesn't contain the match, add the fuzzed versions of the match to the querySet
+          wordSet = fuzzy.expand(matcher.group());
         }
+
+        if (!firstSubQueryDone) {
+          for (String word : wordSet){
+            subResults.addAll(idx.lookup(word));
+          }
+          firstSubQueryDone = true;
+        } else {      
+          // Set for storing the websites corresponding to the querySet
+          Set<Website> retainSet = new HashSet<>();         
+          for (String word : wordSet){
+            retainSet.addAll(idx.lookup(word));
+          }
+          subResults.retainAll(retainSet);
+        }
+        
       }
 
       results.addAll(subResults);
