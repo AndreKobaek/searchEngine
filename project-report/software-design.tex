@@ -22,13 +22,11 @@ One argument for placing the ranking inside the \code{QueryHandler} is, that wou
 
 Therefore the task of ranking the websites found by the \code{QueryHandler} is assigned to the  \code{SearchEngine} which is already responsible for organizing the process of finding search results.
 
+Cohesion is closely related to responsibility-driven design, which philosophy's main point is that "\textit{each class should be responsible for handling its own data}" \citep{270}. This means that whatever information stored in a class is the class's own responsibility to provide or change. This ties into encapsulation as well. %PLEASE ADD TO THIS SECTION.
+
 \subsection{Encapsulation}
 Encapsulation is an approach to class interaction in object-oriented programming as well as a tool from the defensive programming toolbox. Encapsulation is an ideal way to fulfil the intention of low coupling. When an object is encapsulated the interface towards other packages is controlled by keeping the state of the object unexposed to other classes. This is not always possible, since reference type objects are mutable and can therefore be manipulated when access to the object is provided. The theoretical workaround is to only exposing clones of the reference type objects, which has the drawback of using additional memory. We decided that it would an unnecessary strong commitment to encapsulation that did not serve a purpose for all the internal interfaces within the \code{searchEngine} package.
 
-\subsection{Responsibility-driven design}
-Each class should have the data related to it.
-Class responsible for storing data should also be responsible for manipulating it \cite{BK}.
- 
 \subsection{Inheritance} 
 Inheritance is an architectural tool that helps to avoid duplicate code. By conceptually abstracting similar objects into a common object similarities can be abstracted into the common object, thus avoiding duplicate code. This property is used in the case of the \code{InvertedIndex} and the two different instances of it.
 
