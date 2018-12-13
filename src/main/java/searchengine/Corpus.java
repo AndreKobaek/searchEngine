@@ -19,66 +19,68 @@ public class Corpus {
    * The map is build when the corpus is instantiated. The map is made package private to allow
    * convenient access for external ranking methods.
    */
-  Map<String, Integer> wordsToOccurences;
+  private Map<String, Integer> wordsToOccurences;
 
   /**
    * The total number of words in the Corpus (duplicates allowed)
    */
-  private int wordCountTotal = 0; 
+  private int wordCountTotal = 0;
 
   /**
    * A set containing all the websites in the corpus. This set must be given to the Corpus when it
    * is instantiated.
    */
-  Set<Website> allSites; // all websites in the corpus.
+  private Set<Website> allSites;
 
   /**
    * A map which relates a word to the number of sites/documents in which the word appears. The map
    * is build when the corpus is instantiated. The map is made package private to allow convenient
    * access for external ranking methods.
    */
-  Map<String, Integer> appearInSitesMap; // package private
+  private Map<String, Integer> wordsToInSiteOccurences;
 
 
-  /**
-   * The total number of websites in the corpus.
-   */
-  int totalNumberOfSites;
+  /* The total number of websites in the corpus. */
+  private int totalNumberOfSites;
 
-
-  /**
-   * A list of all the words in the corpus/database.
-   */  
-  ArrayList<String> wordsInCorpus;
-
+  /* A list of all the words in the corpus/database. */
+  private ArrayList<String> wordsInCorpus;
 
   /**
   * A map from a bigram (i.e aa, ab ,ac, and so on) to an int[] array of size wordInCorpus.size()
   * int[] consists has only 0's or 1's. A 1 if the corresponding word in WordsInCorpus contains the bigram.
   */
-  Map<String, int[]> biGramMap;
-
-      
-
+  private  Map<String, int[]> biGramMap;
   /**
    * A constructor that instantiates the corpus.
-   * 
+   *
    * NOTE: Most of the fields described above is first instantiated when the build method is
    * invoked. This is because the build method is potentially an "expensive" operation, and
    * therefore the programmer should actively think about when to invoke the method. If the build
    * method was "hid" in the constructor, this concern is more likely to be overlooked. This is
    * similar to the way the InvertedIndex is designed.
-   * 
+   *
    * @param sites the sites that can be searched by the search engine. The sites must be supplied
    *        from an external database.
    */
   public Corpus(Set<Website> sites) {
     wordsToOccurences = new TreeMap<>();
-    appearInSitesMap = new TreeMap<>();
+    wordsToInSiteOccurences = new TreeMap<>();
     allSites = sites;
     totalNumberOfSites = allSites.size();
   }
 
+  public int getTotalNumberOfSites() {
+    return totalNumberOfSites;
+  }
+
+  public Map<String, Integer> getWordsToOccurences() {
+    return wordsToOccurences;
+  }
+
+  public Map<String, Integer> getWordsToInSiteOccurences() {
+    return wordsToInSiteOccurences;
+  }
 
   public boolean containsWord(String word){
     return wordsToOccurences.containsKey(word);
@@ -100,10 +102,10 @@ public class Corpus {
       // NB: according to "Effective Java" by Joshua Bloch the forEach terminator shouldn't be used
       // in cases like this (Item ...). Code should probably be refactored.
       site.getWords().stream().distinct().forEach(w -> {
-        if (appearInSitesMap.containsKey(w)) {
-          appearInSitesMap.put(w, appearInSitesMap.get(w) + 1);
+        if (wordsToInSiteOccurences.containsKey(w)) {
+          wordsToInSiteOccurences.put(w, wordsToInSiteOccurences.get(w) + 1);
         } else {
-          appearInSitesMap.put(w, 1);
+          wordsToInSiteOccurences.put(w, 1);
         }
       });
 
@@ -111,7 +113,7 @@ public class Corpus {
       // and add it to the map that counts the number of times the word appears in the corpus.
       site.getWords().stream().distinct().forEach(w -> {
         // number of times the word occur on site.
-        int n = site.wordMap.get(w);
+        int n = site.getWordsToOccurences().get(w);
         assert n >= 1 : "n should always be at least one"; // word is on the site, and hence a
                                                            // key/value pair should exist in the
                                                            // map.
@@ -129,7 +131,14 @@ public class Corpus {
         (total, count) -> total + count); // sanity check, that wordSize is calculated correctly.
   }
 
-  
+  public ArrayList<String> getWordsInCorpus() {
+    return wordsInCorpus;
+  }
+
+  public Map<String, int[]> getBiGramMap() {
+    return biGramMap;
+  }
+
   public void build2GramIndex() {
     
     // initialize map

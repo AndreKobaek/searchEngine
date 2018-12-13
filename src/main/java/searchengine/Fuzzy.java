@@ -1,6 +1,5 @@
 package searchengine;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,8 +21,8 @@ public class Fuzzy {
    * word1 AND word2 OR word3 -> [[  ]]
    * word1 And word2 OR word3 AND spellingError -> [[word1, word2], [word3, option1], [word3, option2]]  
    * 
-   * @param the raw query string supplied by the user.
-   * @return a list of list of strings
+   * //@param the raw query string supplied by the user.
+   * //@return a list of list of strings
    */
   // public List<List<String>> structure(String rawQuery) {
     
@@ -110,24 +109,27 @@ public class Fuzzy {
     // only looking at 2-grams for now
     int gramSize = 2; 
 
-    int ncols = corpus.wordsInCorpus.size();
+    int ncols = corpus.getTotalNumberOfSites();
 
     Set<String> approximateStrings = new HashSet<>();
 
     int[] summedRowVector = new int[ncols];
     for (String bigram : calculate2Gram(unknownWord)) {
       for (int ncol = 0; ncol < ncols; ncol++) {
-        int[] rowVector = corpus.biGramMap.get(bigram);
+        //HER
+        int[] rowVector = corpus.getBiGramMap().get(bigram);
         summedRowVector[ncol] += rowVector[ncol];
       }
     }
 
     // add approximate words
     for (int i = 0; i < summedRowVector.length; i++) {
-      int commonGramsBound = Math.max(unknownWord.length(), corpus.wordsInCorpus.get(i).length())
+      //HER
+      int commonGramsBound = Math.max(unknownWord.length(), corpus.getWordsInCorpus().get(i).length())
           - 1 - (delta - 1) * gramSize;
       if (summedRowVector[i] >= commonGramsBound) {
-        approximateStrings.add(corpus.wordsInCorpus.get(i));
+        //HER
+        approximateStrings.add(corpus.getWordsInCorpus().get(i));
       }
     }
     // print message

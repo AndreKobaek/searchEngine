@@ -30,7 +30,7 @@ public class Website {
   /**
    * a map from word to wordcount
    */
-  Map<String, Integer> wordMap; // package private
+  private Map<String, Integer> wordsToOccurences;
 
   /**
    * the number of words on the website.
@@ -60,12 +60,12 @@ public class Website {
     this.wordSize = words.size();
 
     // build the map which holds words and corresponding word counts for the website.
-    wordMap = new HashMap<>();
+    wordsToOccurences = new HashMap<>();
     for (String word : words) {
-      if (wordMap.containsKey(word)) {
-        wordMap.put(word, wordMap.get(word) + 1);
+      if (wordsToOccurences.containsKey(word)) {
+        wordsToOccurences.put(word, wordsToOccurences.get(word) + 1);
       } else {
-        wordMap.put(word, 1);
+        wordsToOccurences.put(word, 1);
       }
     }
   }
@@ -86,6 +86,10 @@ public class Website {
    */
   public String getUrl() {
     return url;
+  }
+
+  public Map<String, Integer> getWordsToOccurences() {
+    return wordsToOccurences;
   }
 
   /**

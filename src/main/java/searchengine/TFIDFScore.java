@@ -24,13 +24,13 @@ public class TFIDFScore implements Score{
     int wordSize = site.getWordSize();
 
     // number of times word appear on website, i.e the term site count.
-    double wordCount = (double) site.wordMap.get(word);
+    double wordCount = (double) site.getWordsToOccurences().get(word);
 
     // number of times word appear on a website in the corpus, i.e the site/document count.
-    double siteCount = (double) corpus.appearInSitesMap.get(word);
+    double siteCount = (double) corpus.getWordsToInSiteOccurences().get(word);
 
     // site frequency times logarithm to inverse corpus site/document frequency.
-    return (wordCount / wordSize) * Math.log(corpus.totalNumberOfSites / siteCount);
+    return (wordCount / wordSize) * Math.log(corpus.getTotalNumberOfSites() / siteCount);
   }
 
 
@@ -40,7 +40,7 @@ public class TFIDFScore implements Score{
    * 
    * @param site the website that are to be ranked.
    * @param corpus the corpus of all websites.
-   * @param structured query 
+   * @param structuredQuery
    * 
    * @return Double value
    */
