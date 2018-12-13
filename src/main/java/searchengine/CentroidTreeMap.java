@@ -1,16 +1,10 @@
 package searchengine;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-/**
- * It represents the Vector that is the reference on which every cluster is built. Once values are assigned
- * it accept Vectors of Websites that are assigned to the cluster, which can be deleted and reassigned.
- */
-public class Centroid {
-
-    private List<Double> values;
-    private List<Vector> websiteVectors;
+public class CentroidTreeMap {
+    private Map<String, Double> values;
+    private List<VectorTreeMap> websiteVectors;
     private String name;
 
     /**
@@ -18,7 +12,7 @@ public class Centroid {
      * @param values List of Double
      * @param name String
      */
-    public Centroid(List<Double> values, String name){
+    public CentroidTreeMap(Map<String, Double> values, String name){
         this.name = name;
         websiteVectors = new ArrayList<>();
         this.values = values;
@@ -29,17 +23,17 @@ public class Centroid {
      * to copy the content of a Centroid instance without pointing at the same reference in the memory.
      * @param c Centroid
      */
-    public Centroid (Centroid c){
+    public CentroidTreeMap (CentroidTreeMap c){
         this.name = c.getClusterName();
         this.websiteVectors = new ArrayList<>();
-        this.values = c.getCentroidValues();
+        this.values = c.getCentroidValuesMap();
     }
 
     /**
      * Return a list of Double that represents the values of the Centroid
      * @return List of Double
      */
-    public List<Double> getCentroidValues(){
+    public Map<String, Double> getCentroidValuesMap(){
         return values;
     }
 
@@ -47,8 +41,8 @@ public class Centroid {
      * Delete all the values of the Centroid and sets new values for the List
      * @param newValues List of Double
      */
-    public void setNewValues(List<Double> newValues){
-        values = new ArrayList<>(newValues);
+    public void setNewValues(Map<String, Double> newValues){
+        values = new HashMap<>(newValues);
         //values.addAll(0,newValues);
     }
 
@@ -56,7 +50,7 @@ public class Centroid {
      * Takes a Vector and adds it to the list of vectors assigned to the centroid
      * @param w Vector
      */
-    public void assignWebsiteVectorToCentroid(Vector w){
+    public void assignWebsiteVectorToCentroid(VectorTreeMap w){
         websiteVectors.add(w);
     }
 
@@ -71,7 +65,7 @@ public class Centroid {
      * Return the list of Vector assigned to the centroid
      * @return List of Vector
      */
-    public List<Vector> getWebsiteVectors(){
+    public List<VectorTreeMap> getWebsiteVectors(){
         return websiteVectors;
     }
 

@@ -170,7 +170,6 @@ public class QueryFormat {
     return D[x.length()][y.length()];
   }
 
-
   /**
    * Calculate 2-grams for a word.
    */
@@ -189,5 +188,4 @@ public class QueryFormat {
     biGrams.add(word.charAt(word.length() - 1) + "$");
     return biGrams;
   }
-
 }

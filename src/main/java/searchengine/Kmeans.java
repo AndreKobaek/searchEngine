@@ -24,6 +24,12 @@ public class Kmeans {
     private Corpus corpus;
     private Score score;
 
+    /**
+     * Takes a list of Website a Corpus instance, a Score instance and it assigns them to the respective objects declared int the class
+     * @param dataset a List of Website
+     * @param corpus Corpus
+     * @param score Score
+     */
     public Kmeans(List<Website> dataset, Corpus corpus, Score score){
         this.dataset = dataset;
         totalWords = new TreeSet<>();
@@ -62,6 +68,8 @@ public class Kmeans {
 //                    System.out.println("Centroid name: "+centroids.get(c).getClusterName()+" Website: "+vectors.get(v).getWebsite().getTitle()+" Distance: "+similarity);
                 }
                 int index = calculateClosestCentroid(distance);
+
+                //System.out.println("Centroid: "+centroids.get(index).getClusterName()+ " Vector: "+ vectors.get(v).getWebsite().getTitle());
                 centroids.get(index).assignWebsiteVectorToCentroid(vectors.get(v));
             }
 
@@ -131,8 +139,7 @@ public class Kmeans {
             iteration++;
         }
 
-
-
+        //Debug information on the Terminal
         for(Centroid c: centroids){
             int b=0;
             System.out.println("---------Centroid: "+c.getClusterName()+"--------------");
@@ -168,6 +175,11 @@ public class Kmeans {
         
     }
 
+    /**
+     * Compare two Centroid to check that are the same or not, this similarity has a tolerance of 0.001.
+     * If the values of the two Centroid are the same it return false that stops the loop into startKmeans method,
+     * otherwise it returns true
+     */
     public boolean compareCentroids(List<Centroid> centroids1, List<Centroid> centroids2){
 
         int compared = 0;
@@ -202,20 +214,31 @@ public class Kmeans {
         }
     }
 
-
-
+    /**
+     * Takes a list of Double containing the distance from a Centroid to a Vector and returns the index of the closest one
+     * @param distance List of Double
+     * @return int
+     */
     public int calculateClosestCentroid(List<Double> distance){
         int index = 0;
 
 
         //Takes the list and retrieves the maximum value in the list
         Double maxValue = Collections.max(distance);
+        for(Double d: distance){
+            System.out.println("Distance: "+d);
+        }
+        System.out.println("Chosen distance: "+Collections.max(distance));
         //Retrieves the index position of the maximum value in the list and assign it to an int to be returned
         index = distance.indexOf(maxValue);
+        System.out.println("Chosen distance: "+Collections.max(distance)+" Chosen index: "+ distance.indexOf(maxValue));
 
         return index;
     }
 
+    /**
+     * Calculate the total number of words in the dataset
+     */
     public void calculateTotalWords(){
         for(Website site: dataset){
             for(String word: site.getWords()){
@@ -224,6 +247,10 @@ public class Kmeans {
         }
     }
 
+    /**
+     * Fore every Website in the dataset creates a Vector containing the Website and calculating the Tf-Idf value of every word
+     * contained into the Website. In case the word from the dataset is not contained into the Website its value is 0
+     */
     public void createVectors(){
         // for every website calculate its vector-representation according to database/corpus.
          for(Website website : dataset){
@@ -242,6 +269,13 @@ public class Kmeans {
         }
     }
 
+    /**
+     * Takes a int value called cardinality wich is the k assigned to the constructor and caculates k number of centroids
+     * calling the randomPoint method and assigning its result to a new istance of Centroid,
+     * then this are added to the initialCentroids list
+     * @param cardinality int
+     * @return List of Centroid
+     */
     public List<Centroid> calculateInitialCentroids(int cardinality){
         List<Centroid> initialCentroids = new ArrayList<>();
         List<Double> distance = new ArrayList<>(); //Not used?
@@ -263,6 +297,13 @@ public class Kmeans {
         return initialCentroids;
     }
 
+    /**
+     * Takes a string as name for the cluster, generates a random integer between zero and the size of the dataset and takes a vector
+     * from the vectors list using that randomly generated int. Then takes the value of the randomly chosen vector and assaign them
+     * to a new Centroid instance with the String name. The new instance is returned from the method.
+     * @param clusterName Stirng
+     * @return Centroid
+     */
     public Centroid randomPoint(String clusterName){
         Random randomGenerator = new Random();
         int index = randomGenerator.nextInt(dataset.size());

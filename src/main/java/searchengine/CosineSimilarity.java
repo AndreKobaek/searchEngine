@@ -7,12 +7,22 @@ import java.util.Map;
 import static java.lang.Double.NaN;
 import static java.lang.Double.doubleToLongBits;
 
+/**
+ * CosineSimilarity calculates the distance between two Websites's Vectors, it is also used to measure the distance
+ * between a Centroid's Vector and a Website's Vector
+ */
 public class CosineSimilarity {
 
     public CosineSimilarity(){
 
     }
 
+    /**
+     * Takes two vectors as lists and returns the distance by a number between 0.0 and 1.0
+     * @param vector1 List of Double
+     * @param vector2 List of Double
+     * @return double value representing cosine similarity
+     */
     public double calculateCS(List<Double> vector1, List<Double> vector2){
 
 
@@ -20,7 +30,9 @@ public class CosineSimilarity {
         double magnitudeVect2 = 0;
         double dotProduct = 0;
 
-
+        //Take the value of the vectors of the two lists, add the value of each position in the vector in power of 2
+        //to a magnitude variable and multiply each value with the value at the same index in the other Vector.
+        //If the value is null or NaN, add 0
         for(int i=0; i<vector1.size(); i++){
             if(Double.isNaN(vector1.get(i))&&Double.isNaN(vector2.get(i))){
                 //Do nothing
@@ -40,9 +52,10 @@ public class CosineSimilarity {
 //            System.out.println("Magnitude Vect1: "+magnitudeVect1+" Magnitude Vect2: "+magnitudeVect2+ " DotProduct: "+dotProduct);
         }
 
+        //Divide the dotProduct by the square root of each vector and multiplied together
         if(Double.isNaN(dotProduct/(Math.sqrt(magnitudeVect1)*Math.sqrt(magnitudeVect2)))){
             return 0;
         }
-        return Math.abs(dotProduct/(Math.sqrt(magnitudeVect1)*Math.sqrt(magnitudeVect2)));
+        return dotProduct/(Math.sqrt(magnitudeVect1)*Math.sqrt(magnitudeVect2));
     }
 }

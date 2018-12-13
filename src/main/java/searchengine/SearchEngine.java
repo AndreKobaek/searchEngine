@@ -37,8 +37,11 @@ public class SearchEngine {
     score = new TFIDFScore(); // choose the scoring algorithm to use.
     queryFormat = new QueryFormat(corpus);
 
-    Kmeans kmeans = new Kmeans(new ArrayList<Website>(sites), corpus, score);
-    kmeans.startKmeans(150);
+//    Kmeans kmeans = new Kmeans(new ArrayList<Website>(sites), corpus, score);
+//    kmeans.startKmeans(15);
+
+    KmeansTreeMap kmeans = new KmeansTreeMap(new ArrayList<Website>(sites), corpus, score);
+    kmeans.startKmeans(15);
   }
 
   /**
@@ -60,7 +63,6 @@ public class SearchEngine {
 
     // ??  CosineSimilarity cosine = new CosineSimilarity();
   }
-
 
   /**
    * Rank a list of websites, according to the query, 
@@ -85,5 +87,4 @@ public class SearchEngine {
     list.sort(new RankComparator().reversed()); // why do we need to reverse?
     return list;
   }
-
 }

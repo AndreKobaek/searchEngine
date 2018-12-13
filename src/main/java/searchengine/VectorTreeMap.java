@@ -1,23 +1,18 @@
 package searchengine;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-/**
- * Creates a Vector of a Website. Initialize a Website a vectorValues List of Double and a wordValues Map of String and Double.
- * Takes a String and a Double and assign them to the Map and to the List to represent the Vector's values
- */
-public class Vector {
+public class VectorTreeMap {
     Website website;
-    List <Double> vectorValues;
+    Map<String, Double> vectorValues;
 //    Map<String, Double> wordValues;
 
-    public Vector(Website website){
+    public VectorTreeMap(Website website){
         this.website = website;
-        vectorValues = new ArrayList<>();
-//        wordValues = new TreeMap<>();
+        vectorValues = new HashMap<>();
     }
 
     /**
@@ -33,14 +28,14 @@ public class Vector {
 //            wordValues.put(word, value);
 //        }
 
-        vectorValues.add(value);
+        vectorValues.put(word,value);
     }
 
     /**
      * Returns the list of Double containing the value of the Vector
      * @return List of Double
      */
-    public List<Double> getVectorValues(){
+    public Map<String, Double> getVectorValuesMap(){
         return vectorValues;
     }
 
@@ -59,4 +54,5 @@ public class Vector {
     public Website getWebsite(){
         return website;
     }
+
 }
