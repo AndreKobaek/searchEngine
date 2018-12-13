@@ -44,7 +44,8 @@ public class CLIApplication {
         break;
       }
       System.out.println();
-      List<Website> resultList = searchengine.search(query);
+      // List<Website> resultList = searchengine.search(query);
+      List<Website> resultList = searchengine.search(query).getMatchingWebsites(); // ugly hack
       System.out.println("Found " + resultList.size() + " websites matching the query.");
       for (Website w : resultList) {
         System.out.println(w.getTitle() + ":");
