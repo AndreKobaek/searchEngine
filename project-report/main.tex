@@ -3,14 +3,16 @@
 	
 	\frontmatter
 		
-	%\input{frontpages/frontpage.tex}
+	\includepdf[pages=-]{frontpages/cover.pdf}
 	\newpage	
 	\tableofcontents 
-	%\include{foreword}
 
 	
 	\mainmatter
 	
+	\chapter{Introduction}
+	\input{introduction.tex}
+
 	\chapter{Software Design}
 	\input{software-design.tex}
 	
@@ -26,7 +28,7 @@
 	
 	\chapter{Extensions}
 	\input{improved-client-gui.tex}
-	\input{kmeans.tex}
+	\input{similar-websites.tex}
 	\input{fuzzy-search.tex}
 	
 	
