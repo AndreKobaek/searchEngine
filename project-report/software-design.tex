@@ -29,12 +29,9 @@ A program should aim for high cohesion. %input a reference here?
 High cohesion means that a single method is responsible for a single task, and that a class has well defined area of responsibility. 
 The class \code{QueryHandler} is responsible for handling queries, when it's method \code{getMatchingWebsites} is supplied with a query it fetches the matching websites. But should the \code{QueryHandler} also rank the sites it fetches via \code{getMatchingWebsites}? 
 \\ \\
-One argument for placing the ranking inside the \code{QueryHandler} is, that would be possible to avoid creating duplicate code for refining a query. But we concluded that the cohesion outweighed the implications of introducing duplicate code.
+One argument for placing the ranking inside the \code{QueryHandler} is, that would be possible to avoid creating duplicate code for refining a query. But we concluded that the cohesion outweighed the implications of introducing duplicate code. Therefore the task of ranking the websites found by the \code{QueryHandler} is assigned to the  \code{SearchEngine} which is already responsible for organizing the process of finding search results.
 \\ \\
-Therefore the task of ranking the websites found by the \code{QueryHandler} is assigned to the  \code{SearchEngine} which is already responsible for organizing the process of finding search results.
-\\ \\
-Cohesion is closely related to responsibility-driven design, which philosophy's main point is that "\textit{each class should be responsible for handling its own data}" %\citep{270}.
-This means that whatever information stored in a class is the class's own responsibility to provide or change. This ties into encapsulation as well.
+Cohesion is closely related to responsibility-driven design, which philosophy's main point is that "\textit{each class should be responsible for handling its own data}" \cite[270]{BK}. This means that whatever information stored in a class is the class's own responsibility to provide or change. This ties into encapsulation as well.
 
 \subsection{Encapsulation}
 Encapsulation is an approach to class interaction in object-oriented programming as well as a tool from the defensive programming toolbox. Encapsulation is an ideal way to fulfil the intention of low coupling. When an object is encapsulated the interface towards other packages is controlled by keeping the state of the object unexposed to other classes. This is not always possible, since reference type objects are mutable and can therefore be manipulated when access to the object is provided. The theoretical workaround is to only exposing clones of the reference type objects, which has the drawback of using additional memory. We decided that it would an unnecessary strong commitment to encapsulation that did not serve a purpose for all the internal interfaces within the \code{searchEngine} package.

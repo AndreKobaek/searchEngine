@@ -1,17 +1,17 @@
 \section{Fuzzy Searching}
-Write something in this section.
+This extension makes our search engine able to find relevant pages even if the user makes a typing/spelling error in the search field. If a word in the search query doesn't exist the \code{Fuzzy.expand} method will look for similar words in the corpus/database. 
+Our fuzzy search feature knows nothing about synonyms or words not in the database, neither has it any knowledge of the relation between words, or of which sites are similar, for instance as determined by our k-means clustering algorithm.  
 
 
-\subsection{q-gram indices}
+\subsection{q-gram Indices}
 Just as the inverted index is a map from words to sites containing that word, a q-gram index is a map from a specific gram to all the words containing it. 
 
 What exactly is meant by "all the words"? All the words in the english dictionary or just all the words in the loaded database? To keep things simple we chose to just consider all words in the loaded database, but in a more polished version of a fuzzy search algorithm one should use a dictionary of all the words in a language. 
 
+According to the lecture notes in \cite{lectureNotes} it's a good idea to pad the words with a special character such as \(\$\). A reason for doing this is that it gives more weight to the starting letter. Words with the same beginning letter will then always have a q-gram in-common with the misspelled word. 
+The number of q-grams for an unpadded word \(x\), is \(|x| - q + 1\), and for a padded word as described above, the number of q-grams is \(|x| + q - 1\).  
 
-According to \ref{someRef} it's a good idea to pad the words with a special character such as \(\$\). A reason for doing this is that it gives more weight to the starting letter. Words with the same beginning letter will then always have a q-gram in-common with the misspelled word. 
-The number of q-grams for an unpadded word \(x\), is \(|x| - q + 1\), but when padding the word as described above, the number of q-grams is \(|x| + q - 1\).  
-
-Before building a 2-gram index for our searchengine, lets think about the size of it.
+Before building a 2-gram index for our search engine, lets think about the size of it.
 If an alphabet has \(n\) letters there are \(n^2\) possible 2-grams, \(n^3\) possible 3-grams and \(n^q\) possible q-grams. Hence the number of grams is fairly small. But the number of unique words in the database might be fairly large (small:xx, medium:yy, large:zz), and each word has \(|word| + 1\) 2-grams. Hence the words that a 2-gram maps to, needs to be stored efficiently. 
 We chose to make an \code{ArrayList<String>} with all the unique words and sort it alphabetically(lexiographically), then each word can be represented as it's corresponding index in this \code{ArrayList<String>}.
 
@@ -24,7 +24,7 @@ In the \code{Fuzzy.expand} method we decide how big a Levenshtein distance \(\de
 \[ \text{commonGramsCount} \geq \max{(|x|, |y|) - 1 - (\delta -1 ) \cdot q } \]   
 
 those words will have a Levenshtein distance bigger than the allowed \(\delta\) \ref{label}.  
-For words which have enough common 2-grams to pass this bound, will have to explicitly calculate the Levenshtein distance as shown in listing \ref{lst:levenshtein}. 
+For all words which have enough common 2-grams to pass this bound, we will have to explicitly calculate the Levenshtein distance, as shown in listing \ref{lst:levenshtein}, to check whether the words has an Levenshtein distance smaller or equal to the chosen limit. 
 
 
 
@@ -153,9 +153,28 @@ public void build2GramIndex() {
 \end{lstlisting}
 
 
-\subsection{Levenshtein distance}
+\subsection{Levenshtein Distance}
+The Levenshtein distance is a measure of how similar two words are to each other, it measures the number of edit operations needed to get from one word to the other. 
 
+Operations allowed in the Levenshtein distance are: \emph{delete} characters, \emph{insert} characters or \emph{change} characters. Note that, with the Levenshtein distance, transpositions where two characters are switched, is not counted as a single edit operation, but as two since one needs to make 2 change edits, or a combination of delete and insert. The formal definition of Levenshtein distance is,
 
+\begin{equation}  
+lev_{(a,b)}(i,j) = 
+	\begin{cases} 
+		\max{(i,j)}, & \text{if}\ \min{(i,j) = 0} \\
+		\min{} \begin{cases}
+					lev_{(a,b)}(i-1,j) + 1 \\
+					lev_{(a,b)}(i,j-1) + 1 \\
+					lev_{(a,b)}(i-1,j-1) + \mathbbm{1}_{a_{i} \neq b_{j}} \\
+				\end{cases} , & \text{otherwise}
+	\end{cases}
+\label{eq:levenshtein-def}
+\end{equation}
+
+%\mathbb{1}_{a_{i} \neq b_{j}}
+Where \(lev_{(a,b)}(i,j)\) is the Levenshtein distance between the first \(i\) characters of \(a\), and the first \(j\) characters of \(b\). \(\mathbbm{1}_{a_{i} \neq b_{j}}\) is the indicator function which is equal to 1 when \(a_{i} \neq b_{j}\) and 0 otherwise.
+\eqref{eq:levenshtein-def} is a recursive definition but a recursive algorithm calculating the distance is not efficient because it calculates the distance between the beginning of the words many times \cite{wikiLeven}. So instead we use the algorithm described in \cite{WF1974}. Our implementation to calculate the Levenshtein distance is shown in listing \ref{lst:levenshtein}.
+ 
 \begin{lstlisting}[language=Java, caption=This is a code example., label=lst:2-gram]
 	/**
 	* Calculate edit distance for two strings x and y. algorithm from reference: "The
@@ -201,9 +220,6 @@ public void build2GramIndex() {
 	return D[x.length()][y.length()];
 	}
 \end{lstlisting}
-
-
-
 
 
 
