@@ -68,65 +68,6 @@ public class KmeansMap {
                 oldCentroids.add(new CentroidMap(c));
             }
 
-
-            //If the list of website assigned to the centroid is not empty
-//                if(!centroids.get(c).getWebsiteVectors().isEmpty()){
-
-
-            //OLD
-//            for(int z=0; z<centroids.size();z++){
-//                System.out.println("---------Centroid: "+centroids.get(z).getClusterName()+"--------------");
-//                for(int i=0; i<centroids.get(z).getWebsiteVectors().size();i++){
-//                    System.out.println("Centroid "+centroids.get(z).getClusterName()+" Vector web: "+centroids.get(z).getWebsiteVectors().get(i).getWebsite().getTitle()+" distance: "+cosineSimilarity.calculateCS(centroids.get(z).getCentroidValuesMap(),centroids.get(z).getWebsiteVectors().get(i).getVectorValuesMap()), totalWords);
-//                }
-//            }
-
-//            for(CentroidMap c: centroids){
-//                System.out.println("---------Centroid: "+c.getClusterName()+"--------------");
-//                for(VectorMap v: c.getWebsiteVectors()){
-//                    System.out.println("Centroid "+ c.getClusterName()+ " Vector web: "+v.getWebsite().getTitle()+ " distance: " +cosineSimilarity.calculateCS(c.getCentroidValuesMap(), v.getVectorValuesMap(), totalWords));
-//                }
-//            }
-
-            //OLD IMPLEMENTATION DELETE WHEN EVERYTHING WORK
-//            //Recalculate the centroids
-//            for(int c=0; c<centroids.size(); c++){
-//
-//                ArrayList<Double> temporaryCentroid = new ArrayList<>();
-//
-//                //For every word in the dataset
-//                for(int w=0; w<totalWords.size(); w++){
-//                    double tempVector = 0;
-//                    double tempCentroidValue = 0;
-//                    //For every vector
-//                    for(int v=0; v<centroids.get(c).getWebsiteVectors().size(); v++){
-////                        System.out.println("Recalculating CENTROI size: "+centroids.get(c).getWebsiteVectors().size()+" Iteration: "+v);
-//
-//                        //Add the value of a single word from every vector into a temporary var
-//                        if(centroids.get(c).getWebsiteVectors().get(v).getVectorValues().get(w).isNaN()||
-//                                centroids.get(c).getWebsiteVectors().get(v).getVectorValues().get(w)==null){
-//                            //Do nothing
-//                        }else {
-//                            tempVector += Math.abs(centroids.get(c).getWebsiteVectors().get(v).getVectorValues().get(w));
-//                        }
-//                    }
-//
-//                    //Calculate temporary centroid median and add it to the temporary vector
-//                    //Add the value of the temporary divided by the number of vectors into the centroid
-//                    //to a single temporary var
-//                    tempCentroidValue = Math.abs(tempVector/centroids.get(c).getWebsiteVectors().size());
-////                    System.out.println("TempVector: "+ tempVector+ " Divided by: "+centroids.get(c).getWebsiteVectors().size()+ " Result: "+tempCentroidValue);
-//
-//                    temporaryCentroid.add(tempCentroidValue);
-//                }
-//
-//
-//                //Add the vector resetting the centroid
-//                centroids.get(c).setNewValues(temporaryCentroid);
-////                tempCentroidValue = tempCentroidValue/totalWords.size();
-//            }
-
-
             //Recalculate centroids
             for(CentroidMap c: centroids){
                 Map<String, Double> temparayCentroid = new HashMap<>();
@@ -176,27 +117,6 @@ public class KmeansMap {
                 b++;
             }
         }
-
-//        // This is a test for securing that the words are ordered the same way in totalWords and in the vectors.
-//        ArrayList<String> totalWordList = new ArrayList();
-//        ArrayList<String> vectorList = new ArrayList();
-//
-//        int counter = 0;
-//        for (String word : totalWords) {
-//          counter ++;
-//          totalWordList.add(word);
-//        }
-//        Map<String, Double> tempMap = vectors.get(5).getWordValuesMap();
-//
-//        for(String w: tempMap.keySet()) {
-//          vectorList.add(w);
-//        }
-//
-//        for(int i=0; i<totalWordList.size(); i++) {
-//          System.out.println(i+" "+totalWordList.get(i)+" is equal? "+totalWordList.get(i).equals(vectorList.get(i)));
-//        }
-
-
     }
 
     /**
@@ -207,29 +127,6 @@ public class KmeansMap {
     public boolean compareCentroids(List<CentroidMap> centroids1, List<CentroidMap> centroids2){
 
         int compared = 0;
-
-        //DELETE THIS PART WHEN EVERYTHING WORK
-//        for(int i=0; i<centroids1.size(); i++){
-//            for(int x=0; x<centroids1.get(i).getCentroidValuesMap().size(); x++){
-//
-//                Double a = centroids1.get(i).getCentroidValuesMap().get(x);
-//                Double b = centroids2.get(i).getCentroidValuesMap().get(x);
-//                if(a.isNaN()){
-//                    a = 0.0;
-//                }
-//                if(b.isNaN()){
-//                    b = 0.0;
-//                }
-//
-//                Double tolerance = 0.001;
-//
-//                if(Math.abs(a-b)<tolerance){
-//                    compared += 0;
-//                }else{
-//                    compared += 1;
-//                }
-//            }
-//        }
 
         for(int i=0; i<centroids1.size(); i++){
             Double a = 0.0;
@@ -272,12 +169,12 @@ public class KmeansMap {
         Double maxValue = Collections.max(distance);
         //Retrieves the index position of the maximum value in the list and assign it to an int to be returned
         index = distance.indexOf(maxValue);
-        for(Double d: distance){
-            System.out.println("Distance: "+d);
-        }
-        System.out.println("Chosen distance: "+Collections.max(distance));
-        //Retrieves the index position of the maximum value in the list and assign it to an int to be returned
-        System.out.println("Chosen distance: "+Collections.max(distance)+" Chosen index: "+ distance.indexOf(maxValue));
+//        for(Double d: distance){
+//            System.out.println("Distance: "+d);
+//        }
+//        System.out.println("Chosen distance: "+Collections.max(distance));
+//        //Retrieves the index position of the maximum value in the list and assign it to an int to be returned
+//        System.out.println("Chosen distance: "+Collections.max(distance)+" Chosen index: "+ distance.indexOf(maxValue));
 
         return index;
     }
