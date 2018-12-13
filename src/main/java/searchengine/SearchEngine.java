@@ -9,9 +9,10 @@ import java.util.Set;
  * The search engine. Upon receiving a list of websites, it performs the necessary configuration
  * (i.e. building an index and a query handler) to then be ready to receive search queries.
  *
- * @author Willard Rafnsson
- * @author Martin Aumüller
- * @author Leonid Rusnac
+ * @author André Mortensen Kobæk
+ * @author Domenico Villani
+ * @author Flemming Westberg
+ * @author Mikkel Buch Smedemand
  */
 public class SearchEngine {
 
@@ -37,30 +38,18 @@ public class SearchEngine {
     score = new TFIDFScore(); // choose the scoring algorithm to use.
     queryHandler = new QueryHandler(idx, corpus, new Fuzzy(corpus));
 
-    // KMeans kMeans = new Kmeans(new ArrayList<Website>(sites), corpus, score);
-    // kMeans.startKmeans(15);
+    // KMeans kMeans = new KMeans(new ArrayList<Website>(sites), corpus, score);
+    // kMeans.startKMeans(5);
     KMeansMap kMeans = new KMeansMap(new ArrayList<Website>(sites), corpus, score);
     kMeans.startKMeans(200);
   }
 
   /**
-   * Returns the list of websites matching the query.
+   * Returns a {@code SearchResult} matching the query.
    *
    * @param query the query
-   * @return the list of websites matching the query
+   * @return a {@code SearchResult matching the query}
    */
-  // public List<Website> search(String query) {
-  //   if (query == null || query.isEmpty()) {
-  //     return new ArrayList<>();
-  //   }
-
-  //   List<Website> results = queryHandler.getMatchingWebsites(query);
-  //   List<List<String>> structuredQuery = queryHandler.getStructuredQuery(query);
-    
-  //   // the websites are ordered according to rank.
-  //   return orderWebsites(results, structuredQuery);
-  // }
-  
   public SearchResult search(String query) {
     if (query == null || query.isEmpty()) {
       return new SearchResult();

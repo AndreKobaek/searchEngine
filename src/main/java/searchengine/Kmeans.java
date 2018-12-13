@@ -47,7 +47,7 @@ public class KMeans {
      * 
      * @param k the number of cluster to create
      */
-    public void startKmeans(int k) {
+    public void startKMeans(int k) {
 
         calculateTotalWords();
         createVectors();
