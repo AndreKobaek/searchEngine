@@ -1,6 +1,7 @@
 package searchengine;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.HashSet;
@@ -26,9 +27,11 @@ public class QueryHandler {
    * objects.
    */
   private final String REGEX = "\\b([-\\w]+)\\b";
+  private final String URLREGEX = "^\\s*site:(\\S+)";
   private Pattern pattern;
   private Matcher matcher;
-
+  private Pattern urlPattern;
+  private Matcher urlMatcher;
   /**
    * The constructor
    *
@@ -39,6 +42,7 @@ public class QueryHandler {
     this.corpus = corpus;
     this.fuzzy = fuzzy;
     pattern = Pattern.compile(REGEX);
+    urlPattern = Pattern.compile(URLREGEX);
   }
 
   /**
@@ -53,6 +57,15 @@ public class QueryHandler {
 
     // Set for storing the combined results
     Set<Website> results = new HashSet<>();
+
+    // check if input string starts with "site:", if so the following string until the next white space
+    // is saved for later, and the matched part is removed from the input string.
+    String siteUrl = null;
+    urlMatcher = urlPattern.matcher(query);
+    if (urlMatcher.find()){
+      siteUrl = urlMatcher.group(1).toLowerCase();
+      query = query.replace(urlMatcher.group(),"");
+    }
 
     // The search query is split into sub queries by the keyword 'OR'
     String[] subQueries = query.split("\\bOR\\b");
@@ -114,9 +127,28 @@ public class QueryHandler {
     List<Website> resultsAsList = new ArrayList<>();
     resultsAsList.addAll(results);
 
+    if (siteUrl!=null){
+      checkListForUrl(resultsAsList,siteUrl);
+    }
+
     return resultsAsList;
   }
 
+  /**
+   * Remove the websites from the result list that does not match the site url
+   * @param currentResults list of websites
+   * @param siteURL {@code String} containing the site url.
+   */
+  public void checkListForUrl(List<Website> currentResults, String siteURL){
+    Iterator<Website> websiteIterator = currentResults.iterator();
+    while (websiteIterator.hasNext()){
+      String websiteUrl = websiteIterator.next().getUrl().toLowerCase();
+      // If the url of the website of a substring of it is not equal to the search site url the website is removed.
+      if (websiteUrl.length() < siteURL.length() || !websiteUrl.substring(0,siteURL.length()).equals(siteURL)){
+        websiteIterator.remove();
+      }
+    }
+  }
 
   /**
    * Restructure a raw string query. A raw query is translated into a structured format as follows:

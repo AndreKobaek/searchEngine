@@ -12,11 +12,11 @@ import org.junit.jupiter.api.Test;
 class QueryFormatTest {
 
   // declare variables to be used in the tests
-  List<Website> sites;
-  InvertedIndex idx;
-  Corpus corpus;
-  QueryFormat queryFormat;
-
+  private List<Website> sites;
+  private InvertedIndex idx;
+  private Corpus corpus;
+  private QueryHandler queryHandler;
+  private Fuzzy fuzzy;
 
   @BeforeEach
   void setUp() {
@@ -25,84 +25,72 @@ class QueryFormatTest {
     sites.add(new Website("1.com", "example1", Arrays.asList("word1", "word2")));
     sites.add(new Website("2.com", "example2", Arrays.asList("word2", "word3")));
     sites.add(new Website("3.com", "example3", Arrays.asList("word3", "word4", "word5")));
+    sites.add(new Website("3.com", "example3", Arrays.asList("word3", "word4", "word5")));
 
     // build index for test database.
     idx = new InvertedIndexTreeMap();
     idx.build(new HashSet<Website>(sites));
+
 
     // build corpus for test database.
     corpus = new Corpus(new HashSet<Website>(sites));
     corpus.build();
     corpus.build2GramIndex();
 
-    // instantiate queryFormat
-    queryFormat = new QueryFormat(corpus);
+    fuzzy = new Fuzzy(corpus);
+    // instantiate queryHandler
+    queryHandler = new QueryHandler(idx, corpus ,fuzzy);
   }
-
 
   @Test
   void testSingleWord() {
-
-    List<List<String>> structuredQuery1 = queryFormat.structure("word1");
-    List<List<String>> structuredQuery2 = queryFormat.structure("word2");
-
-    assertEquals(1, idx.getMatchingWebsites(structuredQuery1).size());
-    assertEquals(2, idx.getMatchingWebsites(structuredQuery2).size());
+    assertEquals(1, queryHandler.getMatchingWebsites("word1").size());
+    assertEquals(2, queryHandler.getMatchingWebsites("word2").size());
   }
 
   @Test
-  void testInputMixedCase() {
-
-    List<List<String>> structuredQuery1 = queryFormat.structure("WORD1");
-    List<List<String>> structuredQuery2 = queryFormat.structure("WoRd1");
-    List<List<String>> structuredQuery3 = queryFormat.structure("woRD2");
-    List<List<String>> structuredQuery4 = queryFormat.structure(""); // The empty string
-
-    assertEquals(1, idx.getMatchingWebsites(structuredQuery1).size());
-    assertEquals("example1", idx.getMatchingWebsites(structuredQuery2).get(0).getTitle());
-    assertEquals(2, idx.getMatchingWebsites(structuredQuery3).size());
-    assertEquals(0, idx.getMatchingWebsites(structuredQuery4).size()); 
+  void testInvalidInput() {
+    assertEquals(1, queryHandler.getMatchingWebsites("WORD1").size());
+    assertEquals("example1", queryHandler.getMatchingWebsites("WoRd1").get(0).getTitle());
+    assertEquals(2, queryHandler.getMatchingWebsites("woRD2").size());
+    assertEquals(1, queryHandler.getMatchingWebsites("word-3").size()); // Separated by dash
+    assertEquals(1, queryHandler.getMatchingWebsites("wOrD_4").size()); // Random case and separated by underscore
+    assertEquals(0, queryHandler.getMatchingWebsites("").size()); // The empty string
   }
 
   @Test
   void testMultipleWords() {
-
-    List<List<String>> structuredQuery1 = queryFormat.structure("word1 word2");
-    List<List<String>> structuredQuery2 = queryFormat.structure("word3 word4");
-    List<List<String>> structuredQuery3 = queryFormat.structure("word4 word3 word5");
-
-    assertEquals(1, idx.getMatchingWebsites(structuredQuery1).size());
-    assertEquals(1, idx.getMatchingWebsites(structuredQuery2).size());
-    assertEquals(1, idx.getMatchingWebsites(structuredQuery3).size());
+    assertEquals(1, queryHandler.getMatchingWebsites("word1 word2").size());
+    assertEquals(1, queryHandler.getMatchingWebsites("word3 word4").size());
+    assertEquals(1, queryHandler.getMatchingWebsites("word4 word3 word5").size());
+    assertEquals(1, queryHandler.getMatchingWebsites("word4 WORD3 word5?").size()); // Same as above - but with special characters
   }
-  
-  
+
   @Test
   void testORQueries() {
-    
-    List<List<String>> structuredQuery1 = queryFormat.structure("word2 OR word3");
-    List<List<String>> structuredQuery2 = queryFormat.structure("word1 OR word4");
-    List<List<String>> structuredQuery3 = queryFormat.structure("word1 OR word1");
-    List<List<String>> structuredQuery4 = queryFormat.structure("OR");
-    List<List<String>> structuredQuery5 = queryFormat.structure("OR word2 OR word3");
-    List<List<String>> structuredQuery6 = queryFormat.structure("word1 OR word4 OR");
-    
-    assertEquals(3, idx.getMatchingWebsites(structuredQuery1).size());
-    assertEquals(2, idx.getMatchingWebsites(structuredQuery2).size());
+    assertEquals(3, queryHandler.getMatchingWebsites("word2 OR word3").size());
+    assertEquals(2, queryHandler.getMatchingWebsites("word1 OR word4").size());
     // Corner case: Does code remove duplicates?
-    assertEquals(1, idx.getMatchingWebsites(structuredQuery3).size());
+    assertEquals(1, queryHandler.getMatchingWebsites("word1 OR word1").size());
     // Corner case: Does a standalone 'OR' entail a size of 0?
-    assertEquals(0, idx.getMatchingWebsites(structuredQuery4).size());
-    // Corner case: Does the code support 'OR' at the beginning or end of the query?
-    assertEquals(3, idx.getMatchingWebsites(structuredQuery5).size());
-    // this currently fails: assertEquals(2, idx.getMatchingWebsites(structuredQuery6).size()); 
+    assertEquals(0, queryHandler.getMatchingWebsites("OR").size());
+    // Corner case: Does the code support 'OR' at the beginning og end of the query?
+    assertEquals(3, queryHandler.getMatchingWebsites("OR word2 OR word3").size());
+    assertEquals(2, queryHandler.getMatchingWebsites("word1 OR word4 OR ").size());
   }
-  
-  @Disabled("We decided that this is currently not a requirement.")
+
+  // Test for problematic input
   @Test
-  void testInvalidInput() {
-    // test input for special characters.
-    // what should be the response if one or more special character is found? perhaps ask user for new input?
-    fail("not implemented yet"); 
+  void testCornerCases() {
+
+  }
+  @Test
+  void testUrlSearch(){
+    // Check against non existing site.
+    assertEquals(0, queryHandler.getMatchingWebsites("site:sjdka.com word3").size());
+    // Check against existing site with existing word
+    assertEquals(1, queryHandler.getMatchingWebsites("site:3.co word3").size());
+    // Check against existing site with nonexistent word
+    assertEquals(0, queryHandler.getMatchingWebsites("site:2.com wordWoRD").size());
   }
 }
