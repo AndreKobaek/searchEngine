@@ -1,12 +1,13 @@
 \section{Ranking Algorithms}
-When a search is done on our search-engine, the method \code{getMachingQueries} in \code{QueryHandler} finds all the websites that matches the query. But of course some of the matching websites are more relevant than others, for the given query. To show the user the most relevant pages at the top, we need a way to rank the websites according to relevance, i.e we need a ranking algorithm. There are many different ways to rank a website, we have chosen to implement the term-frequency algorithm (TF-algorithm), and the term-frequency inverse-document-frequency (TFIDF-algorithm).    
+When a search is done on our search-engine, the method \code{getMachingQueries} in \code{QueryHandler} finds all the websites that matches the query. But of course some of the matching websites are more relevant than others, for the given query. To show the user the most relevant pages at the top, we need a way to rank the websites according to relevance, i.e we need a ranking algorithm. There are many different ways to rank a website, we have chosen to implement the term-frequency algorithm (TF-algorithm), the term-frequency inverse-document-frequency (TFIDF-algorithm), and also our own  term-frequency inverse-corpus-frequency (TFICF-algorithm).    
+
 
 \subsection{Term Frequency}
 Keeping in line with the notation at \cite{wikiTFIDF} the term frequency, TF, is calculated as follows.
 
 \[ TF = \frac{f_{t,d}}{\sum_{i \in d}f_{i,d}} \]
 
-Note that we choose the term frequency that is weighted by the total number of words in the document/site. The corresponding Java implementation is shown in listing \ref{lst:tf}.
+Note that we have choosen the term frequency that is weighted by the total number of words in the document/site. The corresponding Java implementation is shown in listing \ref{lst:tf}.
 
 \begin{lstlisting}[language=Java,
 					caption={Implementation of calculating TF rating.},
@@ -65,7 +66,11 @@ for (String word : site.getWords()) {
 
 
 \subsection{Comparison of Algorithms}
-which one is best, TF, TFIDF OR TFITF?
+
+Conceptual differences:
+
+
+Differences in performance: haven't tested this yet.
 
 
 \subsection{Design considerations}
@@ -74,10 +79,36 @@ In this section we will describe how we chose to embed/implement ranking algorit
 A common rule of thumb for deciding on how to distribute responsibility between classes and methods in a program, is to say that methods correspond to verbs, and classes to nouns. This verb/noun method is described in \cite[p.530]{BK}.
 But what kind of word is `rank` or `score`, a verb or a noun? Actually it can be both, and this suggests that we can implement a ranking algorithm using different design styles.
 
-One option is to look at score as an object. In this case it belongs to a website, in the sense that a website should have a score as a field, and the type of that field should be of type Score.
-Another option is to look at a score as a method/function, but then where do this method belong? One option is to make score a utility class, i.e a class consisting only of static methods. 
+Both implementations have some amount of code duplication which could be partially mitigated by ....
 
-\subsubsection{Option 1: Score as Interface}
+
+\subsubsection{Option 1: Score as Utility class}
+\begin{figure}[t]
+	\centering
+	%\includegraphics[width=\textwidth]{graphics/..}
+	\caption{UML Diagram for the search-engine when Score is a utility class.}
+	\label{fig:uml:score-as-utility}
+\end{figure}
+
+In the first implementation we tried, we wrote a utility class named \code{Score} which had static rank methods for ranking websites.   
+A UML class diagram for this design is shown if figure \ref{fig:uml:utilityClass}, and snippets of relevant code lines from the implementation is shown in listing \ref{lst:utilityClass}. 
+A drawback of this method is that it doesn't have a \code{Score} interface as specified in the mandatory requirements for the assignment.  
+
+\begin{lstlisting}[language=Java, caption=This is a code example., label=lst:utilityClass]
+
+//// From Score class 
+
+	// do something	
+
+
+//// From SearchEngine 
+
+	// do something more
+
+\end{lstlisting}
+
+
+\subsubsection{Option 2: Score as Interface}
 \begin{figure}[t]
 	\centering
 	%\includegraphics[width=\textwidth]{graphics/..}
@@ -85,13 +116,21 @@ Another option is to look at a score as a method/function, but then where do thi
 	\label{fig:uml:score-as-interface}
 \end{figure}
 
-\subsubsection{Option 2: Score as Utility class}
-\begin{figure}[t]
-	\centering
-	%\includegraphics[width=\textwidth]{graphics/..}
-	\caption{UML Diagram for the search-engine when Score is a utility class.}
-	\label{fig:uml:score-as-utility}
-\end{figure}
+Another option which largely preserves the same division of responsibility is shown in the class diagram in figure \ref{fig:uml:score-as-interface}.    
+This is the solution we went with in our final version of the code (version...). Relevant coding lines from the implementation is shown in listing \ref{lst:scoreInterface}.
+
+\begin{lstlisting}[language=Java, caption=This is a code example., label=lst:scoreInterface]
+
+//// From TFIDFScore class 
+
+	// do something	
+
+
+//// From SearchEngine 
+
+// do something more
+
+\end{lstlisting}
 
 
 

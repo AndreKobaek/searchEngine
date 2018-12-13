@@ -1,3 +1,50 @@
-\section{Fuzzy-Search}
+\section{Fuzzy Searching}
+Write something in this section.
 
-fuzzzzz
+
+\subsection{Embedding the functionality}
+
+
+
+
+\subsection{q-gram indices}
+Just as the inverted index is a map from words to sites containing that word, a q-gram index is a map from a specific gram to all the words containing it. 
+
+What exactly is meant by "all the words"? All the words in the english dictionary or just all the words in the loaded database? To keep things simple we chose to just consider all words in the loaded database, but in a more polished version of a fuzzy-search one should use a dictionary of all the words in a language. 
+
+If an alphabet has \(n\) letters there are \(n^2\) possible 2-grams, \(n^3\) possible 3-grams and \(n^q\) possible q-grams.
+
+According to ....  it's a good idea to pad the words with a special character such as .... The reason for doing this is that.....
+
+
+\begin{lstlisting}[language=Java, caption=This is a code example., label=lst:2-gram]
+
+//// From Score class 
+
+// do something	
+
+
+//// From SearchEngine 
+
+// do something more
+
+\end{lstlisting}
+
+
+\subsection{Levenhstein distance}
+
+
+\begin{lstlisting}[language=Java, caption=This is a code example., label=lst:2-gram]
+
+//// From Score class 
+
+// do something	
+
+
+//// From SearchEngine 
+
+// do something more
+
+\end{lstlisting}
+
+\section{Fuzzy-Search}

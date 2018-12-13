@@ -3,7 +3,7 @@
 	
 	\frontmatter
 		
-	%\input{frontpages/frontpage.tex}
+	\includepdf[pages=-]{frontpages/cover.pdf}
 	\newpage	
 	\tableofcontents 
 
@@ -33,6 +33,7 @@
 	
 	
 	\chapter{Conclusion}
+	\input{conclusion.tex}
 	
 	
 	\backmatter
@@ -41,7 +42,7 @@
 	%\cleardoublepage
 	%\listoffigures
 	%\listoftables
-	%\bibliographystyle{plain}
+	%\bibliographystyle{acm}
 	\bibliography{bibliography.bib} % Use the bibliography.bib file for the bibliography
 	%\bibliographystyle{bibliography}
 	%\nocite{*}	
