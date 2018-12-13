@@ -19,7 +19,7 @@ class ScoreTest {
 
   List<Website> sites;
   Corpus corpus;
-  QueryFormat queryFormat;
+  QueryHandler queryHandler;
 
   // instantiate variables
   @BeforeEach
@@ -50,8 +50,8 @@ class ScoreTest {
     corpus.build();
     corpus.build2GramIndex();
 
-    // instantiate queryFormat
-    queryFormat = new QueryFormat(corpus);
+    // instantiate queryHandler
+    queryHandler = new QueryHandler(new InvertedIndexTreeMap(), corpus, new Fuzzy(corpus));
   }
 
   // make old objects available to be garbage collected, by removing the reference to them.
@@ -70,7 +70,7 @@ class ScoreTest {
    */
   private void testRankMethod(Score score) {
 
-    double tolerance = 0.00001;
+   double tolerance = 0.00001;
 
     List<List<String>> structuredQuery1 = queryFormat.structure("word1 word2");
     List<List<String>> structuredQuery2 = queryFormat.structure("word2 word1");

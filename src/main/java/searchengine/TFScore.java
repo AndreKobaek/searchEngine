@@ -12,6 +12,12 @@ public class TFScore implements Score {
     return rankQueryTF(site, structuredQuery);
   }
 
+  @Override
+  public Double rankSingle(Website site, Corpus corpus,  String word) {
+    return rankSingleTF(site, word);
+  }
+  
+  
   /**
    * Rank a single website according to a single word. Ranking algorithm is TF
    * 
@@ -19,7 +25,7 @@ public class TFScore implements Score {
    * @param a single word from the search query.
    * @return the rank of the site. Rank will always be non-negative.
    */
-private Double rankSingleTF(Website site, String word) {
+  private Double rankSingleTF(Website site, String word) {
 
     // score single word/term according to the document frequency and inverse corpus frequency.
     int wordSize = site.getWordSize();

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 
+
 /**
  * A website is the basic entity of the search engine. It has a url, a title, and a list of words.
  *
@@ -21,7 +22,6 @@ public class Website {
    */
   private String url;
 
-
   /**
    * A list of words storing the words on the website
    */
@@ -37,13 +37,8 @@ public class Website {
    */
   private int wordSize;
 
-//  /**
-//   * a score object that knows how to calculate the tfidf rank of the website.
-//   * Score depends on both the query and the other websites in the corpus.
-//   */
-//  private Score score;
 
-  /**
+   /**
    * Creates a {@code Website} object from a url, a title, and a list of words that are contained on
    * the website.
    *
@@ -55,8 +50,6 @@ public class Website {
     this.url = url;
     this.title = title;
     this.words = words;
-//    this.score = new TFIDFScore(); // this decides which ranking algorithm is used.
-    
     this.wordSize = words.size();
 
     // build the map which holds words and corresponding word counts for the website.
@@ -109,10 +102,6 @@ public class Website {
   public int getWordSize() {
     return wordSize;
   }
-
-//  public Double getRank(String query, Corpus corpus) { 
-//    return score.rank(this, corpus, query); // Autoboxing. Must return reference type Double for compareTo to work. 
-//  }
 
   /**
    * Checks whether a word is present on the website or not.
