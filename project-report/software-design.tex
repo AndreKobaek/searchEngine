@@ -1,7 +1,9 @@
- \section{Software Design}
+\section{Software Design}
 
- \subsection{Coupling}
+\subsection{Coupling}
 When writing a program one should aim for low (or loose) coupling between classes. Low coupling means that classes are largely independent and communicate via a small well-defined interface \cite[p.259]{BK}. Hence a class should never depend on parts of another class that are not exposed via its interface. The interface of a class corresponds to its public methods and fields.
+\\
+In order to achieve low coupling in our project we have largely followed the structure of the program as it was handed out, since we agreed that it was designed in a reasonable way that enabled low coupling between the classes. Additionally, we followed the teachings of the course, keeping fields private.
 
  \begin{figure}[t]
 	\centering
@@ -9,7 +11,7 @@ When writing a program one should aim for low (or loose) coupling between classe
 	\label{fig:uml:single-class-website}
 \end{figure}
 
-
+ 
  \subsubsection{A note about the package private modifier}
 When working within a package, one could argue that all non-private fields (and methods) are part of the interface, since they are allowed to be accessed by other classes in the package. 
  
@@ -24,32 +26,22 @@ A benefit of choosing the combination of a private field and a getter method is 
 
 
 \subsection{Cohesion}
-A program should aim for high cohesion. High cohesion means that a single method is responsible for a single task, and that a class has well defined area of responsibility. 
+A program should aim for high cohesion. %input a reference here?
+High cohesion means that a single method is responsible for a single task, and that a class has well defined area of responsibility. 
 
 The class \code{QueryHandler} is responsible for handling queries, when it's method \code{getMatchingWebsites} is supplied with a query it fetches the matching websites. But should the \code{QueryHandler} also rank the sites it fetches via \code{getMatchingWebsites}? 
 
-One argument for placing the ranking inside the \code{QueryHandler} is, that this would allow us to get rid of the duplicate code that splits the query string into subqueries and then single words.  
-      
-\begin{lstlisting}[language=Java, caption=Splitting a query into single words.]
+One argument for placing the ranking inside the \code{QueryHandler} is, that would be possible to avoid creating duplicate code for refining a query. But we concluded that the cohesion outweighed the implications of introducing duplicate code.
 
-//  ... in the QueryHandler.
+Therefore the task of ranking the websites found by the \code{QueryHandler} is assigned to the  \code{SearchEngine} which is already responsible for organizing the process of finding search results.
 
-
-// ... for the ranking.
-
-\end{lstlisting}
- 
-
-But despite this we decided that the ranking task should rather be done inside the \code{search} method of the \code{SearchEngine}, to keep the task more ...
+Cohesion is closely related to responsibility-driven design, which philosophy's main point is that "\textit{each class should be responsible for handling its own data}" \citep{270}. This means that whatever information stored in a class is the class's own responsibility to provide or change. This ties into encapsulation as well. %PLEASE ADD TO THIS SECTION.
 
 \subsection{Encapsulation}
-Encapsulation is an approach to class interaction in object-oriented programming as well as a tool from the defensive programming toolbox. 
+Encapsulation is an approach to class interaction in object-oriented programming as well as a tool from the defensive programming toolbox. Encapsulation is an ideal way to fulfil the intention of low coupling. When an object is encapsulated the interface towards other packages is controlled by keeping the state of the object unexposed to other classes. This is not always possible, since reference type objects are mutable and can therefore be manipulated when access to the object is provided. The theoretical workaround is to only exposing clones of the reference type objects, which has the drawback of using additional memory. We decided that it would an unnecessary strong commitment to encapsulation that did not serve a purpose for all the internal interfaces within the \code{searchEngine} package.
 
-\subsection{Responsibility-driven design}
-Each class should have the data related to it.
-Class responsible for storing data should also be responsible for manipulating it \cite{BK}.
- 
 \subsection{Inheritance} 
+Inheritance is an architectural tool that helps to avoid duplicate code. By conceptually abstracting similar objects into a common object similarities can be abstracted into the common object, thus avoiding duplicate code. This property is used in the case of the \code{InvertedIndex} and the two different instances of it.
 
 \subsection{Polymorphism} 
 

@@ -1,7 +1,7 @@
 \section{Finding Similar Websites}
 \paragraph{K-means}
 The K-means algorithm is an iterative method for vector quantization that creates K-number of clusters and calculates the distance between the chosen clusters and the vectors. 
-The algorithm utilizes centroids which can be considere the most representative points in a cluster, these are the arithmetic mean of all the points in the vectors.
+The algorithm utilizes centroids which can be considered the most representative points in a cluster, these are the arithmetic mean of all the points in the vectors.
 \paragraph{Algorithm walk-through}
 Initially a K-number of centroids are randomly chosen among a given set of observations $(x_0,x_1,x_2,...,x_n)$ which represent the vectors contained in the dataset. These centroids are the reference to the initial clusters. Once the initial centroids are chosen each vector in the dataset is assigned to its closest centroid. This operation creates the initial clusters. Then the centroids are recalculated using the mean of the data point vectors inside the cluster. 
 The algorithm iteratively reassigns vectors to more optimal centroids as these are created.
