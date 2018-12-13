@@ -5,12 +5,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class VectorTreeMap {
+public class VectorMap {
     Website website;
     Map<String, Double> vectorValues;
 //    Map<String, Double> wordValues;
 
-    public VectorTreeMap(Website website){
+    public VectorMap(Website website){
         this.website = website;
         vectorValues = new HashMap<>();
     }

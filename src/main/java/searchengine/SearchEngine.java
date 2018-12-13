@@ -40,7 +40,7 @@ public class SearchEngine {
 //    Kmeans kmeans = new Kmeans(new ArrayList<Website>(sites), corpus, score);
 //    kmeans.startKmeans(15);
 
-    KmeansTreeMap kmeans = new KmeansTreeMap(new ArrayList<Website>(sites), corpus, score);
+    KmeansMap kmeans = new KmeansMap(new ArrayList<Website>(sites), corpus, score);
     kmeans.startKmeans(15);
   }
 

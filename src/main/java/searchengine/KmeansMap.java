@@ -2,13 +2,13 @@ package searchengine;
 
 import java.util.*;
 
-public class KmeansTreeMap {
+public class KmeansMap {
     private List<Website> dataset;
     private SortedSet<String> totalWords;
-    private List<CentroidTreeMap> centroids;
-    private List<CentroidTreeMap> oldCentroids;
-    private List<VectorTreeMap> vectors;
-    private CosineSimilarityTreeMap cosineSimilarity;
+    private List<CentroidMap> centroids;
+    private List<CentroidMap> oldCentroids;
+    private List<VectorMap> vectors;
+    private CosineSimilarityMap cosineSimilarity;
     private Corpus corpus;
     private Score score;
 
@@ -18,12 +18,12 @@ public class KmeansTreeMap {
      * @param corpus Corpus
      * @param score Score
      */
-    public KmeansTreeMap(List<Website> dataset, Corpus corpus, Score score){
+    public KmeansMap(List<Website> dataset, Corpus corpus, Score score){
         this.dataset = dataset;
         totalWords = new TreeSet<>();
         centroids = new ArrayList<>();
         vectors = new ArrayList<>();
-        cosineSimilarity = new CosineSimilarityTreeMap();
+        cosineSimilarity = new CosineSimilarityMap();
         oldCentroids = new ArrayList<>();
         this.corpus = corpus;
         this.score = score;
@@ -64,8 +64,8 @@ public class KmeansTreeMap {
             oldCentroids = new ArrayList<>();
 
             //Copy the centroids into a new List of centroids to be compared later
-            for(CentroidTreeMap c: centroids){
-                oldCentroids.add(new CentroidTreeMap(c));
+            for(CentroidMap c: centroids){
+                oldCentroids.add(new CentroidMap(c));
             }
 
 
@@ -81,9 +81,9 @@ public class KmeansTreeMap {
 //                }
 //            }
 
-//            for(CentroidTreeMap c: centroids){
+//            for(CentroidMap c: centroids){
 //                System.out.println("---------Centroid: "+c.getClusterName()+"--------------");
-//                for(VectorTreeMap v: c.getWebsiteVectors()){
+//                for(VectorMap v: c.getWebsiteVectors()){
 //                    System.out.println("Centroid "+ c.getClusterName()+ " Vector web: "+v.getWebsite().getTitle()+ " distance: " +cosineSimilarity.calculateCS(c.getCentroidValuesMap(), v.getVectorValuesMap(), totalWords));
 //                }
 //            }
@@ -128,14 +128,14 @@ public class KmeansTreeMap {
 
 
             //Recalculate centroids
-            for(CentroidTreeMap c: centroids){
+            for(CentroidMap c: centroids){
                 Map<String, Double> temparayCentroid = new HashMap<>();
 
                 //For every word in the dataset
                 for(String word: totalWords){
                     double tempVector = 0;
                     double tempCentroidValue = 0;
-                    for(VectorTreeMap v: c.getWebsiteVectors()){
+                    for(VectorMap v: c.getWebsiteVectors()){
                         //If the word is present in the map
                         if(v.getVectorValuesMap().containsKey(word)){
                             //If the value of the word is not null or NaN
@@ -154,7 +154,7 @@ public class KmeansTreeMap {
 
 
             if(compareCentroids(centroids, oldCentroids)){
-                for(CentroidTreeMap c: centroids){
+                for(CentroidMap c: centroids){
                     c.clearListOfWebsites();
                 }
             }else {
@@ -164,10 +164,10 @@ public class KmeansTreeMap {
         }
 
         //Debug information on the Terminal
-        for(CentroidTreeMap c: centroids){
+        for(CentroidMap c: centroids){
             int b=0;
             System.out.println("---------Centroid: "+c.getClusterName()+"--------------");
-            for(VectorTreeMap v: c.getWebsiteVectors()){
+            for(VectorMap v: c.getWebsiteVectors()){
                 System.out.println("Website: "+v.getWebsite().getTitle()+" distance: "+cosineSimilarity.calculateCS(c.getCentroidValuesMap(), v.getVectorValuesMap(), totalWords));
 //                int x = 0;
 //                for(Double d: v.vectorValues){
@@ -204,7 +204,7 @@ public class KmeansTreeMap {
      * If the values of the two Centroid are the same it return false that stops the loop into startKmeans method,
      * otherwise it returns true
      */
-    public boolean compareCentroids(List<CentroidTreeMap> centroids1, List<CentroidTreeMap> centroids2){
+    public boolean compareCentroids(List<CentroidMap> centroids1, List<CentroidMap> centroids2){
 
         int compared = 0;
 
@@ -301,7 +301,7 @@ public class KmeansTreeMap {
         // for every website calculate its vector-representation according to database/corpus.
         for(Website website : dataset){
             System.out.println("Building Vector for: "+website.getTitle());
-            VectorTreeMap vector = new VectorTreeMap(website);
+            VectorMap vector = new VectorMap(website);
             for(String word: totalWords){
 
                 if (website.containsWord(word)) {
@@ -322,14 +322,14 @@ public class KmeansTreeMap {
      * @param cardinality int
      * @return List of Centroid
      */
-    public List<CentroidTreeMap> calculateInitialCentroids(int cardinality){
-        List<CentroidTreeMap> initialCentroids = new ArrayList<>();
+    public List<CentroidMap> calculateInitialCentroids(int cardinality){
+        List<CentroidMap> initialCentroids = new ArrayList<>();
         List<Double> distance = new ArrayList<>(); //Not used?
         int x = 0;
 
         while (x < cardinality){
             String clusterName = "cluster "+x;
-            CentroidTreeMap c = randomPoint(clusterName);
+            CentroidMap c = randomPoint(clusterName);
             initialCentroids.add(c);
             x++;
         }
@@ -350,11 +350,11 @@ public class KmeansTreeMap {
      * @param clusterName Stirng
      * @return Centroid
      */
-    public CentroidTreeMap randomPoint(String clusterName){
+    public CentroidMap randomPoint(String clusterName){
         Random randomGenerator = new Random();
         int index = randomGenerator.nextInt(dataset.size());
-        VectorTreeMap v = vectors.get(index);
-        CentroidTreeMap centroid = new CentroidTreeMap(v.getVectorValuesMap(), clusterName);
+        VectorMap v = vectors.get(index);
+        CentroidMap centroid = new CentroidMap(v.getVectorValuesMap(), clusterName);
         System.out.println("Initial Cluster random: "+ v.getWebsite().getTitle()+ " Check correctness of centroid distance from website: "+ cosineSimilarity.calculateCS(centroid.getCentroidValuesMap(), v.getVectorValuesMap(), totalWords));
         return centroid;
     }

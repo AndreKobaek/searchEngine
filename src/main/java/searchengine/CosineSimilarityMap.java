@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
 
-public class CosineSimilarityTreeMap {
+public class CosineSimilarityMap {
 
     /**
      * Takes two vectors as lists and returns the distance by a number between 0.0 and 1.0

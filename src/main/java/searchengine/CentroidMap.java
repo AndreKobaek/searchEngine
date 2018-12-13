@@ -2,9 +2,9 @@ package searchengine;
 
 import java.util.*;
 
-public class CentroidTreeMap {
+public class CentroidMap {
     private Map<String, Double> values;
-    private List<VectorTreeMap> websiteVectors;
+    private List<VectorMap> websiteVectors;
     private String name;
 
     /**
@@ -12,7 +12,7 @@ public class CentroidTreeMap {
      * @param values List of Double
      * @param name String
      */
-    public CentroidTreeMap(Map<String, Double> values, String name){
+    public CentroidMap(Map<String, Double> values, String name){
         this.name = name;
         websiteVectors = new ArrayList<>();
         this.values = values;
@@ -23,7 +23,7 @@ public class CentroidTreeMap {
      * to copy the content of a Centroid instance without pointing at the same reference in the memory.
      * @param c Centroid
      */
-    public CentroidTreeMap (CentroidTreeMap c){
+    public CentroidMap(CentroidMap c){
         this.name = c.getClusterName();
         this.websiteVectors = new ArrayList<>();
         this.values = c.getCentroidValuesMap();
@@ -50,7 +50,7 @@ public class CentroidTreeMap {
      * Takes a Vector and adds it to the list of vectors assigned to the centroid
      * @param w Vector
      */
-    public void assignWebsiteVectorToCentroid(VectorTreeMap w){
+    public void assignWebsiteVectorToCentroid(VectorMap w){
         websiteVectors.add(w);
     }
 
@@ -65,7 +65,7 @@ public class CentroidTreeMap {
      * Return the list of Vector assigned to the centroid
      * @return List of Vector
      */
-    public List<VectorTreeMap> getWebsiteVectors(){
+    public List<VectorMap> getWebsiteVectors(){
         return websiteVectors;
     }
 
