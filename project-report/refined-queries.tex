@@ -24,6 +24,7 @@ if (urlMatcher.find()){
   query = query.replace(urlMatcher.group(),"");
 }
 \end{lstlisting}
-The \code{.getMatchingWebsites()} method then carries out its tasks as it has done prior to this implementation. The only other change to the method is the \code{if ( stringUrl!=null)} right before returning the list of found websites. When the URL search is activated the captured URL string is then applied to verify the matching websites found by the method. Only the verified websites are returned. 
-
+The \code{.getMatchingWebsites()} method then carries out its tasks as it has done prior to this implementation. The only other change to the method is the \code{if (stringUrl!=null)} right before returning the list of found websites. When the URL search is activated the captured URL string is then applied to verify the matching websites found by the method. Only the verified websites are returned. \\ \\
 The choice to apply a regular expression, as opposed to solving the task using string operations, was based on the fact that is was largely in line with the existing implementation. Additionally, the solutions provides a very slick implementation that performs its task in just a few lines of code.
+\\ \\
+This feature sadly suffers in applicability due to the contents of the current database, as the database consists exclusively of wikipedia articles. This makes the feature fairly excessive to use, but it can indeed be utilised by the determined user. 

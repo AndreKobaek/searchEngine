@@ -1,6 +1,6 @@
 \section{Inverted Indices}
 
-\subsection{Implementation}
+\subsection{Implementation}\label{sec:invertedindicies-imp}
 Based on the prototype for the project we implemented two inverted indices. The \code{InvertedIndexHashMap} and \code{InvertedIndexTreeMap} are two subclasses of the superclass \code{InvertedIndex} which in turn implement the Index interface. The inverted index is a clever implementation of the \code{SimpleIndex} class trying to overcome the problems given by this naive implementation. The \code{SimpleIndex} looks through every website in the database for any query given. The purpose of an inverted index is to preemptively create an index of websites to a word when the program is build, rather than performing the task for every query. In this scenario when a user makes a query the search will be performed on a \code{Map} object which maps words contained in the websites to the website objects. In this way we increase the time needed for building the application, but we decrease the time needed for every single query. But since the building only takes place ones, supposedly at a convenient time for the user, this is an optimal trade off.
 
 The two subclasses have only one difference, they instantiate two different dynamic types of the map object. A \code{Map} is an interface which once implemented by a class will map a key to a value. The key needs to be unique but the value can be repeated.
