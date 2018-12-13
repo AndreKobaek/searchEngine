@@ -25,7 +25,7 @@ function lookup() {
         data: { query: $('#searchbox').val() }
     }).success(function (data) {
         var t1 = performance.now();
-        console.log("Received response " + data);
+        console.log("Received response " + JSON.stringify(data));
         $("#responsesize").html("<p>Deep Blue retrieved " + data.length + " websites in " + (t1 - t0) + " milliseconds. " + kasparov(data.length) + ".</p>");
         
         const regex = /"|\[|\]/gm;
