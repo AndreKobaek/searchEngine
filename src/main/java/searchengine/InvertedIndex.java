@@ -10,18 +10,19 @@ import java.util.Map;
 
 /**
  * The InvertedIndex data structure provides a way to build an index from a list of websites. It
- * allows to lookup the websites that contain a query word. The InvertedIndex maps query words to
- * websites allowing for a more effective lookup
+ * allows the option to lookup the websites that contain a query word. The index is implemented using a {@code Map}.
  */
 public abstract class InvertedIndex implements Index {
 
+  /**
+   * The data structure of the index.
+   */
   protected Map<String, Set<Website>> map;
 
   /**
-   * Takes a set of websites and creates a map. The keys are the words contained in these websites,
-   * the value is a set of all the websites containing that key word.
-   * 
-   * @param sites The set of websites that should be indexed
+   * Builds an inverted index, mapping a word to the {@code Websites} containing it, given a {@code Set<Websites>}
+   *
+   * @param sites A set of websites to be indexed.
    */
   @Override
   public void build(Set<Website> sites) {
@@ -51,67 +52,12 @@ public abstract class InvertedIndex implements Index {
       }
     }
   }
-
-  
-  
   /**
-   * getMachingWebsites answers queries of the type "subquery1 OR subquery2 OR subquery3 ...". A
-   * "subquery" has the form "word1 word2 word3 ...". A website matches a subquery if all the
-   * words occur on the website. A website matches the whole query, if it matches at least one
-   * subquery.
-   *
-   * @param structuredQuery a structered query.
-   * @return the set of websites that matches the query
-   */
-  public List<Website> getMatchingWebsites(List<List<String>> structuredQuery) {
-    
-    if (structuredQuery == null) {
-      throw new NullPointerException();
-    }
-    
-    if (structuredQuery.isEmpty()) {
-      return Collections.emptyList();
-    }
-    
-    // Set for storing the combined results
-    Set<Website> results = new HashSet<>();
-
-    // take union of websites returned by each subquery.
-    for (List<String> subquery : structuredQuery) {
-      results.addAll(intersect(subquery));   
-    }
-
-    // Simple conversion to a list (to avoid changing types throughout the application (right
-    // now (at least)))
-    List<Website> resultsAsList = new ArrayList<>();
-    resultsAsList.addAll(results);
-    return resultsAsList;
-  }
-  
-  private Set<Website> intersect(List<String> words) {
-
-    if (words.isEmpty()) {
-      return Collections.emptySet();
-    }
-    
-    Set<Website> results = new HashSet<>();
-    
-    // intersection of sets of websites containing all the words
-    results.addAll(lookup(words.get(0)));
-    for (int i=1; i<words.size(); i++) {
-        results.retainAll(lookup(words.get(i)));
-    }
-    return results;
-  }   
-  
-  
-  /**
-   * Returns the set of websites which matches the query string, returns an empty
-   * {@code HashSet} if the query string does not match any sites in the map.
+   * Returns the set of websites which match the {@code query}, returns an empty
+   * {@code Set} if the {@code query} is not contained in the {@code Map}.
    * 
-   * @param query The query
-   * @return the Set of websites that contain the query word, or null if the query word is not among
-   *         the map keys.
+   * @param query The query to be looked up.
+   * @return the {@code Set<Website>} that contain the query word.
    */
   @Override
   public Set<Website> lookup(String query) {
