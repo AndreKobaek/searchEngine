@@ -191,16 +191,14 @@ public static void rankSites(Set<Website> sites, Corpus corpus, String query) {
 \subsubsection{Option 2: Score as Interface}
 \begin{figure}[t]
 	\centering
-	%\includegraphics[width=\textwidth]{graphics/..}
+	\includegraphics[width=\textwidth]{graphics/uml/ScoreAsInterface.png}
 	\caption{UML Diagram for search-engine when using an interface Score.}
-	\label{fig:uml:score-as-interface}
+	\label{fig:uml:ScoreAsInterface}
 \end{figure}
-Another option which largely preserves the same division of responsibility is shown in the class diagram in figure \ref{fig:uml:score-as-interface}.    
+Another option which largely preserves the same division of responsibility is shown in the class diagram in figure \ref{fig:uml:ScoreAsInterface}.    
 This is the solution we went with in our final version of the code (version...). Relevant coding lines from the implementation is shown in listing \ref{lst:scoreInterface}.
 
-This solution has the \code{Score} interface as required. Another big improvement we made, was to remove the score/rank field from \code{Website}, and instead use the value from \code{rankTFIDF()} directly to do the sorting.  
-
-
+This solution has the \code{Score} interface as required. Another big improvement we made, was to remove the score/rank field from \code{Website}, and instead use the value from \code{rank} method directly to do the sorting.  
 
 
 \begin{lstlisting}[language={Java}, caption={This is a code example.}, label={lst:scoreInterface}]
