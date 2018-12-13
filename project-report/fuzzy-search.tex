@@ -21,7 +21,7 @@ But the upside with this approach is that it gets easier later in \code{Fuzzy.ex
 
 In the \code{Fuzzy.expand} method we decide how big a Levenshtein distance \(\delta\) we will accept when searching for similar words, and words with few common 2-grams can be rejected immediately by using the bound,
 
-\[ commonGramsCount \geq \max{(|x|, |y|) - 1 - (\delta -1 ) \cdot q } \]   
+\[ \text{commonGramsCount} \geq \max{(|x|, |y|) - 1 - (\delta -1 ) \cdot q } \]   
 
 those words will have a Levenshtein distance bigger than the allowed \(\delta\) \ref{label}.  
 For words which have enough common 2-grams to pass this bound, will have to explicitly calculate the Levenshtein distance as shown in listing \ref{lst:levenshtein}. 
