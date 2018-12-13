@@ -13,82 +13,8 @@ public class Fuzzy {
     this.corpus = corpus;
   }
 
-  /**
-   * Restructure and possibly "fuzzy-expand" a raw string query.
-   * 
-   * A raw query is translated into a structured format as follows. 
-   * 
-   * word1 AND word2 OR word3 -> [[  ]]
-   * word1 And word2 OR word3 AND spellingError -> [[word1, word2], [word3, option1], [word3, option2]]  
-   * 
-   * //@param the raw query string supplied by the user.
-   * //@return a list of list of strings
-   */
-  // public List<List<String>> structure(String rawQuery) {
-    
-    
-  //   // Array for processed/expanded subqueries.
-  //   List<List<String>> queryArray = new ArrayList<>(new ArrayList<>());
-
-  //   // split the query into subqueries
-  //   String[] subqueries = rawQuery.trim().split("(\\s)*OR(\\s)+");
-  //   for (int j = 0; j < subqueries.length; j++) {
-  //     String[] subquery = subqueries[j].split("(\\s)+");
-
-  //     // check all words in subquery to see if it must be expanded.
-  //     // also turn all words into lower case.
-  //     Set<List<String>> childQueries = new HashSet<>(Collections.emptyList());
-  //     for (String word : subquery) { // always at least 1 word.
-  //       word = word.toLowerCase();
-  //       if (!corpus.wordsToOccurences.containsKey(word)) {
-  //         System.out.println("Cannot find word: " + word);
-  //         Set<String> fuzzySet = expand(word);
-  //         System.out.println("Instead I'll make the search with: " + fuzzySet.toString());
-
-  //         // make a new reference to existing set of sets object.
-  //         Set<List<String>> temporaryStorage = childQueries;
-
-  //         // create new object for storing queries. Overwrite old local variable childQueries.
-  //         childQueries = new HashSet<>(Collections.emptyList());
-  //         // create a new child subquery for each word in fuzzySet
-  //         for (String fword : fuzzySet) {
-  //           List<String> newList;
-  //           if (temporaryStorage.isEmpty()) {
-  //             newList = new ArrayList<>();
-  //             newList.add(fword);
-  //             childQueries.add(newList);
-  //           } else {
-  //             for (List<String> oldList : temporaryStorage) {
-  //               newList = new ArrayList<>();
-  //               newList.add(fword);
-  //               newList.addAll(oldList);
-  //               childQueries.add(newList);
-  //             }
-  //           }
-  //         }
-  //       } else {
-  //         // add the known word to all existing sets (corresponding to "child" subqueries).
-  //         if (childQueries.isEmpty()) {
-  //           List<String> list = new ArrayList<>();
-  //           list.add(word);
-  //           childQueries.add(list);
-  //         } else {
-  //           for (List<String> list : childQueries) {
-  //             list.add(word);
-  //           }
-  //         }
-  //       }
-  //     }
-  //     // add all relevant subqueries to queryArray.
-  //     queryArray.addAll(childQueries);
-  //   }
-  //   System.out
-  //       .println("Final restructured search query is:" + System.lineSeparator() + queryArray.toString());
-  //   return queryArray;
-  // }
-
   public Set<String> expand(String unknownWord) {
-    
+
     // Set for storing the fuzzy strings
     Set<String> fuzzyStrings = new HashSet<>();
 
@@ -96,27 +22,31 @@ public class Fuzzy {
     int delta;
     // delta is assigned based on the length of the word
     switch (unknownWord.length()) {
-      case 3:   delta = 1;
-                break;
-      case 2:   delta = 1;
-                break;
-      case 1:   fuzzyStrings.add(unknownWord);
-                return fuzzyStrings;
-      default:  delta = 2;
-                break;
+      case 3:
+        delta = 1;
+        break;
+      case 2:
+        delta = 1;
+        break;
+      case 1:
+        fuzzyStrings.add(unknownWord);
+        return fuzzyStrings;
+      default:
+        delta = 2;
+        break;
     }
 
     // only looking at 2-grams for now
-    int gramSize = 2; 
+    int gramSize = 2;
 
-    int ncols = corpus.getTotalNumberOfSites();
+    int ncols = corpus.getWordCountUnique();
 
     Set<String> approximateStrings = new HashSet<>();
 
     int[] summedRowVector = new int[ncols];
     for (String bigram : calculate2Gram(unknownWord)) {
       for (int ncol = 0; ncol < ncols; ncol++) {
-        //HER
+        // HER
         int[] rowVector = corpus.getBiGramMap().get(bigram);
         summedRowVector[ncol] += rowVector[ncol];
       }
@@ -124,11 +54,12 @@ public class Fuzzy {
 
     // add approximate words
     for (int i = 0; i < summedRowVector.length; i++) {
-      //HER
-      int commonGramsBound = Math.max(unknownWord.length(), corpus.getWordsInCorpus().get(i).length())
-          - 1 - (delta - 1) * gramSize;
+      // HER
+      int commonGramsBound =
+          Math.max(unknownWord.length(), corpus.getWordsInCorpus().get(i).length()) - 1
+              - (delta - 1) * gramSize;
       if (summedRowVector[i] >= commonGramsBound) {
-        //HER
+        // HER
         approximateStrings.add(corpus.getWordsInCorpus().get(i));
       }
     }
@@ -150,7 +81,7 @@ public class Fuzzy {
     }
     System.out.println("I'll try to search for:");
     System.out.println(fuzzyStrings.toString());
-    
+
     return fuzzyStrings;
   }
 
@@ -220,5 +151,4 @@ public class Fuzzy {
     biGrams.add(word.charAt(word.length() - 1) + "$");
     return biGrams;
   }
-
 }

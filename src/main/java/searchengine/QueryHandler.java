@@ -117,7 +117,7 @@ public class QueryHandler {
     return resultsAsList;
   }
 
-  
+
   /**
    * Restructure a raw string query. A raw query is translated into a structured format as follows:
    * 
@@ -132,8 +132,52 @@ public class QueryHandler {
     // Array for processed/expanded subqueries.
     List<List<String>> structuredQuery = new ArrayList<>();
 
-    // Magic
+    // The search query is split into sub queries by the keyword 'OR'
+    String[] subQueries = query.split("\\bOR\\b");
 
+    // Go through each of the sub queries to get the innermost component of the structured query
+    for (String subQuery : subQueries) {
+
+      // Set for storing the individual words of this sub query
+      Set<String> structuredSubQuery = new HashSet<>();
+
+      // Boolean to define whether the lookups should be added or retained
+      // boolean firstSubQueryDone = false;
+
+      // If the query consists of only 'OR' the split method returns 'OR',
+      // therefore there are no queries and the loop should be terminated
+      if (subQuery.equals("OR")) {
+        break;
+      }
+
+      // The query string is converted to lowercase to match the case of the data
+      subQuery = subQuery.toLowerCase();
+      matcher = pattern.matcher(subQuery);
+
+      while (matcher.find()) {
+
+        // Set for storing the match or the fuzzed versions of a match
+        Set<String> wordSet = new HashSet<>();
+
+        // If the Corpus contains the match, add it (and nothing else) to the querySet
+        if (corpus.containsWord(matcher.group())) {
+          wordSet.add(matcher.group());
+        } else {
+          // If the Corpus doesn't contain the match, add the fuzzed versions of the match to the
+          // querySet
+          wordSet = fuzzy.expand(matcher.group());
+        }
+
+        // Add all the possible versions of a word to the structured sub query
+        structuredSubQuery.addAll(wordSet);
+
+      }
+
+      List<String> structuredSubQueryList = new ArrayList<>();
+      structuredSubQueryList.addAll(structuredSubQuery);
+      structuredQuery.add(structuredSubQueryList);
+    }
+    
     return structuredQuery;
   }
 }

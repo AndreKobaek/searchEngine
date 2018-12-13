@@ -43,7 +43,7 @@ public class Corpus {
   /* The total number of websites in the corpus. */
   private int totalNumberOfSites;
 
-  /* A list of all the words in the corpus/database. */
+  /* A list of all the unique words in the corpus/database. */
   private ArrayList<String> wordsInCorpus;
 
   /**
