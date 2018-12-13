@@ -9,7 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-class QueryFormatTest {
+class QueryHandlerTest {
 
   // declare variables to be used in the tests
   private List<Website> sites;

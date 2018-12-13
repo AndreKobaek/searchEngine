@@ -37,10 +37,10 @@ public class SearchEngine {
     score = new TFIDFScore(); // choose the scoring algorithm to use.
     queryHandler = new QueryHandler(idx, corpus, new Fuzzy(corpus));
 
-    // Kmeans kmeans = new Kmeans(new ArrayList<Website>(sites), corpus, score);
-    // kmeans.startKmeans(15);
-    KmeansMap kmeans = new KmeansMap(new ArrayList<Website>(sites), corpus, score);
-    kmeans.startKmeans(200);
+    // KMeans kMeans = new Kmeans(new ArrayList<Website>(sites), corpus, score);
+    // kMeans.startKmeans(15);
+    KMeansMap kMeans = new KMeansMap(new ArrayList<Website>(sites), corpus, score);
+    kMeans.startKMeans(200);
   }
 
   /**
