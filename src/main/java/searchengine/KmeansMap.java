@@ -16,7 +16,7 @@ public class KMeansMap {
      * Takes a list of Website a Corpus instance, a Score instance and it assigns them to the
      * respective objects declared int the class
      * 
-     * @param dataset a List of Website
+     * @param dataset a List of {@code Website}
      * @param corpus  Corpus
      * @param score   Score
      */
@@ -32,8 +32,8 @@ public class KMeansMap {
     }
 
     /**
-     * It starts the K-means algorithm performing the initial settings and then getting into the
-     * loop which recalculates centroids and every time reassigns the websites to the new calculated
+     * Starts the K-means algorithm performing the initial settings and then getting into the loop
+     * which recalculates centroids and every time reassigns the websites to the new calculated
      * centroids until the n and n-1 iterations have the same centroids as result.
      * 
      * @param k the number of clusters to create
@@ -122,10 +122,6 @@ public class KMeansMap {
                 System.out.println("Website: " + v.getWebsite().getTitle() + " distance: "
                         + cosineSimilarity.calculateCS(c.getCentroidValuesMap(),
                                 v.getVectorValuesMap(), totalWords));
-                // int x = 0;
-                // for(Double d: v.vectorValues){
-                // System.out.println("Vector"+x+ " value: "+d);
-                // }
                 b++;
             }
         }
@@ -178,20 +174,11 @@ public class KMeansMap {
     public int calculateClosestCentroid(List<Double> distance) {
         int index = 0;
 
-
         // Takes the list and retrieves the maximum value in the list
         Double maxValue = Collections.max(distance);
         // Retrieves the index position of the maximum value in the list and assign it to an int to
         // be returned
         index = distance.indexOf(maxValue);
-        // for(Double d: distance){
-        // System.out.println("Distance: "+d);
-        // }
-        // System.out.println("Chosen distance: "+Collections.max(distance));
-        // //Retrieves the index position of the maximum value in the list and assign it to an int
-        // to be returned
-        // System.out.println("Chosen distance: "+Collections.max(distance)+" Chosen index: "+
-        // distance.indexOf(maxValue));
 
         return index;
     }
@@ -208,9 +195,9 @@ public class KMeansMap {
     }
 
     /**
-     * Fore every Website in the dataset creates a Vector containing the Website and calculating the
-     * Tf-Idf value of every word contained into the Website. In case the word from the dataset is
-     * not contained into the Website its value is not added to the Vector.
+     * For every Website in the dataset, this creates a Vector containing the Website and
+     * calculating the Tf-Idf value of every word contained into the Website. In case the word from
+     * the dataset is not contained into the Website its value is not added to the Vector.
      */
     public void createVectors() {
         // for every website calculate its vector-representation according to database/corpus.
@@ -240,7 +227,6 @@ public class KMeansMap {
      */
     public List<CentroidMap> calculateInitialCentroids(int cardinality) {
         List<CentroidMap> initialCentroids = new ArrayList<>();
-        List<Double> distance = new ArrayList<>(); // Not used?
         int x = 0;
 
         while (x < cardinality) {
@@ -249,15 +235,6 @@ public class KMeansMap {
             initialCentroids.add(c);
             x++;
         }
-
-        // for(int z=0; z<initialCentroids.size();z++){
-        // for(int i=0; i<vectors.size();i++){
-        // System.out.println("Initial Centroid "+initialCentroids.get(z).getClusterName()+" Vector
-        // web: "+vectors.get(i).getWebsite().getTitle()+" distance:
-        // "+cosineSimilarity.calculateCS(initialCentroids.get(z).getCentroidValuesMap(),vectors.get(i).getVectorValuesMap(),
-        // totalWords));
-        // }
-        // }
 
         return initialCentroids;
     }
@@ -268,7 +245,7 @@ public class KMeansMap {
      * Then takes the value of the randomly chosen vector and assaign them to a new Centroid
      * instance with the String name. The new instance is returned from the method.
      * 
-     * @param clusterName Stirng
+     * @param clusterName the name for the {@code CentroidMap} cluster
      * @return Centroid
      */
     public CentroidMap randomPoint(String clusterName) {
@@ -283,4 +260,12 @@ public class KMeansMap {
         return centroid;
     }
 
+    /**
+     * Returns all the centroids
+     * 
+     * @return A list containing all the centroids
+     */
+    public List<CentroidMap> getCentroids(){
+        return centroids;
+    }
 }

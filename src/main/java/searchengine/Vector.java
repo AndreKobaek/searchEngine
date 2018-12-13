@@ -7,6 +7,11 @@ import java.util.List;
  * Creates a Vector of a Website. Initialize a Website a vectorValues List of Double and a
  * wordValues Map of String and Double. Takes a String and a Double and assign them to the Map and
  * to the List to represent the Vector's values
+ * 
+ * @author André Mortensen Kobæk
+ * @author Domenico Villani
+ * @author Flemming Westberg
+ * @author Mikkel Buch Smedemand
  */
 public class Vector {
     Website website;

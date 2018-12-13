@@ -6,43 +6,36 @@ import java.util.HashMap;
 
 
 /**
- * A website is the basic entity of the search engine. It has a url, a title, and a list of words.
+ * A {@code Website} is the basic entity of the search engine. It has a url, a title, a list of
+ * words, and various metadata.
  *
- * @author Martin Aumüller
+ * @author André Mortensen Kobæk
+ * @author Domenico Villani
+ * @author Flemming Westberg
+ * @author Mikkel Buch Smedemand
  */
 public class Website {
 
-  /**
-   * The website's title
-   */
+  /** The website's title */
   private String title;
 
-  /**
-   * The website's url
-   */
+  /** The website's url */
   private String url;
 
-  /**
-   * A list of words storing the words on the website
-   */
+  /** A list of words storing the words on the website */
   private List<String> words;
 
-  /**
-   * a map from word to wordcount
-   */
+  /** A map from word to wordcount */
   private Map<String, Integer> wordsToOccurences;
 
+  /** A list of similar websites */
+  private List<Website> similarWebsites;
+
   /**
-   * the number of words on the website.
-   */
-  private int wordSize;
-
-
-   /**
    * Creates a {@code Website} object from a url, a title, and a list of words that are contained on
    * the website.
    *
-   * @param url the website's url
+   * @param url   the website's url
    * @param title the website's title
    * @param words the website's list of words
    */
@@ -50,7 +43,6 @@ public class Website {
     this.url = url;
     this.title = title;
     this.words = words;
-    this.wordSize = words.size();
 
     // build the map which holds words and corresponding word counts for the website.
     wordsToOccurences = new HashMap<>();
@@ -64,18 +56,18 @@ public class Website {
   }
 
   /**
-   * Returns the website's title.
+   * Returns the title of the {@code Website}
    *
-   * @return the website's title.
+   * @return the title of the {@code Website}
    */
   public String getTitle() {
     return title;
   }
 
   /**
-   * Returns the website's url.
+   * Returns the URL of the {@code Website}
    *
-   * @return the website's url.
+   * @return the URL of the {@code Website}
    */
   public String getUrl() {
     return url;
@@ -100,7 +92,7 @@ public class Website {
    * @return number of words in list of words.
    */
   public int getWordSize() {
-    return wordSize;
+    return words.size();
   }
 
   /**
@@ -111,6 +103,24 @@ public class Website {
    */
   public Boolean containsWord(String word) {
     return words.contains(word);
+  }
+
+  /**
+   * Assign a list with similar websites to this object
+   *
+   * @param similarWebsites the list of similar websites
+   */
+  public void setSimilarWebsites(List<Website> similarWebsites) {
+    this.similarWebsites = similarWebsites;
+  }
+
+  /**
+   * Return the websites similar to this one
+   *
+   * @return the list of similar websites
+   */
+  public List<Website> getSimilarWebsites() {
+    return similarWebsites;
   }
 
   @Override

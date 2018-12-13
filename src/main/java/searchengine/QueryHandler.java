@@ -139,7 +139,7 @@ public class QueryHandler {
    * @param currentResults list of websites
    * @param siteURL {@code String} containing the site url.
    */
-  public void checkListForUrl(List<Website> currentResults, String siteURL){
+  private void checkListForUrl(List<Website> currentResults, String siteURL){
     Iterator<Website> websiteIterator = currentResults.iterator();
     while (websiteIterator.hasNext()){
       String websiteUrl = websiteIterator.next().getUrl().toLowerCase();

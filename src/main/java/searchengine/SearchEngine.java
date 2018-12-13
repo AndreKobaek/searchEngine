@@ -48,6 +48,7 @@ public class SearchEngine {
    * Returns a {@code SearchResult} matching the query.
    *
    * @param query the query
+   * 
    * @return a {@code SearchResult matching the query}
    */
   public SearchResult search(String query) {
@@ -57,20 +58,21 @@ public class SearchEngine {
 
     List<Website> results = queryHandler.getMatchingWebsites(query);
     List<List<String>> structuredQuery = queryHandler.getStructuredQuery(query);
-    
+
     // The websites are ordered according to rank and returned as a {@code SearchResult}.
     return new SearchResult(orderWebsites(results, structuredQuery));
   }
 
   /**
-   * Rank a list of websites, according to the query, 
-   * also using information about the whole database from corpus object. 
+   * Rank a list of websites, according to the query, also using information about the whole
+   * database from corpus object.
    *
-   * @param list List of websites to be ordered according to rank.
+   * @param list  List of websites to be ordered according to rank.
    * @param query The search query.
-   * @return return the list of websites reordered according to rank.
-   * I.e the method modifies the input list.  
-  */
+   * 
+   * @return return the list of websites reordered according to rank. I.e the method modifies the
+   *         input list.
+   */
   private List<Website> orderWebsites(List<Website> list, List<List<String>> structuredQuery) {
 
     // create a nested Comparator class
