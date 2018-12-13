@@ -10,7 +10,7 @@ The site has a simple mobile-first layout. A dynamic background resembling the i
 	\label{fig:gui:noResults}
 \end{figure}
 
-When a search has been completed, a few details are displayed: The amount of websites retrieved, the time it took, and a tip of the hat to Garry Kasparov (see implementation in Listing \ref{lst:kasparov}). Below, results are displayed with a simple preview (Figure \ref{fig:gui:results}). 
+When a search has been completed, a few details are displayed: The amount of websites retrieved, the time it took, and a tip of the hat to Garry Kasparov (see implementation in Listing \ref{lst:kasparov}). Below, results are displayed with a simple preview (Figure \ref{fig:gui:results}). The preview is generated on the front-end (Listing \ref{lst:preview}).
 
 \begin{lstlisting}[language=Java,
 	caption={The Kasparov Algorithm},
@@ -25,6 +25,18 @@ function kasparov(responseSize){
 		return "Kasparov gloats excessively"
 	}
 }
+\end{lstlisting}
+
+\begin{lstlisting}[language=Java,
+	caption={Preview generation},
+	label={lst:preview}]
+const regex = /"|\[|\]/gm;
+
+// Convert the JSON data to a string, replace commas with spaces 
+// and the special characters defined by the regular expression by the empty string. 
+// Finally, get the substring from index 0 to 140
+
+var preview = JSON.stringify(value.words).replace(/,/g, " ").replace(regex, "").substring(0, 140);
 \end{lstlisting}
 
 \begin{figure}[h]
