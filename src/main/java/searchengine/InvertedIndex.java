@@ -60,7 +60,7 @@ public abstract class InvertedIndex implements Index {
    * words occur on the website. A website matches the whole query, if it matches at least one
    * subquery.
    *
-   * @param input the structured query.
+   * @param structuredQuery a structered query.
    * @return the set of websites that matches the query
    */
   public List<Website> getMatchingWebsites(List<List<String>> structuredQuery) {

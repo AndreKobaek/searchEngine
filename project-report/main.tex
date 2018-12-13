@@ -1,6 +1,4 @@
 \input{preambles/preamble.tex}
-%\includeonly{foreword}
-
 \begin{document}
 	
 	\frontmatter
@@ -9,11 +7,14 @@
 	\newpage	
 	\tableofcontents 
 	%\include{foreword}
-	
+
 	
 	\mainmatter
 	
-	\chapter{Quality assurance}
+	\chapter{Software Design}
+	\input{software-design.tex}
+	
+	\chapter{Quality Assurance}
 	\input{quality-assurance.tex}
 	\input{performance.tex} 
 	
@@ -38,6 +39,7 @@
 	%\listoffigures
 	%\listoftables
 	%\bibliographystyle{plain}
+	\bibliography{bibliography.bib} % Use the bibliography.bib file for the bibliography
 	%\bibliographystyle{bibliography}
 	%\nocite{*}	
 \end{document}

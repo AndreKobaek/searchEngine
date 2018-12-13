@@ -15,10 +15,10 @@ import java.util.Set;
  */
 public class SearchEngine {
 
-  private InvertedIndex idx;
+  private Index idx;
   private Corpus corpus;
   private Score score;
-  private QueryFormat queryFormat;
+  private QueryHandler queryHandler;
 
   /**
    * Creates a {@code SearchEngine} object from a list of websites.
@@ -35,11 +35,10 @@ public class SearchEngine {
     System.out.println("Building 2-gram index, this may take a while...");
     corpus.build2GramIndex(); // build 2gram inverse index, for fuzzy matching.
     score = new TFIDFScore(); // choose the scoring algorithm to use.
-    queryFormat = new QueryFormat(corpus);
+    queryHandler = new QueryHandler(idx, corpus, new Fuzzy(corpus));
 
-//    Kmeans kmeans = new Kmeans(new ArrayList<Website>(sites), corpus, score);
-//    kmeans.startKmeans(15);
-
+    // Kmeans kmeans = new Kmeans(new ArrayList<Website>(sites), corpus, score);
+    // kmeans.startKmeans(15);
     KmeansMap kmeans = new KmeansMap(new ArrayList<Website>(sites), corpus, score);
     kmeans.startKmeans(200);
   }
@@ -55,9 +54,9 @@ public class SearchEngine {
       return new ArrayList<>();
     }
 
-    List<List<String>> structuredQuery = queryFormat.structure(query);
-    List<Website> results = idx.getMatchingWebsites(structuredQuery);
-
+    List<Website> results = queryHandler.getMatchingWebsites(query);
+    List<List<String>> structuredQuery = queryHandler.getStructuredQuery(query);
+    
     // the websites are ordered according to rank.
     return orderWebsites(results, structuredQuery);
 

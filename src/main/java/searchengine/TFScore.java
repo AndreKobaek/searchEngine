@@ -31,7 +31,7 @@ public class TFScore implements Score {
     int wordSize = site.getWordSize();
 
     // number of times word appear on website, i.e the term site count.
-    double wordCount = (double) site.wordMap.get(word);
+    double wordCount = (double) site.getWordsToOccurences().get(word);
 
     // the site term frequency.
     return (wordCount / wordSize);
