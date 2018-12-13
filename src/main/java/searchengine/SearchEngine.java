@@ -64,7 +64,7 @@ public class SearchEngine {
     List<Website> results = queryHandler.getMatchingWebsites(query);
     List<List<String>> structuredQuery = queryHandler.getStructuredQuery(query);
     
-    // the websites are ordered according to rank.
+    // The websites are ordered according to rank and returned as a {@code SearchResult}.
     return new SearchResult(orderWebsites(results, structuredQuery));
   }
 
