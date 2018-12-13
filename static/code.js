@@ -25,13 +25,14 @@ function lookup() {
         data: { query: $('#searchbox').val() }
     }).success(function (data) {
         var t1 = performance.now();
-        console.log("Received response " + data);
-        $("#responsesize").html("<p>Deep Blue retrieved " + data.length + " websites in " + (t1 - t0) + " milliseconds. " + kasparov(data.length) + ".</p>");
+        console.log("Received response " + JSON.stringify(data));
+        console.log("Greeting: " + JSON.stringify(data.message));
+        $("#responsesize").html("<p>Deep Blue retrieved " + data.websiteCount + " websites in " + (t1 - t0) + " milliseconds. <br>" + kasparov(data.length) + ".</p>");
         
         const regex = /"|\[|\]/gm;
         var buffer = "";
 
-        $.each(data, function (index, value) {
+        $.each(data.matchingWebsites, function (index, value) {
             // Convert the JSON data to a string, replace commas with spaces 
             // and the special characters defined by the regular expression by the empty string. 
             // Finally, get the substring from index 0 to 140

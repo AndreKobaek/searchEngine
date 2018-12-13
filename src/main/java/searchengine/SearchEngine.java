@@ -49,18 +49,28 @@ public class SearchEngine {
    * @param query the query
    * @return the list of websites matching the query
    */
-  public List<Website> search(String query) {
+  // public List<Website> search(String query) {
+  //   if (query == null || query.isEmpty()) {
+  //     return new ArrayList<>();
+  //   }
+
+  //   List<Website> results = queryHandler.getMatchingWebsites(query);
+  //   List<List<String>> structuredQuery = queryHandler.getStructuredQuery(query);
+    
+  //   // the websites are ordered according to rank.
+  //   return orderWebsites(results, structuredQuery);
+  // }
+  
+  public SearchResult search(String query) {
     if (query == null || query.isEmpty()) {
-      return new ArrayList<>();
+      return new SearchResult();
     }
 
     List<Website> results = queryHandler.getMatchingWebsites(query);
     List<List<String>> structuredQuery = queryHandler.getStructuredQuery(query);
     
-    // the websites are ordered according to rank.
-    return orderWebsites(results, structuredQuery);
-
-    // ??  CosineSimilarity cosine = new CosineSimilarity();
+    // The websites are ordered according to rank and returned as a {@code SearchResult}.
+    return new SearchResult(orderWebsites(results, structuredQuery));
   }
 
   /**
