@@ -14,11 +14,13 @@ When writing a program one should aim for low (or loose) coupling between classe
 When working within a package, one could argue that all non-private fields (and methods) are part of the interface, since they are allowed to be accessed by other classes in the package. 
  
 Package private access to a field in \code{Class} allows \code{OtherClass} to tinker with the state of \code{Class}, just as a setter method would.
-A public getter method in \code{Class} on the other hand .... would have exactly the same effect!
+A public getter method in \code{Class} on the other hand... would have exactly the same effect!
 A getter method supplies the calling class \code{OtherClass} with a reference to the field, and thus changing the returned map will also change the state of \code{Class}.
  
 For primitive types (and strings), getter methods doesn't expose state, but for fields of for example type \code{Map} \code{Set} or \code{List}, care should be taken if ones do not intend to expose the state.
-In the cases above a package private modifier would not be a worse choice than the combination of private field and a getter method that returns the object \emph{reference}. To avoid exposing state one could choose to clone/copy the object and then return the clone/copy in the getter method. 
+In the cases above a package private modifier would not be a worse choice than the combination of private field and a getter method that returns the object \emph{reference}. To avoid exposing state one could choose to clone/copy the object and then return the clone/copy in the getter method.
+
+A benefit of choosing the combination of a private field and a getter method is that we are able to change the behaviour of the getter method if we want to, for instance change it to return a (reference to a) clone/copy instead of returning (a reference to) the actual object. 
 
 
 \subsection{Cohesion}
