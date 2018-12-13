@@ -36,6 +36,11 @@ public class SearchEngine {
     corpus.build2GramIndex(); // build 2gram inverse index, for fuzzy matching.
     score = new TFIDFScore(); // choose the scoring algorithm to use.
     queryHandler = new QueryHandler(idx, corpus, new Fuzzy(corpus));
+
+    // Kmeans kmeans = new Kmeans(new ArrayList<Website>(sites), corpus, score);
+    // kmeans.startKmeans(15);
+    KmeansMap kmeans = new KmeansMap(new ArrayList<Website>(sites), corpus, score);
+    kmeans.startKmeans(200);
   }
 
   /**
@@ -54,8 +59,9 @@ public class SearchEngine {
     
     // the websites are ordered according to rank.
     return orderWebsites(results, structuredQuery);
-  }
 
+    // ??  CosineSimilarity cosine = new CosineSimilarity();
+  }
 
   /**
    * Rank a list of websites, according to the query, 
@@ -80,5 +86,4 @@ public class SearchEngine {
     list.sort(new RankComparator().reversed()); // why do we need to reverse?
     return list;
   }
-
 }

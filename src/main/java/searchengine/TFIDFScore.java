@@ -9,6 +9,11 @@ public class TFIDFScore implements Score{
      return rankQueryTFIDF(site, corpus, structuredQuery);
  }
  
+ @Override
+ public Double rankSingle(Website site, Corpus corpus,  String word) {
+   return rankSingleTFIDF(site, corpus, word);
+ }
+ 
 
    /**
    * Rank a single website according to a single word. Ranking algorithm is TFIDF.

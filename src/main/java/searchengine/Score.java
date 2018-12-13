@@ -21,4 +21,10 @@ public interface Score {
    */
   Double rank(Website site, Corpus corpus, List<List<String>> structuredQuery);
 
+  
+  /**
+   * Calculate the rank of the website, given a corpus/databse of websites, and a single words.
+   * Mainly for use in calculations in Kmeans class.
+   */
+  Double rankSingle(Website site, Corpus corpus, String word);
 }
