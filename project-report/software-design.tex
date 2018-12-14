@@ -21,7 +21,7 @@ A getter method supplies the calling class \code{OtherClass} with a reference to
  
 For primitive types (and strings), getter methods doesn't expose state, but for fields of for example type \code{Map}, \code{Set} or \code{List}, care should be taken if ones do not intend to expose the state.
 So with regards to "exposure of state" a package private modifier would not be a worse choice than the combination of private field and a getter method that returns the object \emph{reference}. To avoid exposing state one could choose to clone/copy the object and then return the clone/copy in the getter method.
-And a benefit of choosing the combination of a private field and a getter method is that we are able to change the behaviour of the getter method if we want to, for instance change it to return a (reference to a) clone/copy instead of returning (a reference to) the actual object. 
+And a benefit of choosing the combination of a private field and a getter method is that we are able to change the behaviour of the getter method if we want to, for instance change it to return a (reference to a) clone instead of returning (a reference to) the actual object. 
 
 \subsection{Cohesion}
 A program should aim for high cohesion. %input a reference here?
@@ -37,11 +37,3 @@ Encapsulation is an approach to class interaction in object-oriented programming
 
 \subsection{Inheritance} 
 Inheritance is an architectural tool that helps to avoid duplicate code. By conceptually abstracting similar objects into a common object similarities can be abstracted into the common object, thus avoiding duplicate code. This property is used in the case of the \code{InvertedIndex} and the two different instances of it, the advantages of it is thoroughly examined in section \ref{sec:invertedindicies-imp}.
-
-\subsection{Polymorphism} 
-
-\subsection{Streams and Lambdas}
-Maybe a section about streams and lambdas? When are they useful, an when are they not?
-
-
- 
