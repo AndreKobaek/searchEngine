@@ -119,9 +119,9 @@ public class Website {
   }
 
   /**
-   * Return the websites similar to this one
+   * Return a list of URLs for websites similar to this one
    *
-   * @return the list of similar websites
+   * @return the list of URLs
    */
   public List<String> getSimilarWebsites() {
     return similarWebsites;

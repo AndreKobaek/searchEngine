@@ -58,16 +58,16 @@ public class SearchEngine {
    * 
    * @return a {@code SearchResult matching the query}
    */
-  public SearchResult search(String query) {
+  public List<Website> search(String query) {
     if (query == null || query.isEmpty()) {
-      return new SearchResult();
+      return new ArrayList<>();
     }
 
     List<Website> results = queryHandler.getMatchingWebsites(query);
     List<List<String>> structuredQuery = queryHandler.getStructuredQuery(query);
 
     // The websites are ordered according to rank and returned as a {@code SearchResult}.
-    return new SearchResult(orderWebsites(results, structuredQuery));
+    return orderWebsites(results, structuredQuery);
   }
 
 

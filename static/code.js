@@ -26,23 +26,35 @@ function lookup() {
     }).success(function (data) {
         var t1 = performance.now();
         console.log("Received response " + data);
-        $("#responsesize").html("<p>Deep Blue retrieved " + data.websiteCount + " websites in " + (t1 - t0) + " milliseconds. <br>" + kasparov(data.length) + ".</p>");
+        $("#responsesize").html("<p>Deep Blue retrieved " + data.size + " websites in " + (t1 - t0) + " milliseconds. <br>" + kasparov(data.length) + ".</p>");
         
         const regex = /"|\[|\]/gm;
         var buffer = "";
 
-        $.each(data.matchingWebsites, function (index, value) {
+        $.each(data, function (index, value) {
             // Convert the JSON data to a string, replace commas with spaces 
             // and the special characters defined by the regular expression by the empty string. 
             // Finally, get the substring from index 0 to 140
+            var similar = "";
+            var counter = 0;
+
+            $.each(value.similarWebsites, function (index, url) {
+                counter++;
+                similar += "<a href=\"" + url + "\" target=\"_blank\" rel=\"noopener\"><cite>" + " SIM0" + counter + " |" + "</cite></a>";
+                if(counter >= 5){
+                    return false;
+                }
+            });
+
             var preview = JSON.stringify(value.words).replace(/,/g, " ").replace(regex, "").substring(0, 140);
             buffer +=   "<div>\n" + 
                             "<a href=\"" + value.url + "\" target=\"_blank\" rel=\"noopener\">\n" + 
                                 "<span>" + value.title + "</span>\n" + 
                                 "<br>\n" + 
                                 "<cite>" + value.url + "</cite>" + 
-                            "</a>\n" + 
+                            "</a>\n" +                             
                             "<p>" + preview + "...</p>\n" +
+                            similar + 
                         "</div>\n";
         });
 
