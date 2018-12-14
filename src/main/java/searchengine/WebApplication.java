@@ -71,13 +71,13 @@ public class WebApplication {
 
   @CrossOrigin(origins = "*")
   @RequestMapping("/search")
-  public SearchResult search(@RequestParam(value = "query", defaultValue = "") String query) {
+  public List<Website> search(@RequestParam(value = "query", defaultValue = "") String query) {
 
     System.out.println("Handling request for query word \"" + query + "\"");
 
-    SearchResult searchResult = searchengine.search(query);
+    List<Website> searchResult = searchengine.search(query);
 
-    System.out.println("Found " + searchResult.getWebsiteCount() + " websites.");
+    System.out.println("Found " + searchResult.size() + " websites.");
 
     return searchResult;
   }

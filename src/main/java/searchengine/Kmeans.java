@@ -159,41 +159,12 @@ public class KMeans {
 
         // Debug information on the Terminal
         for (Centroid c : centroids) {
-            int b = 0;
             System.out.println("---------Centroid: " + c.getClusterName() + "--------------");
             for (Vector v : c.getWebsiteVectors()) {
                 System.out.println("Website: " + v.getWebsite().getTitle() + " distance: "
                         + cosineSimilarity.calculateCS(c.getCentroidValues(), v.getVectorValues()));
-                // int x = 0;
-                // for(Double d: v.vectorValues){
-                // System.out.println("Vector"+x+ " value: "+d);
-                // }
-                b++;
             }
         }
-
-        // // This is a test for securing that the words are ordered the same way in totalWords and
-        // in the vectors.
-        // ArrayList<String> totalWordList = new ArrayList();
-        // ArrayList<String> vectorList = new ArrayList();
-        //
-        // int counter = 0;
-        // for (String word : totalWords) {
-        // counter ++;
-        // totalWordList.add(word);
-        // }
-        // Map<String, Double> tempMap = vectors.get(5).getWordValuesMap();
-        //
-        // for(String w: tempMap.keySet()) {
-        // vectorList.add(w);
-        // }
-        //
-        // for(int i=0; i<totalWordList.size(); i++) {
-        // System.out.println(i+" "+totalWordList.get(i)+" is equal?
-        // "+totalWordList.get(i).equals(vectorList.get(i)));
-        // }
-
-
     }
 
     /**

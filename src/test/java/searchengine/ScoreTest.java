@@ -1,139 +1,139 @@
-package searchengine;
+// package searchengine;
 
-import static org.junit.jupiter.api.Assertions.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-
-class ScoreTest {
-
-  // declare variables to be used in the tests
-  TFScore tfScore;
-  TFIDFScore tfidfScore;
-  TFICFScore tficfScore;
-
-  List<Website> sites;
-  Corpus corpus;
-  QueryHandler queryHandler;
-
-  // instantiate variables
-  @BeforeEach
-  void setUp() {
-    tfScore = new TFScore();
-    tfidfScore = new TFIDFScore();
-    tficfScore = new TFICFScore();
-
-    // create the test database needed for many(all?) of the following tests.
-    sites = new ArrayList<>();
-    sites.add(
-        new Website("example1.com", "example1", Arrays.asList("word1", "word2", "word1", "word1")));
-    sites.add(
-        new Website("example2.com", "example2", Arrays.asList("word2", "word2", "word3", "word3")));
-    sites.add(new Website("example3.com", "example3",
-        Arrays.asList("word2", "word2", "word3", "word3", "word4")));
-    sites.add(new Website("example4.com", "example4",
-        Arrays.asList("word2", "word2", "word2", "word3", "word4")));
-    sites.add(new Website("example5.com", "example5",
-        Arrays.asList("word2", "word2", "word3", "word3", "word4")));
-    sites.add(new Website("example6.com", "example6",
-        Arrays.asList("word2", "word2", "word3", "word3", "word4")));
-    sites.add(new Website("example7.com", "example7",
-        Arrays.asList("word2", "word3", "word4", "word5", "word6")));
-
-    // build corpus for test database.
-    corpus = new Corpus(new HashSet<Website>(sites));
-    corpus.build();
-    corpus.build2GramIndex();
-
-    // instantiate queryHandler
-    queryHandler = new QueryHandler(new InvertedIndexTreeMap(), corpus, new Fuzzy(corpus));
-  }
-
-  // make old objects available to be garbage collected, by removing the reference to them.
-  @AfterEach
-  void tearDown() {
-    tfScore = null;
-    tfidfScore = null;
-    tficfScore = null;
-
-  }
+// import static org.junit.jupiter.api.Assertions.*;
+// import java.util.ArrayList;
+// import java.util.Arrays;
+// import java.util.HashSet;
+// import java.util.List;
+// import org.junit.jupiter.api.AfterEach;
+// import org.junit.jupiter.api.BeforeEach;
+// import org.junit.jupiter.api.Test;
 
 
+// class ScoreTest {
 
-  /**
-   * Test all our score(sub)classes which implements the Score interface.
-   */
-  private void testRankMethod(Score score) {
+//   // declare variables to be used in the tests
+//   TFScore tfScore;
+//   TFIDFScore tfidfScore;
+//   TFICFScore tficfScore;
 
-   double tolerance = 0.00001;
+//   List<Website> sites;
+//   Corpus corpus;
+//   QueryHandler queryHandler;
 
-    List<List<String>> structuredQuery1 = queryFormat.structure("word1 word2");
-    List<List<String>> structuredQuery2 = queryFormat.structure("word2 word1");
-    List<List<String>> structuredQuery3 = queryFormat.structure("   word1    word2   ");
-    List<List<String>> structuredQuery4 = queryFormat.structure(" word2  word1   ");
+//   // instantiate variables
+//   @BeforeEach
+//   void setUp() {
+//     tfScore = new TFScore();
+//     tfidfScore = new TFIDFScore();
+//     tficfScore = new TFICFScore();
 
-    // go through all websites in the example database.
-    for (Website site : sites) {
+//     // create the test database needed for many(all?) of the following tests.
+//     sites = new ArrayList<>();
+//     sites.add(
+//         new Website("example1.com", "example1", Arrays.asList("word1", "word2", "word1", "word1")));
+//     sites.add(
+//         new Website("example2.com", "example2", Arrays.asList("word2", "word2", "word3", "word3")));
+//     sites.add(new Website("example3.com", "example3",
+//         Arrays.asList("word2", "word2", "word3", "word3", "word4")));
+//     sites.add(new Website("example4.com", "example4",
+//         Arrays.asList("word2", "word2", "word2", "word3", "word4")));
+//     sites.add(new Website("example5.com", "example5",
+//         Arrays.asList("word2", "word2", "word3", "word3", "word4")));
+//     sites.add(new Website("example6.com", "example6",
+//         Arrays.asList("word2", "word2", "word3", "word3", "word4")));
+//     sites.add(new Website("example7.com", "example7",
+//         Arrays.asList("word2", "word3", "word4", "word5", "word6")));
 
-      // Order of search words shouldn't matter.
-      assertTrue(Math.abs(score.rank(site, corpus, structuredQuery1)
-          - score.rank(site, corpus, structuredQuery2)) < tolerance);
+//     // build corpus for test database.
+//     corpus = new Corpus(new HashSet<Website>(sites));
+//     corpus.build();
+//     corpus.build2GramIndex();
 
-      // whitespaces between, before, or after search words shouldn't matter.
-      assertTrue(Math.abs(score.rank(site, corpus, structuredQuery3)
-          - score.rank(site, corpus, structuredQuery4)) < tolerance);
-    }
-  }
+//     // instantiate queryHandler
+//     queryHandler = new QueryHandler(new InvertedIndexTreeMap(), corpus, new Fuzzy(corpus));
+//   }
 
-  @Test
-  void testTFScore() {
-    testRankMethod(tfScore);
-  }
+//   // make old objects available to be garbage collected, by removing the reference to them.
+//   @AfterEach
+//   void tearDown() {
+//     tfScore = null;
+//     tfidfScore = null;
+//     tficfScore = null;
 
-  @Test
-  void testTFIDFScore() {
-    testRankMethod(tfidfScore);
-  }
-
-  @Test
-  void testTFICFcore() {
-    testRankMethod(tficfScore);
-  }
+//   }
 
 
-  /**
-   * Test all our score(sub)classes which implements the Score interface.
-   */
-  private void testRankMethod2(Score score) {
 
-    Website site1 = sites.get(0);
-    Website site2 = sites.get(1);
-    List<List<String>> structuredQuery1 = queryFormat.structure("word1 OR word2");
+//   /**
+//    * Test all our score(sub)classes which implements the Score interface.
+//    */
+//   private void testRankMethod(Score score) {
 
-    assertTrue(
-        score.rank(site1, corpus, structuredQuery1) > score.rank(site2, corpus, structuredQuery1));
-  }
+//    double tolerance = 0.00001;
 
-  @Test
-  void testTFScore2() {
-    testRankMethod2(tfScore);
-  }
+//     List<List<String>> structuredQuery1 = queryFormat.structure("word1 word2");
+//     List<List<String>> structuredQuery2 = queryFormat.structure("word2 word1");
+//     List<List<String>> structuredQuery3 = queryFormat.structure("   word1    word2   ");
+//     List<List<String>> structuredQuery4 = queryFormat.structure(" word2  word1   ");
 
-  @Test
-  void testTFIDFScore2() {
-    testRankMethod2(tfidfScore);
-  }
+//     // go through all websites in the example database.
+//     for (Website site : sites) {
 
-  @Test
-  void testTFICFcore2() {
-    testRankMethod2(tficfScore);
-  }
+//       // Order of search words shouldn't matter.
+//       assertTrue(Math.abs(score.rank(site, corpus, structuredQuery1)
+//           - score.rank(site, corpus, structuredQuery2)) < tolerance);
 
-}
+//       // whitespaces between, before, or after search words shouldn't matter.
+//       assertTrue(Math.abs(score.rank(site, corpus, structuredQuery3)
+//           - score.rank(site, corpus, structuredQuery4)) < tolerance);
+//     }
+//   }
+
+//   @Test
+//   void testTFScore() {
+//     testRankMethod(tfScore);
+//   }
+
+//   @Test
+//   void testTFIDFScore() {
+//     testRankMethod(tfidfScore);
+//   }
+
+//   @Test
+//   void testTFICFcore() {
+//     testRankMethod(tficfScore);
+//   }
+
+
+//   /**
+//    * Test all our score(sub)classes which implements the Score interface.
+//    */
+//   private void testRankMethod2(Score score) {
+
+//     Website site1 = sites.get(0);
+//     Website site2 = sites.get(1);
+//     List<List<String>> structuredQuery1 = queryFormat.structure("word1 OR word2");
+
+//     assertTrue(
+//         score.rank(site1, corpus, structuredQuery1) > score.rank(site2, corpus, structuredQuery1));
+//   }
+
+//   @Test
+//   void testTFScore2() {
+//     testRankMethod2(tfScore);
+//   }
+
+//   @Test
+//   void testTFIDFScore2() {
+//     testRankMethod2(tfidfScore);
+//   }
+
+//   @Test
+//   void testTFICFcore2() {
+//     testRankMethod2(tficfScore);
+//   }
+
+// }
 
 
