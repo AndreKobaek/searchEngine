@@ -3,11 +3,13 @@ package searchengine;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Scanner;
 import java.util.Set;
 
 /**
  * The search engine. Upon receiving a list of websites, it performs the necessary configuration
- * (i.e. building an {@code Index} and a {@code QueryHandler}) to then be ready to receive search queries.
+ * (i.e. building an {@code Index} and a {@code QueryHandler}) to then be ready to receive search
+ * queries.
  *
  * @author André Mortensen Kobæk
  * @author Domenico Villani
@@ -15,13 +17,13 @@ import java.util.Set;
  * @author Mikkel Buch Smedemand
  */
 public class SearchEngine {
-  /** The {@code Index}  used by the {@code SearchEngine}*/
+  /** The {@code Index} used by the {@code SearchEngine} */
   private Index idx;
-  /** The {@code Corpus}  used by the {@code SearchEngine}*/
+  /** The {@code Corpus} used by the {@code SearchEngine} */
   private Corpus corpus;
-  /** The {@code Score}  used by the {@code SearchEngine}*/
+  /** The {@code Score} used by the {@code SearchEngine} */
   private Score score;
-  /** The {@code QueryHandler}  used by the {@code SearchEngine}*/
+  /** The {@code QueryHandler} used by the {@code SearchEngine} */
   private QueryHandler queryHandler;
   private KMeansMap kMeans;
 
@@ -45,12 +47,19 @@ public class SearchEngine {
     score = new TFIDFScore(); // choose the scoring algorithm to use.
     queryHandler = new QueryHandler(idx, corpus, new Fuzzy(corpus));
 
-    kMeans = new KMeansMap(new ArrayList<Website>(sites), corpus, score);
-    System.out.println("Building the k-means index, this may take even longer...");
-    kMeans.startKMeans(200);
-    System.out.println("Assigning similar websites based on the k-means index, this might make everything crash...");
-    kMeans.assignSimilarWebsites();
-    System.out.println("Success");
+    // Activate k-means or not
+    Scanner input = new Scanner(System.in);
+    System.out.println("Do you want to run the k-means algorithm (it will take a very long time for medium/large datasets)? [Y/N]");
+      if (input.next().equals("Y")) {
+        kMeans = new KMeansMap(new ArrayList<Website>(sites), corpus, score);
+        System.out.println("Building the k-means index, this may take even longer...");
+        kMeans.startKMeans(200);
+        System.out.println("Assigning similar websites based on the k-means index, this might make everything crash...");
+        kMeans.assignSimilarWebsites();
+        System.out.println("Success");
+      }
+      input.close();
+
   }
 
 
@@ -78,10 +87,10 @@ public class SearchEngine {
    * Rank a list of websites, according to the query, also using information about the whole
    * database from corpus object.
    *
-   * @param list List of {@code websites} to be ordered according to rank.
+   * @param list            List of {@code websites} to be ordered according to rank.
    * @param structuredQuery The search query.
    * @return Returns the list of {@code websites} reordered according to rank.
-    */
+   */
   private List<Website> orderWebsites(List<Website> list, List<List<String>> structuredQuery) {
 
     // create a nested Comparator class
