@@ -44,7 +44,7 @@ public class SearchEngine {
 
     kMeans = new KMeansMap(new ArrayList<Website>(sites), corpus, score);
     System.out.println("Building the k-means index, this may take even longer...");
-    kMeans.startKMeans(3);
+    kMeans.startKMeans(200);
     System.out.println("Assigning similar websites based on the k-means index, this might make everything crash...");
     kMeans.assignSimilarWebsites();
     System.out.println("Success");
