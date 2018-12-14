@@ -7,10 +7,16 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+
 /**
  * The class holds information about the whole database (corpus) of websites. This information is
  * used by ranking methods to calculate the rank of individual websites in the corpus. The Corpus
  * class is fairly similar to the Index classes, and the two could perhaps be merged.
+ *
+ * @author André Mortensen Kobæk
+ * @author Domenico Villani
+ * @author Flemming Westberg
+ * @author Mikkel Buch Smedemand
  */
 public class Corpus {
 

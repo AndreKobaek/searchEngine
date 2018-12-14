@@ -7,10 +7,8 @@ import java.util.SortedSet;
 /**
  * CosineSimilarity calculates the distance between two Websites's Vectors, it is also used to
  * measure the distance between a Centroid's Vector and a Website's Vector.
- * 
- * @author André Mortensen Kobæk
+ *
  * @author Domenico Villani
- * @author Flemming Westberg
  * @author Mikkel Buch Smedemand
  */
 public class CosineSimilarityMap {

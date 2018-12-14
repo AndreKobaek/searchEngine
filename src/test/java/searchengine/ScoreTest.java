@@ -11,15 +11,12 @@ import org.junit.jupiter.api.Test;
 
 
 class ScoreTest {
-
-  // declare variables to be used in the tests
-  TFScore tfScore;
-  TFIDFScore tfidfScore;
-  TFICFScore tficfScore;
-
-  List<Website> sites;
-  Corpus corpus;
-  QueryHandler queryHandler;
+private TFScore tfScore;
+private TFIDFScore tfidfScore;
+private TFICFScore tficfScore;
+private List<Website> sites;
+private Corpus corpus;
+private QueryHandler queryHandler;
 
   // instantiate variables
   @BeforeEach
@@ -46,7 +43,7 @@ class ScoreTest {
         Arrays.asList("word2", "word3", "word4", "word5", "word6")));
 
     // build corpus for test database.
-    corpus = new Corpus(new HashSet<Website>(sites));
+    corpus = new Corpus(new HashSet<>(sites));
     corpus.build();
     corpus.build2GramIndex();
 
@@ -60,10 +57,7 @@ class ScoreTest {
     tfScore = null;
     tfidfScore = null;
     tficfScore = null;
-
   }
-
-
 
   /**
    * Test all our score(sub)classes which implements the Score interface.

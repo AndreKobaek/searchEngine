@@ -11,6 +11,7 @@ import java.util.List;
  * @author Flemming Westberg
  * @author Mikkel Buch Smedemand
  */
+
 public class TFScore implements Score {
 
   /**

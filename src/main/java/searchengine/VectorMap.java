@@ -5,10 +5,8 @@ import java.util.HashMap;
 
 /**
  * A {@code VectorMap}
- * 
- * @author André Mortensen Kobæk
+ *
  * @author Domenico Villani
- * @author Flemming Westberg
  * @author Mikkel Buch Smedemand
  */
 public class VectorMap {

@@ -10,9 +10,7 @@ import java.util.*;
  * finds the minumum distance (which is the higher value of cosine similarity) of a website from
  * that centroid it assigns the website to the centroid.
  *
- *  @author André Mortensen Kobæk
  *  @author Domenico Villani
- *  @author Flemming Westberg
  *  @author Mikkel Buch Smedemand
  */
 
