@@ -5,8 +5,16 @@
 \usepackage[T1]{fontenc}
 \usepackage[english]{babel}
 
+% math
+\usepackage{amsmath}
+\usepackage{bbm} % For having a bold 1 for an indicator function.
+
 % tables
 \usepackage{booktabs}
+
+% rotated figures
+\usepackage{rotating}
+
 
 % Colours and graphics
 \usepackage{graphicx}
@@ -19,6 +27,12 @@
 \definecolor{codepurple}{rgb}{0.58,0,0.82}
 \definecolor{backcolour}{rgb}{0.95,0.95,0.92}
 \definecolor{gitcodebackcolour}{rgb}{0.676, 0.844, 0.898}
+
+% PDF import
+\usepackage{pdfpages}
+
+% Math
+\usepackage{amsmath}
 
 % tikz
 \usepackage{tikz}
@@ -118,7 +132,7 @@
 
 \newcommand{\code}[1]{\colorbox{backcolour}{\lstinline|#1|}}
 
-\newcommand{\gitcode}[1]{\colorbox{gitcodebackcolour}{\lstinline|#1|}}
+\newcommand{\gitcode}[1]{\colorbox{backcolour}{\lstinline|#1|}}
 
 % Bibliography, Index and Appendices 
 
