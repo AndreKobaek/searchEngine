@@ -9,57 +9,7 @@ Keeping in line with the notation at \cite{wikiTFIDF} the term frequency, TF, is
 
 Note that we have choosen the term frequency that is weighted by the total number of words in the document/site. %The corresponding Java implementation is shown in listing \ref{lst:tf}.
 
-%\begin{lstlisting}[language=Java,
-%					caption={Implementation of calculating TF rating.},
-%					label={lst:tf}]
-%/**
-%* Rank a single website according to a single word. Ranking algorithm is TF
-%* 
-%* @param site a single website that will be ranked.
-%* @param a single word from the search query.
-%* @return the rank of the site. Rank will always be non-negative.
-%*/
-%private Double rankSingleTF(Website site, String word) {
-%
-%	// total number of words on the site
-%	int wordSize = site.getWordSize();
-%	
-%	// number of times word appear on website, i.e the term site count.
-%	double wordCount = (double) site.getWordsToOccurences().get(word);
-%	
-%	// the site term frequency.
-%	return (wordCount / wordSize);
-%}
-%\end{lstlisting}
-%
-%
-%\subsection{Term Frequency - Inverse Document Frequency}
-%\[ TFIDF = TF \cdot \log{\left(\frac{N}{|\{d \in D : t \in d \}|}\right)}  \]
-%
-%%\begin{lstlisting}[language=Java, caption=This is a code example., label=lst:TFIDF]
-%%/**
-%%* Rank a single website according to a single word. Ranking algorithm is TFIDF.
-%%* 
-%%* @param site a single website that will be ranked.
-%%* @param corpus of all websites that the search engine knows about.
-%%* @param word a single word from the search query.
-%%* @return the rank of the site. Rank will always be non-negative.
-%%*/
-%%private Double rankSingleTFIDF(Website site, Corpus corpus, String word) {
-%%
-%%	// number of words on the site.
-%%	int wordSize = site.getWordSize();
-%%	
-%%	// number of times word appear on website, i.e the term site count.
-%%	double wordCount = (double) site.getWordsToOccurences().get(word);
-%%	
-%%	// number of times word appear on a website in the corpus, i.e the site/document count.
-%%	double siteCount = (double) corpus.getWordsToInSiteOccurences().get(word);
-%%	
-%%	// site frequency times logarithm to inverse corpus site/document frequency.
-%%	return (wordCount / wordSize) * Math.log(corpus.getTotalNumberOfSites() / siteCount);
-%%}
-%%\end{lstlisting}
+
 
 
 \subsection{Term Frequency - Inverse \emph{Corpus} Frequency}
@@ -68,35 +18,6 @@ Instead of using the inverse document frequency as above, it would also be sensi
 \[ TFICF = TF \cdot \log{\left( \frac{C_{total}}{C_{word}} \right) } \]
 
 Where \(C_{total}\) is the total number of words in the corpus (duplicates allowed), and \(C_{word}\) is the number of times the specific word appears in the corpus. 
-
-%\begin{lstlisting}[language=Java, caption=This is a code example., label=lst:TFICF]
-%  /**
-%* Rank a single website according to a single word. Ranking algorithm is TFICF (i.e Inverse
-%* Corpus term Frequency instead of Inverse Document Frequency).
-%* 
-%* @param site a single website that will be ranked.
-%* @param corpus of all websites that the search engine knows about.
-%* @param a single word from the search query.
-%* @return the rank of the site. Rank will always be non-negative.
-%*/
-%private Double rankSingleTFICF(Website site, Corpus corpus, String word) {
-%
-%	// number of words on the site.
-%	int wordSize = site.getWordSize();
-%	
-%	// number of times word appear on website, i.e the term site count.
-%	double wordCount = (double) site.getWordsToOccurences().get(word);
-%	
-%	// number of times word appear in the corpus, i.e the corpus count.
-%	double corpusCount = (double) corpus.getWordsToOccurences().get(word);
-%	
-%	// total number of words in the corpus.
-%	int corpusSize = corpus.getWordCountTotal();
-%	
-%	return (wordCount / wordSize) * Math.log(corpusSize / corpusCount);
-%}
-%\end{lstlisting}
-
 
 
 
@@ -109,7 +30,7 @@ TFIDF (and our TFICF) takes into account the rarity of words by weighing them ac
 Togo doesn't appear very often in the corpus (38 occourrences in medium database), and therefore even if a site has just a few occurrences of "Togo" the search word counts for more than many occurrences of the word "government" (which appears 3067 times in the medium database.
 This is a reasonable behavior since the rare words are probably the best indicators of what the user really wants to read about.  
 
-\begin{table}
+\begin{table}[b]
 	\centering
 \begin{tabular}{@{}llr@{}} \toprule
 	\multicolumn{3}{c}{Search query: \textit{Togo OR Government}} \\ \cmidrule(r){1-3}
@@ -140,7 +61,7 @@ But what kind of word is `rank` or `score`, a verb or a noun? Actually it can be
 \end{figure}
 
 In the first implementation we tried, we wrote a utility class named \code{Score} which had static rank methods for ranking websites.   
-A (relevant part of the) UML class diagram for this design is shown if figure \ref{fig:uml:utilityClass}, and snippets of relevant code lines from the implementation is shown in listing \ref{lst:ScoreUtilityClass} and \ref{lst:ScoreUtilityClass-2}. 
+A (relevant part of the) UML class diagram for this design is shown in figure \ref{fig:uml:ScoreAsClass}, and snippets of relevant code lines from the implementation is shown in listing \ref{lst:ScoreUtilityClass} and \ref{lst:ScoreUtilityClass-2}. 
 A drawback of this method is that it doesn't have a \code{Score} interface as specified in the mandatory requirements for the assignment.
 Another drawback of this implementation is that the ranking methods works by having a sideeffect, rather than returning a value. The ranking methods sets a score field in the website. This field is then used when sorting the sites. A better way would be to make ranking methods with no sideeffect and instead return the website score directly, and use this for sorting. This is fixed in the second implementation we did.      
 
