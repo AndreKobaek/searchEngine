@@ -79,11 +79,7 @@ class QueryHandlerTest {
     assertEquals(2, queryHandler.getMatchingWebsites("word1 OR word4 OR ").size());
   }
 
-  // Test for problematic input
-  @Test
-  void testCornerCases() {
 
-  }
   @Test
   void testUrlSearch(){
     // Check against non existing site.

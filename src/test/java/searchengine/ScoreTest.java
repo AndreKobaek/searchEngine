@@ -72,10 +72,10 @@ class ScoreTest {
 
    double tolerance = 0.00001;
 
-    List<List<String>> structuredQuery1 = queryFormat.structure("word1 word2");
-    List<List<String>> structuredQuery2 = queryFormat.structure("word2 word1");
-    List<List<String>> structuredQuery3 = queryFormat.structure("   word1    word2   ");
-    List<List<String>> structuredQuery4 = queryFormat.structure(" word2  word1   ");
+    List<List<String>> structuredQuery1 = queryHandler.getStructuredQuery("word1 word2");
+    List<List<String>> structuredQuery2 = queryHandler.getStructuredQuery("word2 word1");
+    List<List<String>> structuredQuery3 = queryHandler.getStructuredQuery("   word1    word2   ");
+    List<List<String>> structuredQuery4 = queryHandler.getStructuredQuery(" word2  word1   ");
 
     // go through all websites in the example database.
     for (Website site : sites) {
@@ -113,7 +113,7 @@ class ScoreTest {
 
     Website site1 = sites.get(0);
     Website site2 = sites.get(1);
-    List<List<String>> structuredQuery1 = queryFormat.structure("word1 OR word2");
+    List<List<String>> structuredQuery1 = queryHandler.getStructuredQuery("word1 OR word2");
 
     assertTrue(
         score.rank(site1, corpus, structuredQuery1) > score.rank(site2, corpus, structuredQuery1));
