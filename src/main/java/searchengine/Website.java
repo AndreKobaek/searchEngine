@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 
-
 /**
  * A website is the basic entity of the search engine. It has a url, a title, and a list of words.
  *
@@ -28,15 +27,14 @@ public class Website {
   private List<String> words;
 
   /**
-   * a map from word to wordcount
+   * A {@code Map} from words to number of occurences in the {@code Website}
    */
   private Map<String, Integer> wordsToOccurences;
 
   /**
-   * the number of words on the website.
+   * The number of words on the website.
    */
-  private int wordSize;
-
+  private int wordCount;
 
    /**
    * Creates a {@code Website} object from a url, a title, and a list of words that are contained on
@@ -50,7 +48,7 @@ public class Website {
     this.url = url;
     this.title = title;
     this.words = words;
-    this.wordSize = words.size();
+    this.wordCount = words.size();
 
     // build the map which holds words and corresponding word counts for the website.
     wordsToOccurences = new HashMap<>();
@@ -81,6 +79,11 @@ public class Website {
     return url;
   }
 
+  /**
+   * Returns the {@Map} of words to its occurences
+   *
+   * @return Returns the {@Map} of words to its occurences
+   */
   public Map<String, Integer> getWordsToOccurences() {
     return wordsToOccurences;
   }
@@ -99,8 +102,8 @@ public class Website {
    * 
    * @return number of words in list of words.
    */
-  public int getWordSize() {
-    return wordSize;
+  public int getWordCount() {
+    return wordCount;
   }
 
   /**

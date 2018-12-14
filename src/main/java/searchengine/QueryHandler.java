@@ -9,16 +9,21 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * This class is responsible for answering queries to our search engine.
+ * This class is responsible for answering queries to our search engine. It deciphers query strings parsed by the {@code SearchEngine}
+ * using regular expressions. Furthermore it generates both a structuredQuery, usable for ranking, as well as getting matching {@code Websites}
+ * for a given query string.
+ *
+ * @author André Mortensen Kobæk
+ * @author Domenico Villani
+ * @author Flemming Westberg
+ * @author Mikkel Buch Smedemand
  */
 public class QueryHandler {
 
   /** The Index the QueryHandler uses for answering queries. */
   private Index idx;
-
   /** The Corpus the QueryHandler used to check whether a fuzzy search should be carried out */
   private Corpus corpus;
-
   /** The Fuzzy object used for fuzzy search */
   private Fuzzy fuzzy;
 
@@ -32,10 +37,12 @@ public class QueryHandler {
   private Matcher matcher;
   private Pattern urlPattern;
   private Matcher urlMatcher;
+
   /**
-   * The constructor
-   *
-   * @param idx The index used by the QueryHandler.
+   * Creates a {@code QueryHandler} object from an {@code Index}, {@code Corpus} and a {@code Fuzzy} object.
+   * @param idx The {@code Index} used by the {@code QueryHandler} to perform website lookups.
+   * @param corpus The {@code Corpus} is necessary for the fuzzy search functionality.
+   * @param fuzzy The {@code Fuzzy} is necessary for the fuzzy search functionality.
    */
   public QueryHandler(Index idx, Corpus corpus, Fuzzy fuzzy) {
     this.idx = idx;
@@ -135,11 +142,12 @@ public class QueryHandler {
   }
 
   /**
-   * Remove the websites from the result list that does not match the site url
-   * @param currentResults list of websites
+   * Removes the {@code Websites} from the list of current results, that does not match the site url or a substring of it.
+   *
+   * @param currentResults List of {@code websites}.
    * @param siteURL {@code String} containing the site url.
    */
-  public void checkListForUrl(List<Website> currentResults, String siteURL){
+  private void checkListForUrl(List<Website> currentResults, String siteURL){
     Iterator<Website> websiteIterator = currentResults.iterator();
     while (websiteIterator.hasNext()){
       String websiteUrl = websiteIterator.next().getUrl().toLowerCase();

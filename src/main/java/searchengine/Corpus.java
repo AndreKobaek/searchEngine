@@ -127,7 +127,7 @@ public class Corpus {
         wordCountTotal += n;
       });
     }
-    assert wordCountTotal == allSites.stream().map(Website::getWordSize).reduce(0,
+    assert wordCountTotal == allSites.stream().map(Website::getWordCount).reduce(0,
         (total, count) -> total + count); // sanity check, that wordSize is calculated correctly.
   }
 

@@ -7,7 +7,7 @@ import java.util.Set;
 
 /**
  * The search engine. Upon receiving a list of websites, it performs the necessary configuration
- * (i.e. building an index and a query handler) to then be ready to receive search queries.
+ * (i.e. building an {@code Index} and a {@code QueryHandler}) to then be ready to receive search queries.
  *
  * @author André Mortensen Kobæk
  * @author Domenico Villani
@@ -15,14 +15,17 @@ import java.util.Set;
  * @author Mikkel Buch Smedemand
  */
 public class SearchEngine {
-
+  /** The {@code Index}  used by the {@code SearchEngine}*/
   private Index idx;
+  /** The {@code Corpus}  used by the {@code SearchEngine}*/
   private Corpus corpus;
+  /** The {@code Score}  used by the {@code SearchEngine}*/
   private Score score;
+  /** The {@code QueryHandler}  used by the {@code SearchEngine}*/
   private QueryHandler queryHandler;
 
   /**
-   * Creates a {@code SearchEngine} object from a list of websites.
+   * Creates a {@code SearchEngine} object from a list of {@code websites}.
    *
    * @param sites the list of websites
    */
@@ -66,11 +69,10 @@ public class SearchEngine {
    * Rank a list of websites, according to the query, 
    * also using information about the whole database from corpus object. 
    *
-   * @param list List of websites to be ordered according to rank.
-   * @param query The search query.
-   * @return return the list of websites reordered according to rank.
-   * I.e the method modifies the input list.  
-  */
+   * @param list List of {@code websites} to be ordered according to rank.
+   * @param structuredQuery The search query.
+   * @return Returns the list of {@code websites} reordered according to rank.
+    */
   private List<Website> orderWebsites(List<Website> list, List<List<String>> structuredQuery) {
 
     // create a nested Comparator class
