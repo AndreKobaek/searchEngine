@@ -2,6 +2,16 @@ package searchengine;
 
 import java.util.*;
 
+/**
+ * It represents the Vector that is the reference on which every cluster is built. Once values are
+ * assigned it accept Vectors of Websites that are assigned to the cluster, which can be deleted and
+ * reassigned.
+ * 
+ * @author André Mortensen Kobæk
+ * @author Domenico Villani
+ * @author Flemming Westberg
+ * @author Mikkel Buch Smedemand
+ */
 public class CentroidMap {
     private Map<String, Double> values;
     private List<VectorMap> websiteVectors;

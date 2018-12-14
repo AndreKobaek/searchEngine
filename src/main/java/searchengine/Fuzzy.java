@@ -18,7 +18,7 @@ public class Fuzzy {
    * words in the corpus that are close to it. As a measure of the distance between words,
    * we use the Levenshtein distance.   
    * 
-   * @param unknownWord
+   * @param unknownWord an unknown word to be expanded by the fuzzy algorithm
    * @return a set of strings with words that are close to the mispelled word.
    */
   public Set<String> expand(String unknownWord) {

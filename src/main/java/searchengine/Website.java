@@ -76,9 +76,9 @@ public class Website {
   }
 
   /**
-   * Returns the {@Map} of words to its occurences
+   * Returns the {@code Map} of words to its occurences
    *
-   * @return Returns the {@Map} of words to its occurences
+   * @return Returns the {@code Map} of words to its occurences
    */
   public Map<String, Integer> getWordsToOccurences() {
     return wordsToOccurences;
@@ -119,7 +119,8 @@ public class Website {
    */
   public void setSimilarWebsites(List<String> websiteUrls) {
     similarWebsites.addAll(websiteUrls);
-    similarWebsites.remove(url); // Remove the URL of this website if it is present in the list - to avoid circular dependencies
+    similarWebsites.remove(url); // Remove the URL of this website if it is present in the list - to
+                                 // avoid circular dependencies
   }
 
   /**

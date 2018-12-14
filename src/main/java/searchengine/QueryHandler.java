@@ -9,9 +9,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * This class is responsible for answering queries to our search engine. It deciphers query strings parsed by the {@code SearchEngine}
- * using regular expressions. Furthermore it generates both a structuredQuery, usable for ranking, as well as getting matching {@code Websites}
- * for a given query string.
+ * This class is responsible for answering queries to our search engine. It deciphers query strings
+ * parsed by the {@code SearchEngine} using regular expressions. Furthermore it generates both a
+ * structuredQuery, usable for ranking, as well as getting matching {@code Websites} for a given
+ * query string.
  *
  * @author André Mortensen Kobæk
  * @author Domenico Villani
@@ -39,10 +40,12 @@ public class QueryHandler {
   private Matcher urlMatcher;
 
   /**
-   * Creates a {@code QueryHandler} object from an {@code Index}, {@code Corpus} and a {@code Fuzzy} object.
-   * @param idx The {@code Index} used by the {@code QueryHandler} to perform website lookups.
+   * Creates a {@code QueryHandler} object from an {@code Index}, {@code Corpus} and a {@code Fuzzy}
+   * object.
+   * 
+   * @param idx    The {@code Index} used by the {@code QueryHandler} to perform website lookups.
    * @param corpus The {@code Corpus} is necessary for the fuzzy search functionality.
-   * @param fuzzy The {@code Fuzzy} is necessary for the fuzzy search functionality.
+   * @param fuzzy  The {@code Fuzzy} is necessary for the fuzzy search functionality.
    */
   public QueryHandler(Index idx, Corpus corpus, Fuzzy fuzzy) {
     this.idx = idx;
@@ -65,13 +68,14 @@ public class QueryHandler {
     // Set for storing the combined results
     Set<Website> results = new HashSet<>();
 
-    // check if input string starts with "site:", if so the following string until the next white space
+    // check if input string starts with "site:", if so the following string until the next white
+    // space
     // is saved for later, and the matched part is removed from the input string.
     String siteUrl = null;
     urlMatcher = urlPattern.matcher(query);
-    if (urlMatcher.find()){
+    if (urlMatcher.find()) {
       siteUrl = urlMatcher.group(1).toLowerCase();
-      query = query.replace(urlMatcher.group(),"");
+      query = query.replace(urlMatcher.group(), "");
     }
 
     // The search query is split into sub queries by the keyword 'OR'
@@ -134,25 +138,28 @@ public class QueryHandler {
     List<Website> resultsAsList = new ArrayList<>();
     resultsAsList.addAll(results);
 
-    if (siteUrl!=null){
-      checkListForUrl(resultsAsList,siteUrl);
+    if (siteUrl != null) {
+      checkListForUrl(resultsAsList, siteUrl);
     }
 
     return resultsAsList;
   }
 
   /**
-   * Removes the {@code Websites} from the list of current results, that does not match the site url or a substring of it.
+   * Removes the {@code Websites} from the list of current results, that does not match the site url
+   * or a substring of it.
    *
    * @param currentResults List of {@code websites}.
-   * @param siteURL {@code String} containing the site url.
+   * @param siteURL        {@code String} containing the site url.
    */
-  private void checkListForUrl(List<Website> currentResults, String siteURL){
+  private void checkListForUrl(List<Website> currentResults, String siteURL) {
     Iterator<Website> websiteIterator = currentResults.iterator();
-    while (websiteIterator.hasNext()){
+    while (websiteIterator.hasNext()) {
       String websiteUrl = websiteIterator.next().getUrl().toLowerCase();
-      // If the url of the website of a substring of it is not equal to the search site url the website is removed.
-      if (websiteUrl.length() < siteURL.length() || !websiteUrl.substring(0,siteURL.length()).equals(siteURL)){
+      // If the url of the website of a substring of it is not equal to the search site url the
+      // website is removed.
+      if (websiteUrl.length() < siteURL.length()
+          || !websiteUrl.substring(0, siteURL.length()).equals(siteURL)) {
         websiteIterator.remove();
       }
     }
@@ -161,7 +168,7 @@ public class QueryHandler {
   /**
    * Restructure a raw string query. A raw query is translated into a structured format as follows:
    * 
-   * word1 AND word2 OR word3 -> [[ ]] word1 And word2 OR word3 AND spellingError -> [[word1,
+   * word1 AND word2 OR word3 TO [[ ]] word1 And word2 OR word3 AND spellingError TO [[word1,
    * word2], [word3, option1], [word3, option2]]
    * 
    * @param query the raw query string supplied by the user.
@@ -217,7 +224,7 @@ public class QueryHandler {
       structuredSubQueryList.addAll(structuredSubQuery);
       structuredQuery.add(structuredSubQueryList);
     }
-    
+
     return structuredQuery;
   }
 }
