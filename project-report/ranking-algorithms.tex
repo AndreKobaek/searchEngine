@@ -7,95 +7,95 @@ Keeping in line with the notation at \cite{wikiTFIDF} the term frequency, TF, is
 
 \[ TF = \frac{f_{t,d}}{\sum_{i \in d}f_{i,d}} \]
 
-Note that we have choosen the term frequency that is weighted by the total number of words in the document/site. The corresponding Java implementation is shown in listing \ref{lst:tf}.
+Note that we have choosen the term frequency that is weighted by the total number of words in the document/site. %The corresponding Java implementation is shown in listing \ref{lst:tf}.
 
-\begin{lstlisting}[language=Java,
-					caption={Implementation of calculating TF rating.},
-					label={lst:tf}]
-/**
-* Rank a single website according to a single word. Ranking algorithm is TF
-* 
-* @param site a single website that will be ranked.
-* @param a single word from the search query.
-* @return the rank of the site. Rank will always be non-negative.
-*/
-private Double rankSingleTF(Website site, String word) {
-
-	// total number of words on the site
-	int wordSize = site.getWordSize();
-	
-	// number of times word appear on website, i.e the term site count.
-	double wordCount = (double) site.getWordsToOccurences().get(word);
-	
-	// the site term frequency.
-	return (wordCount / wordSize);
-}
-\end{lstlisting}
-
-
-\subsection{Term Frequency - Inverse Document Frequency}
-\[ TFIDF = TF \cdot \log{\left(\frac{N}{|\{d \in D : t \in d \}|}\right)}  \]
-
-\begin{lstlisting}[language=Java, caption=This is a code example., label=lst:TFIDF]
-/**
-* Rank a single website according to a single word. Ranking algorithm is TFIDF.
-* 
-* @param site a single website that will be ranked.
-* @param corpus of all websites that the search engine knows about.
-* @param word a single word from the search query.
-* @return the rank of the site. Rank will always be non-negative.
-*/
-private Double rankSingleTFIDF(Website site, Corpus corpus, String word) {
-
-	// number of words on the site.
-	int wordSize = site.getWordSize();
-	
-	// number of times word appear on website, i.e the term site count.
-	double wordCount = (double) site.getWordsToOccurences().get(word);
-	
-	// number of times word appear on a website in the corpus, i.e the site/document count.
-	double siteCount = (double) corpus.getWordsToInSiteOccurences().get(word);
-	
-	// site frequency times logarithm to inverse corpus site/document frequency.
-	return (wordCount / wordSize) * Math.log(corpus.getTotalNumberOfSites() / siteCount);
-}
-\end{lstlisting}
+%\begin{lstlisting}[language=Java,
+%					caption={Implementation of calculating TF rating.},
+%					label={lst:tf}]
+%/**
+%* Rank a single website according to a single word. Ranking algorithm is TF
+%* 
+%* @param site a single website that will be ranked.
+%* @param a single word from the search query.
+%* @return the rank of the site. Rank will always be non-negative.
+%*/
+%private Double rankSingleTF(Website site, String word) {
+%
+%	// total number of words on the site
+%	int wordSize = site.getWordSize();
+%	
+%	// number of times word appear on website, i.e the term site count.
+%	double wordCount = (double) site.getWordsToOccurences().get(word);
+%	
+%	// the site term frequency.
+%	return (wordCount / wordSize);
+%}
+%\end{lstlisting}
+%
+%
+%\subsection{Term Frequency - Inverse Document Frequency}
+%\[ TFIDF = TF \cdot \log{\left(\frac{N}{|\{d \in D : t \in d \}|}\right)}  \]
+%
+%%\begin{lstlisting}[language=Java, caption=This is a code example., label=lst:TFIDF]
+%%/**
+%%* Rank a single website according to a single word. Ranking algorithm is TFIDF.
+%%* 
+%%* @param site a single website that will be ranked.
+%%* @param corpus of all websites that the search engine knows about.
+%%* @param word a single word from the search query.
+%%* @return the rank of the site. Rank will always be non-negative.
+%%*/
+%%private Double rankSingleTFIDF(Website site, Corpus corpus, String word) {
+%%
+%%	// number of words on the site.
+%%	int wordSize = site.getWordSize();
+%%	
+%%	// number of times word appear on website, i.e the term site count.
+%%	double wordCount = (double) site.getWordsToOccurences().get(word);
+%%	
+%%	// number of times word appear on a website in the corpus, i.e the site/document count.
+%%	double siteCount = (double) corpus.getWordsToInSiteOccurences().get(word);
+%%	
+%%	// site frequency times logarithm to inverse corpus site/document frequency.
+%%	return (wordCount / wordSize) * Math.log(corpus.getTotalNumberOfSites() / siteCount);
+%%}
+%%\end{lstlisting}
 
 
 \subsection{Term Frequency - Inverse \emph{Corpus} Frequency}
-Instead of using the inverse document frequency as above, it would also be sensible to use the \emph{inverse term frequency} with respect to the whole database/corpus. Lets call that algorithm for TFICF (Term frequency - Inverse Corpus Frequency). A Java implementation is shown in listing \ref{lst:TFICF}.
+Instead of using the inverse document frequency as above, it would also be sensible to use the \emph{inverse term frequency} with respect to the whole database/corpus. Lets call that algorithm for TFICF (Term frequency - Inverse Corpus Frequency).
     
 \[ TFICF = TF \cdot \log{\left( \frac{C_{total}}{C_{word}} \right) } \]
 
 Where \(C_{total}\) is the total number of words in the corpus (duplicates allowed), and \(C_{word}\) is the number of times the specific word appears in the corpus. 
 
-\begin{lstlisting}[language=Java, caption=This is a code example., label=lst:TFICF]
-  /**
-* Rank a single website according to a single word. Ranking algorithm is TFICF (i.e Inverse
-* Corpus term Frequency instead of Inverse Document Frequency).
-* 
-* @param site a single website that will be ranked.
-* @param corpus of all websites that the search engine knows about.
-* @param a single word from the search query.
-* @return the rank of the site. Rank will always be non-negative.
-*/
-private Double rankSingleTFICF(Website site, Corpus corpus, String word) {
-
-	// number of words on the site.
-	int wordSize = site.getWordSize();
-	
-	// number of times word appear on website, i.e the term site count.
-	double wordCount = (double) site.getWordsToOccurences().get(word);
-	
-	// number of times word appear in the corpus, i.e the corpus count.
-	double corpusCount = (double) corpus.getWordsToOccurences().get(word);
-	
-	// total number of words in the corpus.
-	int corpusSize = corpus.getWordCountTotal();
-	
-	return (wordCount / wordSize) * Math.log(corpusSize / corpusCount);
-}
-\end{lstlisting}
+%\begin{lstlisting}[language=Java, caption=This is a code example., label=lst:TFICF]
+%  /**
+%* Rank a single website according to a single word. Ranking algorithm is TFICF (i.e Inverse
+%* Corpus term Frequency instead of Inverse Document Frequency).
+%* 
+%* @param site a single website that will be ranked.
+%* @param corpus of all websites that the search engine knows about.
+%* @param a single word from the search query.
+%* @return the rank of the site. Rank will always be non-negative.
+%*/
+%private Double rankSingleTFICF(Website site, Corpus corpus, String word) {
+%
+%	// number of words on the site.
+%	int wordSize = site.getWordSize();
+%	
+%	// number of times word appear on website, i.e the term site count.
+%	double wordCount = (double) site.getWordsToOccurences().get(word);
+%	
+%	// number of times word appear in the corpus, i.e the corpus count.
+%	double corpusCount = (double) corpus.getWordsToOccurences().get(word);
+%	
+%	// total number of words in the corpus.
+%	int corpusSize = corpus.getWordCountTotal();
+%	
+%	return (wordCount / wordSize) * Math.log(corpusSize / corpusCount);
+%}
+%\end{lstlisting}
 
 
 
@@ -104,7 +104,7 @@ private Double rankSingleTFICF(Website site, Corpus corpus, String word) {
 TFIDF and TFICF are conceptually almost identical, but they are conceptually quite different from the TF algorithm. 
 
 TF algorithm only counts how often a word appers on a site. So lets say that you search for a fairly common word like "government", and a relatively rare word like "Togo". Then you risk that the government word gets many hits compared to "Togo" even on a site about The goverment of Togo. And since the rare word doesn't contribute significantly to the score, sites about governments might be ranked to high compared to sites about Togo. 
-This effect will be larger if the TF implementation only uses the word count and not the word frequency as we do. The described effect can still be seen as shown in table \ref{tab:comparisonRankingAlgorithms} below, but the TF algorithm is actually quite good in most cases we tried out.   
+This effect will be larger if the TF implementation only uses the word count and not the word frequency as we do. The described effect can still be seen as shown in table \ref{tab:comparisonRankingAlgorithms}, but the TF algorithm is actually quite good in most cases we tried out.   
 TFIDF (and our TFICF) takes into account the rarity of words by weighing them according to how common/rare they are in the corpus of websites. 
 Togo doesn't appear very often in the corpus (38 occourrences in medium database), and therefore even if a site has just a few occurrences of "Togo" the search word counts for more than many occurrences of the word "government" (which appears 3067 times in the medium database.
 This is a reasonable behavior since the rare words are probably the best indicators of what the user really wants to read about.  
@@ -140,11 +140,11 @@ But what kind of word is `rank` or `score`, a verb or a noun? Actually it can be
 \end{figure}
 
 In the first implementation we tried, we wrote a utility class named \code{Score} which had static rank methods for ranking websites.   
-A (relevant part of the) UML class diagram for this design is shown if figure \ref{fig:uml:utilityClass}, and snippets of relevant code lines from the implementation is shown in listing \ref{lst:ScoreUtilityClass}. 
+A (relevant part of the) UML class diagram for this design is shown if figure \ref{fig:uml:utilityClass}, and snippets of relevant code lines from the implementation is shown in listing \ref{lst:ScoreUtilityClass} and \ref{lst:ScoreUtilityClass-2}. 
 A drawback of this method is that it doesn't have a \code{Score} interface as specified in the mandatory requirements for the assignment.
 Another drawback of this implementation is that the ranking methods works by having a sideeffect, rather than returning a value. The ranking methods sets a score field in the website. This field is then used when sorting the sites. A better way would be to make ranking methods with no sideeffect and instead return the website score directly, and use this for sorting. This is fixed in the second implementation we did.      
 
-\begin{lstlisting}[language=Java, caption=This is a code example., label=lst:ScoreUtilityClass]
+\begin{lstlisting}[language={Java}, caption={Snippet from the Score utility class.}, label={lst:ScoreUtilityClass}]
 //// From Score class 
 
 /**
@@ -160,13 +160,14 @@ Another drawback of this implementation is that the ranking methods works by hav
 */
 public static void rankSites(Set<Website> sites, Corpus corpus, String query) {
 	for (Website site : sites) {
-		site.setRank(rankQueryTFIDF(site, corpus, query)); // bad decision! 
-					// better just to use double from rankQueryTFIDF() and do the sorting imidiately. 
+		site.setRank(rankQueryTFIDF(site, corpus, query)); 
+		// bad decision! 
+		// better just to use double from rankQueryTFIDF() and do the sorting imidiately. 
 	}
 }
 \end{lstlisting}
 
-\begin{lstlisting}[language=Java, caption=This is a code example., label=lst:ScoreUtilityClass-2]
+\begin{lstlisting}[language={Java}, caption={Snippets from SearchEngine and Website, from the first implementation where Score was a utility class.}, label={lst:ScoreUtilityClass-2}]
 //// From SearchEngine 
 
 	Set<Website> results = queryHandler.getMatchingWebsites(query);
@@ -214,10 +215,10 @@ public static void rankSites(Set<Website> sites, Corpus corpus, String query) {
 %\end{figure}
 \end{sidewaysfigure}
 Another option which largely preserves the same division of responsibility is shown in the class diagram in figure \ref{fig:uml:ScoreAsInterface}. This is the solution we went with in our final version of the code. Relevant coding lines from the implementation is shown in listing \ref{lst:scoreInterface}.
-This solution has the \code{Score} interface as required, and another big improvement is that the score/rank field from \code{Website} is removed, and instead we use the value from \code{rank} method directly to do the sorting.  
+This solution has the \code{Score} interface as required, and another big improvement is that the rank field from \code{Website} is removed, and instead we use the value from \code{rank} method directly to do the sorting.  
 
 
-\begin{lstlisting}[language={Java}, caption={This is a code example.}, label={lst:scoreInterface}]
+\begin{lstlisting}[language={Java}, caption={Final implementation where Score is an interface.}, label={lst:scoreInterface}]
 //// From TFIDFScore class 
 
 // Rank the site according to the whole query, and the Corpus.
