@@ -139,6 +139,14 @@ public class Corpus {
     return biGramMap;
   }
 
+  /**
+   * Build a map which maps bigrams to "boolean" vectors which indicate 
+   * whether a word contains a bigram or not.
+   * 
+   * NB: this method should preferably be the responsibility of the Fuzzy class,
+   * but to avoid last minute mistakes we decided to keep it here. 
+   * If this method was moved we would also avoid to have duplication of the method calculate2grams.  
+   */
   public void build2GramIndex() {
     
     // initialize map
@@ -182,14 +190,26 @@ public class Corpus {
   
   /**
    * Calculate 2-grams for a word.
+   * 
+   * @param word for which 2-grams must be calculated.
+   * @return set of 2-grams that the word contains, including "$s1", and "$sn" where
+   * s1 is the first letter, and sn is the last letter in the word.  
    */
   private Set<String> calculate2Gram(String word) {
 
-    if (word.length() <= 1) {
-      return Collections.emptySet();
+    Set<String> biGrams = new HashSet<>();
+
+    // If the word has < 1 character, return an empty set
+    if (word.length() < 1) {
+      return biGrams;
+    }
+    
+    // If the word has == 1 character
+    if (word.length() == 1) {
+      biGrams.add("$"+word);
+      return biGrams;
     }
 
-    Set<String> biGrams = new HashSet<>();
     biGrams.add("$" + word.charAt(0));
     for (int i = 0; i < word.length() - 1; i++) {
       String biGram = word.substring(i, i + 2);
