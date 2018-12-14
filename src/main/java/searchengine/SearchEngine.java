@@ -39,7 +39,7 @@ public class SearchEngine {
     System.out.println("Building corpus...");
     corpus.build(); // corpus is kept in SearchEngine since this is where ranking is done.
 
-    System.out.println("Building 2-gram index, this may take a while...");
+    System.out.println("Building 2-gram index, this may take a while...(~30 secs for medium database.)");
     corpus.build2GramIndex(); // build 2gram inverse index, for fuzzy matching.
 
     score = new TFIDFScore(); // choose the scoring algorithm to use.
