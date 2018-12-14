@@ -4,11 +4,22 @@ import java.util.HashSet;
 import java.util.Set;
 
 
+/**
+ * The {@code Fuzzy} class takes an inputted word that is deemed unrecognisable. The word is then expanded into
+ * grams and similar words are found.
+ *
+ * @author Domenico Villani
+ * @author Mikkel Buch Smedemand
+ */
 public class Fuzzy {
 
   /** The Corpus used for fuzzy search. */
   private Corpus corpus;
 
+  /**
+   * Creates a {@code Fuzzy} object that can be used for Fuzzy expansion of a word query.
+   * @param corpus The {@code Corpus} used in the {@code SearchEngine}
+   */
   public Fuzzy(Corpus corpus) {
     this.corpus = corpus;
   }
@@ -104,10 +115,10 @@ public class Fuzzy {
    * Allowed edit operations are: delete, insert, change. 
    * The cost for all edit operations are chosen equal to 1.  
    * 
-   * @param word x
-   * @param other word y
+   * @param x {@code String} word, serving as first point in the distance measuring.
+   * @param y {@code String} word, serving as the second point in the distance measuring.
    * 
-   * @return the edit distance between 
+   * @return the edit distance between the two input words.
    */
   private int editDistance(String x, String y) {
 
@@ -154,7 +165,7 @@ public class Fuzzy {
   /**
    * Calculate 2-grams for a word.
    * 
-   * @param word for which 2-grams must be calculated.
+   * @param word for which 2-grams is to be calculated.
    * @return set of 2-grams that the word contains, including "$s1", and "$sn" where
    * s1 is the first letter, and sn is the last letter in the word.  
    */

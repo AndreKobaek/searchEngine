@@ -1,14 +1,13 @@
 package searchengine;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import static java.lang.Double.NaN;
-import static java.lang.Double.doubleToLongBits;
 
 /**
  * CosineSimilarity calculates the distance between two Websites's Vectors, it is also used to
  * measure the distance between a Centroid's Vector and a Website's Vector
+ *
+ * @author Domenico Villani
+ * @author Mikkel Buch Smedemand
  */
 public class CosineSimilarity {
 

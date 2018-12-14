@@ -3,7 +3,7 @@ package searchengine;
 import java.util.List;
 
 /**
- * The {@code TFICFScore} is an implementation of the {@code Score interface}. It calculates a rank
+ * The {@code TFScore} is an implementation of the {@code Score interface}. It calculates a rank
  * for a {@code Website}, given a {@code Corpus} and either a {@code structuredQuery} or a single word using the TFICF algorithm.
  *
  * @author André Mortensen Kobæk
@@ -11,6 +11,7 @@ import java.util.List;
  * @author Flemming Westberg
  * @author Mikkel Buch Smedemand
  */
+
 public class TFScore implements Score {
 
   /**

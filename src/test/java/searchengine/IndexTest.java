@@ -10,9 +10,9 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 
 class IndexTest {
-  Index simpleIndex = null;
-  InvertedIndex treeIndex = null;
-  InvertedIndex hashIndex = null;
+  private Index simpleIndex = null;
+  private InvertedIndex treeIndex = null;
+  private InvertedIndex hashIndex = null;
 
   @BeforeEach
   void setUp() {
