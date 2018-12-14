@@ -9,16 +9,29 @@ import java.util.*;
  * as initial centroids and then calculate the distance of each website from the centroids, when it
  * finds the minumum distance (which is the higher value of cosine similarity) of a website from
  * that centroid it assigns the website to the centroid.
+ *
+ *  @author André Mortensen Kobæk
+ *  @author Domenico Villani
+ *  @author Flemming Westberg
+ *  @author Mikkel Buch Smedemand
  */
 
 public class KMeans {
+    /**The list of website into the dataset*/
     private List<Website> dataset;
+    /**The list of total words into the dataset*/
     private SortedSet<String> totalWords;
+    /**The list of centroids created*/
     private List<Centroid> centroids;
+    /**A list of old centroid used to be compared with the new one*/
     private List<Centroid> oldCentroids;
+    /**The list of all the vectors*/
     private List<Vector> vectors;
+    /**A cosine similarity object to calculate cosine similarity*/
     private CosineSimilarity cosineSimilarity;
+    /**The corpus used for the kmeans*/
     private Corpus corpus;
+    /**The score used in the kmeans*/
     private Score score;
 
     /**
@@ -171,6 +184,9 @@ public class KMeans {
      * Compare two Centroid to check that are the same or not, this similarity has a tolerance of
      * 0.001. If the values of the two Centroid are the same it return false that stops the loop
      * into startKmeans method, otherwise it returns true
+     * @param centroids1 List
+     * @param centroids2 List
+     * @return boolean
      */
     public boolean compareCentroids(List<Centroid> centroids1, List<Centroid> centroids2) {
 

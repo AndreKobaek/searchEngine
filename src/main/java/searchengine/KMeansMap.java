@@ -2,15 +2,36 @@ package searchengine;
 
 import java.util.*;
 
+/**
+ * The k-means algorithm implements a cluster analysis of the database. It takes an arbitrary number
+ * as K, which represents the number of clusters to create. It uses Tf-Idf score to calculate the
+ * relation of each website with all the words in dataset. It randomly assign K number of websites
+ * as initial centroids and then calculate the distance of each website from the centroids, when it
+ * finds the minumum distance (which is the higher value of cosine similarity) of a website from
+ * that centroid it assigns the website to the centroid.
+ *
+ *  @author André Mortensen Kobæk
+ *  @author Domenico Villani
+ *  @author Flemming Westberg
+ *  @author Mikkel Buch Smedemand
+ */
 
 public class KMeansMap {
+    /**The list of website into the dataset*/
     private List<Website> dataset;
+    /**The list of total words into the dataset*/
     private SortedSet<String> totalWords;
+    /**The list of centroids created*/
     private List<CentroidMap> centroids;
+    /**A list of old centroid used to be compared with the new one*/
     private List<CentroidMap> oldCentroids;
+    /**The list of all the vectors*/
     private List<VectorMap> vectors;
+    /**A cosine similarity object to calculate cosine similarity*/
     private CosineSimilarityMap cosineSimilarity;
+    /**The corpus used for the kmeans*/
     private Corpus corpus;
+    /**The score used in the kmeans*/
     private Score score;
 
     /**
@@ -132,6 +153,9 @@ public class KMeansMap {
      * Compare two Centroid to check that are the same or not, this similarity has a tolerance of
      * 0.001. If the values of the two Centroid are the same it return false that stops the loop
      * into startKmeans method, otherwise it returns true
+     * @param centroids1 List
+     * @param centroids2 List
+     * @return boolean
      */
     public boolean compareCentroids(List<CentroidMap> centroids1, List<CentroidMap> centroids2) {
 
