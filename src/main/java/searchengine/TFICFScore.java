@@ -3,8 +3,8 @@ package searchengine;
 import java.util.List;
 
 /**
- * The {@code TFICFScore} is an implmentation of the {@code Score interface}. It calculates a rank
- * for a {@code Website}, given a {@code Corpus} and a {@code structuredQuery} using the TFICF algorithm.
+ * The {@code TFICFScore} is an implementation of the {@code Score interface}. It calculates a rank
+ * for a {@code Website}, given a {@code Corpus} and either a {@code structuredQuery} or a single word using the TFICF algorithm.
  *
  * @author André Mortensen Kobæk
  * @author Domenico Villani
@@ -57,7 +57,7 @@ public class TFICFScore implements Score {
   private Double rankSingleTFICF(Website site, Corpus corpus, String word) {
 
     // number of words on the site.
-    int wordSize = site.getWordSize();
+    int wordSize = site.getWordCount();
 
     // number of times word appear on website, i.e the term site count.
     double wordCount = (double) site.getWordsToOccurences().get(word);

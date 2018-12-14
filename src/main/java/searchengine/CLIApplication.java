@@ -45,11 +45,12 @@ public class CLIApplication {
       }
       System.out.println();
       // List<Website> resultList = searchengine.search(query);
-      List<Website> resultList = searchengine.search(query).getMatchingWebsites(); // ugly hack
+      List<Website> resultList = searchengine.search(query);
       System.out.println("Found " + resultList.size() + " websites matching the query.");
       for (Website w : resultList) {
         System.out.println(w.getTitle() + ":");
         System.out.println("  " + w.getUrl());
+        System.out.println("  " + w.getSimilarWebsites());
       }
       System.out.println();
       System.out.println("Please enter your query (Q to quit), then press [Enter].");
