@@ -2,6 +2,7 @@ package searchengine;
 
 import java.util.*;
 
+
 public class KMeansMap {
     private List<Website> dataset;
     private SortedSet<String> totalWords;
@@ -14,7 +15,7 @@ public class KMeansMap {
 
     /**
      * Takes a list of Website a Corpus instance, a Score instance and it assigns them to the
-     * respective objects declared int the class
+     * respective objects declared in the class
      * 
      * @param dataset a List of {@code Website}
      * @param corpus  Corpus
@@ -261,11 +262,22 @@ public class KMeansMap {
     }
 
     /**
-     * Returns all the centroids
-     * 
-     * @return A list containing all the centroids
+     * Assigns the URLs of similar websites to all the {@code Website} objects contained in all the centroids
      */
-    public List<CentroidMap> getCentroids(){
-        return centroids;
+    public void assignSimilarWebsites() {
+        for (CentroidMap centroid : centroids) {
+            List<String> similarWebsites = new ArrayList<>();
+
+            // First, extract websites from all the we
+            for (VectorMap vector : centroid.getWebsiteVectors()) {
+                similarWebsites.add(vector.getWebsite().getUrl());
+                System.out.println("Adding " + vector.getWebsite().getUrl()
+                        + " to list of similar websites in " + centroid.getClusterName());
+            }
+            // Second, assign the list to each website
+            for (VectorMap vector : centroid.getWebsiteVectors()) {
+                vector.getWebsite().setSimilarWebsites(similarWebsites);
+            }
+        }
     }
 }

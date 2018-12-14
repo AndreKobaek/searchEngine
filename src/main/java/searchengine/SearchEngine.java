@@ -20,29 +20,36 @@ public class SearchEngine {
   private Corpus corpus;
   private Score score;
   private QueryHandler queryHandler;
+  private KMeansMap kMeans;
 
   /**
-   * Creates a {@code SearchEngine} object from a list of websites.
+   * Creates a {@code SearchEngine} object from a set of websites.
    *
-   * @param sites the list of websites
+   * @param sites the set of websites
    */
   public SearchEngine(Set<Website> sites) {
     idx = new InvertedIndexTreeMap();
     System.out.println("Building index...");
     idx.build(sites);
+
     corpus = new Corpus(sites);
     System.out.println("Building corpus...");
     corpus.build(); // corpus is kept in SearchEngine since this is where ranking is done.
+
     System.out.println("Building 2-gram index, this may take a while...");
     corpus.build2GramIndex(); // build 2gram inverse index, for fuzzy matching.
+
     score = new TFIDFScore(); // choose the scoring algorithm to use.
     queryHandler = new QueryHandler(idx, corpus, new Fuzzy(corpus));
 
-    // KMeans kMeans = new KMeans(new ArrayList<Website>(sites), corpus, score);
-    // kMeans.startKMeans(5);
-    KMeansMap kMeans = new KMeansMap(new ArrayList<Website>(sites), corpus, score);
-    kMeans.startKMeans(200);
+    kMeans = new KMeansMap(new ArrayList<Website>(sites), corpus, score);
+    System.out.println("Building the k-means index, this may take even longer...");
+    kMeans.startKMeans(3);
+    System.out.println("Assigning similar websites based on the k-means index, this might make everything crash...");
+    kMeans.assignSimilarWebsites();
+    System.out.println("Success");
   }
+
 
   /**
    * Returns a {@code SearchResult} matching the query.
@@ -62,6 +69,7 @@ public class SearchEngine {
     // The websites are ordered according to rank and returned as a {@code SearchResult}.
     return new SearchResult(orderWebsites(results, structuredQuery));
   }
+
 
   /**
    * Rank a list of websites, according to the query, also using information about the whole
@@ -87,4 +95,5 @@ public class SearchEngine {
     list.sort(new RankComparator().reversed()); // why do we need to reverse?
     return list;
   }
+
 }

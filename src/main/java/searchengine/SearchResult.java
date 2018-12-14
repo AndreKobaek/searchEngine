@@ -37,6 +37,7 @@ public class SearchResult {
         return matchingWebsites;
     }
 
+    
     /** Returns the count of matching websites */
     public int getWebsiteCount() {
         return matchingWebsites.size();

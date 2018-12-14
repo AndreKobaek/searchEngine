@@ -2,6 +2,8 @@ package searchengine;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 
@@ -28,8 +30,8 @@ public class Website {
   /** A map from word to wordcount */
   private Map<String, Integer> wordsToOccurences;
 
-  /** A list of similar websites */
-  private List<Website> similarWebsites;
+  /** A list of URLs for similar websites */
+  private List<String> similarWebsites;
 
   /**
    * Creates a {@code Website} object from a url, a title, and a list of words that are contained on
@@ -43,6 +45,7 @@ public class Website {
     this.url = url;
     this.title = title;
     this.words = words;
+    similarWebsites = new ArrayList<>();
 
     // build the map which holds words and corresponding word counts for the website.
     wordsToOccurences = new HashMap<>();
@@ -108,10 +111,11 @@ public class Website {
   /**
    * Assign a list with similar websites to this object
    *
-   * @param similarWebsites the list of similar websites
+   * @param websiteUrls the list of URLs for similar websites from the centroid
    */
-  public void setSimilarWebsites(List<Website> similarWebsites) {
-    this.similarWebsites = similarWebsites;
+  public void setSimilarWebsites(List<String> websiteUrls) {
+    similarWebsites.addAll(websiteUrls);
+    similarWebsites.remove(url); // Remove the URL of this website if it is present in the list - to avoid circular dependencies
   }
 
   /**
@@ -119,8 +123,25 @@ public class Website {
    *
    * @return the list of similar websites
    */
-  public List<Website> getSimilarWebsites() {
+  public List<String> getSimilarWebsites() {
     return similarWebsites;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Website website = (Website) o;
+    return title.equals(website.title) && url.equals(website.url);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(title, url);
   }
 
   @Override
