@@ -109,7 +109,7 @@ TFIDF (and our TFICF) takes into account the rarity of words by weighing them ac
 Togo doesn't appear very often in the corpus (38 occourrences in medium database), and therefore even if a site has just a few occurrences of "Togo" the search word counts for more than many occurrences of the word "government" (which appears 3067 times in the medium database.
 This is a reasonable behavior since the rare words are probably the best indicators of what the user really wants to read about.  
 
-\begin{table}
+\begin{table}[b]
 	\centering
 \begin{tabular}{@{}llr@{}} \toprule
 	\multicolumn{3}{c}{Search query: \textit{Togo OR Government}} \\ \cmidrule(r){1-3}
@@ -140,7 +140,7 @@ But what kind of word is `rank` or `score`, a verb or a noun? Actually it can be
 \end{figure}
 
 In the first implementation we tried, we wrote a utility class named \code{Score} which had static rank methods for ranking websites.   
-A (relevant part of the) UML class diagram for this design is shown if figure \ref{fig:uml:utilityClass}, and snippets of relevant code lines from the implementation is shown in listing \ref{lst:ScoreUtilityClass} and \ref{lst:ScoreUtilityClass-2}. 
+A (relevant part of the) UML class diagram for this design is shown if figure \ref{fig:uml:ScoreAsClass}, and snippets of relevant code lines from the implementation is shown in listing \ref{lst:ScoreUtilityClass} and \ref{lst:ScoreUtilityClass-2}. 
 A drawback of this method is that it doesn't have a \code{Score} interface as specified in the mandatory requirements for the assignment.
 Another drawback of this implementation is that the ranking methods works by having a sideeffect, rather than returning a value. The ranking methods sets a score field in the website. This field is then used when sorting the sites. A better way would be to make ranking methods with no sideeffect and instead return the website score directly, and use this for sorting. This is fixed in the second implementation we did.      
 
